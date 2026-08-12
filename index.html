@@ -108,6 +108,11 @@
     <div id="pesan"></div>
 
   </div>
-
+  <script>
+document.querySelector("button").addEventListener("click", function() {
+var email = document.getElementById("email").value;
+  document.getElementById("pesan").textContent = "Email diterima.";
+ });
+ </script>   
 </body>
 </html>
