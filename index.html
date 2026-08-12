@@ -108,10 +108,17 @@
     <div id="pesan"></div>
 
   </div>
+  <div id="dashboard" style="display:none;">
+    <h2>Dashboard Koperasi</h2>
+    <p>Selamat datang di Koperasi Digital Jaya.</p>
+</div>
   <script>
 document.querySelector("button").addEventListener("click", function() {
 var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+  if (email === "demo@koperasi.test" && password === "123456") {
   document.getElementById("pesan").textContent = "Login berhasil (demo).";
+    }
  });
  </script>   
 </body>
