@@ -111,7 +111,32 @@
   <div id="dashboard" style="display:none;">
     <h2>Dashboard Koperasi</h2>
     <p>Selamat datang di Koperasi Digital Jaya.</p>
- <button>Data Anggota</button>   
+
+    <button id="btnAnggota">Data Anggota</button>
+</div>
+
+<div id="anggota" style="display:none;">
+    <h2>Data Anggota</h2>
+    <p>Daftar anggota Koperasi Digital Jaya</p>
+
+    <button id="btnTambah">+ Tambah Anggota</button>
+
+    <div id="formAnggota" style="display:none;">
+        <h3>Tambah Anggota</h3>
+
+        <label>Nama Anggota</label>
+        <input type="text" id="namaAnggota" placeholder="Masukkan nama anggota">
+
+        <label>No. Anggota</label>
+        <input type="text" id="noAnggota" placeholder="Masukkan nomor anggota">
+
+        <button id="btnSimpan">Simpan</button>
+    </div>
+
+    <div id="daftarAnggota">
+        <h3>Daftar Anggota</h3>
+        <p>Belum ada data anggota.</p>
+    </div>
 </div>
   <script>
 document.querySelector("button").addEventListener("click", function() {
@@ -123,6 +148,14 @@ var email = document.getElementById("email").value;
     document.querySelector(".login-box").style.display = "none";
     }
  });
+   document.getElementById("btnAnggota").addEventListener("click", function() {
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("anggota").style.display = "block";
+});
+
+document.getElementById("btnTambah").addEventListener("click", function() {
+    document.getElementById("formAnggota").style.display = "block";
+}); 
  </script>   
 </body>
 </html>
