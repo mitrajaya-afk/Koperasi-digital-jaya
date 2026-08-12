@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koperasi Digital Jaya</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background: #f3f6f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 32px 26px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.10);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0;
+      font-size: 25px;
+      color: #1f2937;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin: 8px 0 28px;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      border: 0;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    #pesan {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+
+    <div class="logo">🏦</div>
+
+    <h1>Koperasi Digital Jaya</h1>
+
+    <div class="subtitle">
+      Silakan masuk untuk melanjutkan
+    </div>
+
+    <label>Email</label>
+    <input type="email" id="email" placeholder="Masukkan email">
+
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Masukkan password">
+
+    <button>LOGIN</button>
+
+    <div id="pesan"></div>
+
+  </div>
+
+</body>
+</html>
