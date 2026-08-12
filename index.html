@@ -118,6 +118,8 @@ var email = document.getElementById("email").value;
   var password = document.getElementById("password").value;
   if (email === "demo@koperasi.test" && password === "123456") {
   document.getElementById("pesan").textContent = "Login berhasil (demo).";
+    document.getElementById("dashboard").style.display = "block";
+    document.querySelector(".login-box").style.display = "none";
     }
  });
  </script>   
