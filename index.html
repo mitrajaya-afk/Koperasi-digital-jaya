@@ -131,38 +131,113 @@ label{
     margin-bottom:20px;
 }
 
+
+/* =====================================================
+   TABEL REKAP
+   DIBUAT AGAR SELURUH KOLOM MUAT DI LAYAR TABLET
+===================================================== */
+
 .table-wrap{
-    overflow-x:auto;
     width:100%;
+    overflow-x:auto;
 }
 
 .rekap-table{
     width:100%;
+    min-width:0;
+    table-layout:fixed;
     border-collapse:collapse;
-    min-width:1150px;
 }
+
+
+/* Lebar masing-masing kolom */
+
+.rekap-table th:nth-child(1),
+.rekap-table td:nth-child(1){
+    width:9%;
+}
+
+.rekap-table th:nth-child(2),
+.rekap-table td:nth-child(2){
+    width:12%;
+}
+
+.rekap-table th:nth-child(3),
+.rekap-table td:nth-child(3){
+    width:8%;
+}
+
+.rekap-table th:nth-child(4),
+.rekap-table td:nth-child(4){
+    width:9%;
+}
+
+.rekap-table th:nth-child(5),
+.rekap-table td:nth-child(5){
+    width:8%;
+}
+
+.rekap-table th:nth-child(6),
+.rekap-table td:nth-child(6){
+    width:10%;
+}
+
+.rekap-table th:nth-child(7),
+.rekap-table td:nth-child(7){
+    width:11%;
+}
+
+.rekap-table th:nth-child(8),
+.rekap-table td:nth-child(8){
+    width:7%;
+}
+
+.rekap-table th:nth-child(9),
+.rekap-table td:nth-child(9){
+    width:8%;
+}
+
+.rekap-table th:nth-child(10),
+.rekap-table td:nth-child(10){
+    width:11%;
+}
+
+.rekap-table th:nth-child(11),
+.rekap-table td:nth-child(11){
+    width:7%;
+}
+
 
 .rekap-table th{
     background:#1261e8;
     color:white;
-    padding:10px;
+    padding:7px 4px;
     border:1px solid #ddd;
-    font-size:13px;
+    font-size:11px;
+    line-height:1.15;
+    text-align:center;
+    white-space:normal;
+    word-break:normal;
 }
 
 .rekap-table td{
-    padding:7px;
+    padding:5px 3px;
     border:1px solid #ddd;
-    font-size:13px;
+    font-size:11px;
     text-align:center;
     white-space:nowrap;
+    overflow:hidden;
 }
 
 .rekap-table input{
-    min-width:105px;
-    padding:8px;
+    width:100%;
+    min-width:0;
+    max-width:100%;
+    padding:6px 4px;
     border-radius:5px;
     text-align:right;
+    font-size:11px;
+    height:32px;
 }
 
 .resort-name{
@@ -201,6 +276,7 @@ label{
     margin-top:0;
     border-radius:8px 8px 0 0;
     font-weight:bold;
+    font-size:14px;
 }
 
 .info{
@@ -217,9 +293,48 @@ label{
 }
 
 
-/* =========================
+/* =====================================================
+   TABLET
+   Fokus utama: semua kolom langsung terlihat
+===================================================== */
+
+@media(min-width:701px) and (max-width:1300px){
+
+    .container{
+        padding:12px;
+    }
+
+    .card{
+        padding:14px;
+    }
+
+    .rekap-table th{
+        font-size:10px;
+        padding:6px 2px;
+    }
+
+    .rekap-table td{
+        font-size:10px;
+        padding:4px 2px;
+    }
+
+    .rekap-table input{
+        font-size:10px;
+        padding:5px 2px;
+        height:30px;
+    }
+
+    .day-title{
+        font-size:13px;
+        padding:10px;
+    }
+
+}
+
+
+/* =====================================================
    PRINT
-========================= */
+===================================================== */
 
 @media print{
 
@@ -255,9 +370,9 @@ label{
 }
 
 
-/* =========================
+/* =====================================================
    MOBILE
-========================= */
+===================================================== */
 
 @media(max-width:700px){
 
@@ -266,7 +381,7 @@ label{
     }
 
     .card{
-        padding:15px;
+        padding:10px;
     }
 
     .top-bar{
@@ -276,6 +391,46 @@ label{
 
     .top-bar button{
         width:100%;
+    }
+
+    /*
+       HP kecil tetap boleh geser tabel.
+       Ini supaya angka tidak terlalu kecil.
+    */
+
+    .rekap-table{
+        min-width:850px;
+        table-layout:fixed;
+    }
+
+    .rekap-table th{
+        font-size:10px;
+    }
+
+    .rekap-table td{
+        font-size:10px;
+    }
+
+}
+
+
+/* =====================================================
+   TABLET LEBAR
+===================================================== */
+
+@media(min-width:1301px){
+
+    .rekap-table th{
+        font-size:12px;
+        padding:8px 4px;
+    }
+
+    .rekap-table td{
+        font-size:12px;
+    }
+
+    .rekap-table input{
+        font-size:12px;
     }
 
 }
@@ -464,53 +619,18 @@ label{
                     id="bulan"
                     onchange="gantiPeriode()">
 
-                    <option value="1">
-                        Januari
-                    </option>
-
-                    <option value="2">
-                        Februari
-                    </option>
-
-                    <option value="3">
-                        Maret
-                    </option>
-
-                    <option value="4">
-                        April
-                    </option>
-
-                    <option value="5">
-                        Mei
-                    </option>
-
-                    <option value="6">
-                        Juni
-                    </option>
-
-                    <option value="7">
-                        Juli
-                    </option>
-
-                    <option value="8">
-                        Agustus
-                    </option>
-
-                    <option value="9">
-                        September
-                    </option>
-
-                    <option value="10">
-                        Oktober
-                    </option>
-
-                    <option value="11">
-                        November
-                    </option>
-
-                    <option value="12">
-                        Desember
-                    </option>
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
 
                 </select>
 
@@ -981,49 +1101,17 @@ function buatHari(
 
                     <tr>
 
-                        <th>
-                            Nama Resort
-                        </th>
-
-                        <th>
-                            Storting
-                        </th>
-
-                        <th>
-                            Tunai Pasar
-                        </th>
-
-                        <th>
-                            Tabungan 5%
-                        </th>
-
-                        <th>
-                            ADM 5%
-                        </th>
-
-                        <th>
-                            Jumlah
-                        </th>
-
-                        <th>
-                            Drop
-                        </th>
-
-                        <th>
-                            Drop 20%
-                        </th>
-
-                        <th>
-                            Drop 120%
-                        </th>
-
-                        <th>
-                            Tabungan Keluar
-                        </th>
-
-                        <th>
-                            Saldo
-                        </th>
+                        <th>Nama Resort</th>
+                        <th>Storting</th>
+                        <th>Tunai<br>Pasar</th>
+                        <th>Tabungan<br>5%</th>
+                        <th>ADM<br>5%</th>
+                        <th>Jumlah</th>
+                        <th>Drop</th>
+                        <th>Drop<br>20%</th>
+                        <th>Drop<br>120%</th>
+                        <th>Tabungan<br>Keluar</th>
+                        <th>Saldo</th>
 
                     </tr>
 
@@ -1552,16 +1640,6 @@ function hitungHari(
                 );
 
 
-            /*
-               V7
-
-               Tabungan 5% =
-               Drop x 5%
-
-               ADM 5% =
-               Drop x 5%
-            */
-
             const tabungan5 =
                 drop * 0.05;
 
@@ -1570,44 +1648,19 @@ function hitungHari(
                 drop * 0.05;
 
 
-            /*
-               Jumlah
-            */
-
             const jumlah =
                 storting +
                 tabungan5 +
                 adm5;
 
 
-            /*
-               Drop 20%
-            */
-
             const drop20 =
                 drop * 0.20;
 
 
-            /*
-               Drop 120%
-            */
-
             const drop120 =
                 drop * 1.20;
 
-
-            /*
-               Tunai Pasar dan Saldo
-
-               Mengikuti pola V7:
-
-               Bila jumlah belum mencukupi
-               kebutuhan Drop + Tabungan Keluar,
-               kekurangannya masuk Tunai Pasar.
-
-               Bila cukup,
-               selisihnya menjadi Saldo.
-            */
 
             const kebutuhan =
                 drop +
@@ -1832,9 +1885,6 @@ function hitungHari(
 
     /* =========================
        SALDO AKHIR
-
-       SALDO AKHIR =
-       SALDO AWAL + TOTAL HARI
     ========================= */
 
     const akhir = {
@@ -2061,7 +2111,6 @@ function simpanData(){
     .getElementById("statusData")
     .textContent =
         `Data ${namaBulan[bulan]} ${tahun} berhasil disimpan.`;
-
 
 
     document
