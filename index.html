@@ -801,7 +801,7 @@ async function login(){
 
     if(error){
         console.error(error);
-        message.textContent = "Email atau password salah.";
+        message.textContent = error.message;
         return;
     }
 
