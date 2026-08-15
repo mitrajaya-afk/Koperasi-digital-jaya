@@ -449,6 +449,31 @@ const supabaseClient =
         SUPABASE_URL,
         SUPABASE_PUBLISHABLE_KEY
     );
+// ===============================
+// PULIHKAN SESSION SAAT HALAMAN DIBUKA
+// ===============================
+document.addEventListener("DOMContentLoaded", async () => {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    if (session) {
+        document.getElementById("loginPage")
+            .classList.add("hidden");
+
+        document.getElementById("dashboardPage")
+            .classList.remove("hidden");
+    }
+});
+
+// Pantau perubahan status login
+supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (session) {
+        document.getElementById("loginPage")
+            .classList.add("hidden");
+
+        document.getElementById("dashboardPage")
+            .classList.remove("hidden");
+    }
+});    
 </script>
 </head>
 
