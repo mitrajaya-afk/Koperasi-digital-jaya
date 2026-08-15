@@ -455,25 +455,40 @@ const supabaseClient =
 document.addEventListener("DOMContentLoaded", async () => {
     const { data: { session } } = await supabaseClient.auth.getSession();
 
-    if (session) {
-        document.getElementById("loginPage")
-            .classList.add("hidden");
+   if (session) {
+    document.getElementById("loginPage")
+        .classList.add("hidden");
 
+    const halamanTerakhir =
+        localStorage.getItem("halamanTerakhir");
+
+    if (halamanTerakhir === "rekap") {
+        bukaRekap();
+    } else {
         document.getElementById("dashboardPage")
             .classList.remove("hidden");
     }
+} 
 });
 
 // Pantau perubahan status login
 supabaseClient.auth.onAuthStateChange((event, session) => {
     if (session) {
+
         document.getElementById("loginPage")
             .classList.add("hidden");
 
-        document.getElementById("dashboardPage")
-            .classList.remove("hidden");
+        const halamanTerakhir =
+            localStorage.getItem("halamanTerakhir");
+
+        if (halamanTerakhir === "rekap") {
+            bukaRekap();
+        } else {
+            document.getElementById("dashboardPage")
+                .classList.remove("hidden");
+        }
     }
-});    
+});
 </script>
 </head>
 
@@ -849,6 +864,7 @@ async function login(){
 ===================================================== */
 
 function bukaRekap(){
+  localStorage.setItem("halamanTerakhir", "rekap");  
 
     document
     .getElementById("dashboardPage")
