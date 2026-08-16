@@ -149,6 +149,15 @@ label{
     border-collapse:collapse;
 }
 
+    /* Ukuran tulisan tabel */
+.rekap-table th,
+.rekap-table td {
+    font-size: 14px;
+}
+
+.rekap-table input {
+    font-size: 14px;
+}
 
 /* Lebar masing-masing kolom */
 
@@ -599,6 +608,12 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
 
             </button>
 
+            <button
+    class="menu-button"
+    onclick="logout()">
+    🚪<br>
+    Keluar
+</button>
         </div>
 
     </div>
@@ -615,6 +630,9 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
     id="rekapPage"
     class="container hidden">
 
+   <button type="button" onclick="kembaliDashboard()">
+    ↩️ Kembali
+</button> 
 
     <div class="card">
 
@@ -882,6 +900,41 @@ function bukaRekap(){
 
 }
 
+   function kembaliDashboard() {
+
+    localStorage.removeItem("halamanTerakhir");
+
+    document
+        .getElementById("rekapPage")
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById("dashboardPage")
+        .classList
+        .remove("hidden");
+} 
+
+async function logout() {
+
+    const { error } = await supabaseClient.auth.signOut();
+
+    if (error) {
+        alert("Gagal logout: " + error.message);
+        return;
+    }
+
+    localStorage.removeItem("halamanTerakhir");
+
+    document.getElementById("loginPage")
+        .classList.remove("hidden");
+
+    document.getElementById("dashboardPage")
+        .classList.add("hidden");
+
+    document.getElementById("rekapPage")
+        .classList.add("hidden");
+}    
 
 
 /* =====================================================
