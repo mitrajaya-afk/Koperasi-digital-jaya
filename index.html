@@ -593,9 +593,10 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
             </button>
 
 
-            <button
-                class="menu-button"
-                disabled>
+<button
+    class="menu-button"
+    onclick="bukaEkspedisi()">
+            
 
                 📦<br>
                 Ekspedisi
@@ -626,6 +627,34 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
      REKAP HARIAN
 ===================================================== -->
 
+<!-- =========================================
+     BUKU EKSPEDISI
+========================================= -->
+
+<div
+    id="ekspedisiPage"
+    class="container hidden">
+
+    <button type="button" onclick="kembaliDashboardDariEkspedisi()">
+        ↩️ Kembali
+    </button>
+
+    <div class="card">
+
+        <h1>Buku Ekspedisi</h1>
+
+        <p>
+            Buku pencatatan ekspedisi Koperasi Digital Jaya
+        </p>
+
+        <div style="margin-top:20px;">
+            📦 Buku Ekspedisi
+        </div>
+
+    </div>
+
+</div>
+    
 <div
     id="rekapPage"
     class="container hidden">
@@ -915,6 +944,18 @@ function bukaRekap(){
         .remove("hidden");
 } 
 
+function bukaEkspedisi() {
+    localStorage.setItem("halamanTerakhir", "ekspedisi");
+
+    document
+        .getElementById("dashboardPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("ekspedisiPage")
+        .classList.remove("hidden");
+}
+    
 async function logout() {
 
     const { error } = await supabaseClient.auth.signOut();
