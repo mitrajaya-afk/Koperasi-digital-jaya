@@ -955,6 +955,18 @@ function bukaEkspedisi() {
         .getElementById("ekspedisiPage")
         .classList.remove("hidden");
 }
+
+   function kembaliDashboardDariEkspedisi() {
+    localStorage.removeItem("halamanTerakhir");
+
+    document
+        .getElementById("ekspedisiPage")
+        .classList.add("hidden");
+
+    document
+        .getElementById("dashboardPage")
+        .classList.remove("hidden");
+} 
     
 async function logout() {
 
