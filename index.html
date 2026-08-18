@@ -1705,6 +1705,445 @@ function cetakEkspedisi(){
     document.getElementById("tunaiBulan").value=sekarang.getMonth()+1;
     document.getElementById("tunaiTahun").value=sekarang.getFullYear();
 </script>
+<!-- =========================================================
+     V4 - TOMBOL MELAYANG SIMPAN + KEMBALI
+     Tidak mengubah fungsi tombol asli
+========================================================= -->
 
+<style>
+/* Bar tombol melayang */
+#v4FloatingActions{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:9999;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+
+    padding:10px 12px;
+
+    background:rgba(255,255,255,.94);
+    border-top:1px solid rgba(20,35,55,.10);
+
+    box-shadow:0 -4px 18px rgba(0,0,0,.10);
+
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+
+    box-sizing:border-box;
+}
+
+/* Tombol melayang */
+#v4FloatingActions button{
+    border:0;
+    border-radius:10px;
+
+    min-height:42px;
+    padding:0 18px;
+
+    font-family:inherit;
+    font-size:14px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+
+    transition:
+        transform .12s ease,
+        opacity .12s ease;
+}
+
+/* Tombol Simpan */
+#v4FloatingSave{
+    background:#2563eb;
+    color:white;
+}
+
+/* Tombol Kembali */
+#v4FloatingBack{
+    background:#eef1f5;
+    color:#263445;
+}
+
+/* Efek tekan */
+#v4FloatingActions button:active{
+    transform:scale(.96);
+}
+
+/* Saat tidak ada halaman aktif */
+#v4FloatingActions.v4-hidden{
+    display:none;
+}
+
+/* Agar isi paling bawah tidak tertutup bar */
+body.v4-floating-active{
+    padding-bottom:72px;
+}
+
+/* Tampilan tablet / HP */
+@media(max-width:600px){
+
+    #v4FloatingActions{
+        gap:8px;
+        padding:8px 10px;
+    }
+
+    #v4FloatingActions button{
+        flex:1;
+        max-width:180px;
+        min-height:44px;
+        padding:0 12px;
+        font-size:13px;
+    }
+
+}
+
+/* Saat print jangan tampil */
+@media print{
+    #v4FloatingActions{
+        display:none !important;
+    }
+
+    body.v4-floating-active{
+        padding-bottom:0 !important;
+    }
+}
+</style>
+
+
+<div id="v4FloatingActions" class="v4-hidden">
+
+    <button
+        type="button"
+        id="v4FloatingBack">
+        <span>↩</span>
+        <span>Kembali</span>
+    </button>
+
+    <button
+        type="button"
+        id="v4FloatingSave">
+        <span>💾</span>
+        <span>Simpan</span>
+    </button>
+
+</div>
+
+
+<script>
+(function(){
+
+    "use strict";
+
+    /*
+     * ========================================================
+     * V4 FLOATING ACTIONS
+     * ========================================================
+     *
+     * Tidak mengganti fungsi asli.
+     * Tombol melayang hanya memanggil tombol asli.
+     *
+     * Halaman:
+     * - Rekap       : simpanData()
+     * - Ekspedisi   : simpanEkspedisi()
+     * - Buku Tunai  : simpanTunai()
+     *
+     * Kembali:
+     * - Rekap       : kembaliDashboard()
+     * - Ekspedisi   : kembaliDashboardDariEkspedisi()
+     * - Tunai       : kembaliDashboardDariTunai()
+     *
+     * ========================================================
+     */
+
+    function halamanAktif(){
+
+        const rekap = document.getElementById("rekapPage");
+        const ekspedisi = document.getElementById("ekspedisiPage");
+        const tunai = document.getElementById("tunaiPage");
+
+        if(
+            rekap &&
+            !rekap.classList.contains("hidden")
+        ){
+            return "rekap";
+        }
+
+        if(
+            ekspedisi &&
+            !ekspedisi.classList.contains("hidden")
+        ){
+            return "ekspedisi";
+        }
+
+        if(
+            tunai &&
+            !tunai.classList.contains("hidden")
+        ){
+            return "tunai";
+        }
+
+        return null;
+    }
+
+
+    function tampilkanFloating(){
+
+        const bar =
+            document.getElementById("v4FloatingActions");
+
+        if(!bar) return;
+
+        const halaman = halamanAktif();
+
+        if(halaman){
+
+            bar.classList.remove("v4-hidden");
+
+            document.body.classList.add(
+                "v4-floating-active"
+            );
+
+        }else{
+
+            bar.classList.add("v4-hidden");
+
+            document.body.classList.remove(
+                "v4-floating-active"
+            );
+
+        }
+    }
+
+
+    function klikTombolAsli(teks){
+
+        /*
+         * Cari tombol berdasarkan tulisan.
+         * Tombol asli tetap dipakai sehingga
+         * onclick dan fungsi V4 tidak berubah.
+         */
+
+        const semua =
+            document.querySelectorAll(
+                "button"
+            );
+
+        for(const tombol of semua){
+
+            if(
+                tombol.closest("#v4FloatingActions")
+            ){
+                continue;
+            }
+
+            const tulisan =
+                tombol.innerText
+                    .replace(/\s+/g," ")
+                    .trim()
+                    .toLowerCase();
+
+            if(tulisan === teks.toLowerCase()){
+
+                tombol.click();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /*
+     * TOMBOL SIMPAN MELAYANG
+     */
+    document
+        .getElementById("v4FloatingSave")
+        .addEventListener("click",function(){
+
+            const halaman = halamanAktif();
+
+            if(halaman === "rekap"){
+
+                /*
+                 * Cari tombol Simpan di Rekap.
+                 */
+                const tombol =
+                    document.querySelector(
+                        '#rekapPage button[onclick*="simpanData"]'
+                    );
+
+                if(tombol){
+                    tombol.click();
+                    return;
+                }
+
+                /*
+                 * Cadangan langsung ke fungsi lama.
+                 */
+                if(typeof window.simpanData === "function"){
+                    window.simpanData();
+                }
+
+                return;
+            }
+
+
+            if(halaman === "ekspedisi"){
+
+                const tombol =
+                    document.querySelector(
+                        '#ekspedisiPage button[onclick*="simpanEkspedisi"]'
+                    );
+
+                if(tombol){
+                    tombol.click();
+                    return;
+                }
+
+                if(
+                    typeof window.simpanEkspedisi ===
+                    "function"
+                ){
+                    window.simpanEkspedisi();
+                }
+
+                return;
+            }
+
+
+            if(halaman === "tunai"){
+
+                const tombol =
+                    document.querySelector(
+                        '#tunaiPage button[onclick*="simpanTunai"]'
+                    );
+
+                if(tombol){
+                    tombol.click();
+                    return;
+                }
+
+                if(
+                    typeof window.simpanTunai ===
+                    "function"
+                ){
+                    window.simpanTunai();
+                }
+
+                return;
+            }
+
+        });
+
+
+    /*
+     * TOMBOL KEMBALI MELAYANG
+     */
+    document
+        .getElementById("v4FloatingBack")
+        .addEventListener("click",function(){
+
+            const halaman = halamanAktif();
+
+            if(halaman === "rekap"){
+
+                if(
+                    typeof window.kembaliDashboard ===
+                    "function"
+                ){
+                    window.kembaliDashboard();
+                }
+
+                return;
+            }
+
+
+            if(halaman === "ekspedisi"){
+
+                if(
+                    typeof window.kembaliDashboardDariEkspedisi ===
+                    "function"
+                ){
+                    window.kembaliDashboardDariEkspedisi();
+                }
+
+                return;
+            }
+
+
+            if(halaman === "tunai"){
+
+                if(
+                    typeof window.kembaliDashboardDariTunai ===
+                    "function"
+                ){
+                    window.kembaliDashboardDariTunai();
+                }
+
+                return;
+            }
+
+        });
+
+
+    /*
+     * Cek halaman secara berkala.
+     *
+     * Ini penting karena sistem V4 Anda
+     * berpindah halaman dengan class "hidden",
+     * bukan pindah URL.
+     */
+    function pantauHalaman(){
+
+        tampilkanFloating();
+
+    }
+
+
+    /*
+     * Saat halaman pertama kali dibuka
+     */
+    if(
+        document.readyState === "loading"
+    ){
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function(){
+
+                tampilkanFloating();
+
+                setInterval(
+                    pantauHalaman,
+                    500
+                );
+
+            }
+        );
+
+    }else{
+
+        tampilkanFloating();
+
+        setInterval(
+            pantauHalaman,
+            500
+        );
+
+    }
+
+})();
+</script>
+   
 </body>
 </html>
