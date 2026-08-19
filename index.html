@@ -1,1 +1,2149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koperasi Digital Jaya</title>
 
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f6fb;color:#222}
+.container{max-width:1200px;margin:auto;padding:20px}
+h1,h2,h3{margin-top:0}
+.card{background:white;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+button{border:none;border-radius:10px;padding:13px 18px;background:#1261e8;color:white;font-size:15px;font-weight:bold;cursor:pointer}
+button:hover{background:#0b4fc7}
+.btn-secondary{background:#555}
+.btn-danger{background:#d62828}
+input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;font-size:15px;background:white}
+label{display:block;font-weight:bold;margin-bottom:6px}
+.form-group{margin-bottom:15px}
+.hidden{display:none !important}
+.login-box{max-width:420px;margin:80px auto}
+.dashboard-header{text-align:center;padding:30px 10px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.menu-button{min-height:110px;font-size:18px}
+
+.top-bar{display:grid;grid-template-columns:1fr 1fr auto auto;gap:12px;align-items:end;margin-bottom:20px}
+.table-wrap{width:100%;overflow-x:auto}
+.rekap-table{width:100%;min-width:0;table-layout:fixed;border-collapse:collapse}
+.rekap-table th:nth-child(1),.rekap-table td:nth-child(1){width:9%}
+.rekap-table th:nth-child(2),.rekap-table td:nth-child(2){width:12%}
+.rekap-table th:nth-child(3),.rekap-table td:nth-child(3){width:8%}
+.rekap-table th:nth-child(4),.rekap-table td:nth-child(4){width:9%}
+.rekap-table th:nth-child(5),.rekap-table td:nth-child(5){width:8%}
+.rekap-table th:nth-child(6),.rekap-table td:nth-child(6){width:10%}
+.rekap-table th:nth-child(7),.rekap-table td:nth-child(7){width:11%}
+.rekap-table th:nth-child(8),.rekap-table td:nth-child(8){width:7%}
+.rekap-table th:nth-child(9),.rekap-table td:nth-child(9){width:8%}
+.rekap-table th:nth-child(10),.rekap-table td:nth-child(10){width:11%}
+.rekap-table th:nth-child(11),.rekap-table td:nth-child(11){width:7%}
+
+.rekap-table th{background:#1261e8;color:white;padding:7px 4px;border:1px solid #ddd;font-size:14px;line-height:1.15;text-align:center;white-space:normal}
+.rekap-table td{padding:5px 3px;border:1px solid #ddd;font-size:14px;text-align:center;white-space:nowrap;overflow:hidden}
+.rekap-table input{width:100%;min-width:0;max-width:100%;padding:6px 4px;border-radius:5px;text-align:right;font-size:14px;height:32px}
+.resort-name{font-weight:bold;background:#f1f5ff}
+.calculated{background:#f5f5f5;font-weight:bold}
+.total-row{background:#e8f0ff;font-weight:bold}
+.saldo-awal-row{background:#dff5e5;font-weight:bold}
+.saldo-akhir-row{background:#dff5e5;font-weight:bold}
+.saldo-akhir-row td{color:#222}
+.day-title{background:#222;color:white;padding:12px;margin-top:0;border-radius:8px 8px 0 0;font-weight:bold;font-size:14px}
+.info{background:#eef5ff;border-left:4px solid #1261e8;padding:12px;margin-bottom:15px;border-radius:6px}
+.status-success{color:#16803c;font-weight:bold}
+.status-error{color:#d62828;font-weight:bold}
+
+/* =========================
+   BUKU EKSPEDISI - GAYA BUKU ASLI
+========================= */
+.exp-toolbar{display:grid;grid-template-columns:1fr 1fr auto auto;gap:12px;align-items:end;margin-bottom:18px}
+.exp-book{background:#fff;border:1px solid #d5d9df;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:22px}
+.exp-date{background:#222;color:#fff;padding:11px 14px;font-weight:bold;font-size:16px;letter-spacing:.2px}
+.exp-ledger{width:100%;border-collapse:collapse;table-layout:fixed}
+.exp-ledger th,.exp-ledger td{border:1px solid #d7dbe0;padding:8px 10px;vertical-align:middle}
+.exp-ledger th{background:#edf3fc;color:#222;text-align:center;font-size:13px}
+.exp-ledger th:first-child{width:38%}
+.exp-ledger th:nth-child(2){width:42%}
+.exp-ledger th:last-child{width:20%}
+.exp-ledger td.amount{text-align:right;font-weight:bold;white-space:nowrap}
+.exp-ledger td.label{font-weight:bold}
+.exp-ledger td.note{font-weight:normal;color:#333}
+.exp-opening td.amount{color:#d62828}
+.exp-income td.amount{color:#1261e8}
+.exp-expense-total{background:#fff4f4}
+.exp-expense-total td.amount{color:#d62828}
+.exp-temporary{background:#eef5ff}
+.exp-temporary td.amount{color:#1261e8}
+.exp-final{background:#dff5e5;font-weight:bold}
+.exp-final td.amount{color:#d62828;font-size:16px}
+.exp-expense-cell{padding:0!important}
+.exp-expense-list{padding:5px 0}
+.exp-expense-row{display:grid;grid-template-columns:minmax(0,1fr) 180px 42px;gap:7px;padding:4px 7px}
+.exp-expense-row input{height:34px;padding:6px 8px;border-radius:6px;font-size:14px}
+.exp-delete{background:#fff0f0;color:#d62828;border:1px solid #f1b5b5;padding:6px 8px;border-radius:6px;font-size:14px}
+.exp-delete:hover{background:#ffe0e0;color:#b71c1c}
+.exp-delete svg,.tunai-delete svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.exp-delete.btn-icon,.tunai-delete.btn-icon{display:inline-flex;align-items:center;justify-content:center;gap:0;min-height:34px}
+.exp-add{margin:6px 7px 8px;background:#fff;color:#1261e8;border:1px solid #b8cdf5;padding:8px 12px;font-size:13px}
+.exp-add:hover{background:#eef5ff}
+.exp-actions{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.exp-nav{background:#555}
+.exp-nav:hover{background:#444}
+.exp-save-wrap{text-align:center}
+.exp-save{min-width:180px}
+.save-popup{position:fixed;top:22px;left:50%;transform:translateX(-50%);z-index:9999;display:none;background:#16803c;color:white;padding:12px 22px;border-radius:10px;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.save-popup.show{display:flex;align-items:center;gap:9px}
+.save-popup-icon{display:inline-flex;width:20px;height:20px;flex:0 0 20px}
+.save-popup-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.save-popup-error{background:#d62828!important;box-shadow:0 10px 25px rgba(214,40,40,.22)!important}
+
+@media(min-width:701px) and (max-width:1300px){
+.container{padding:12px}.card{padding:14px}
+.rekap-table th,.rekap-table td,.rekap-table input{font-size:14px}
+.rekap-table th{padding:6px 2px}.rekap-table td{padding:4px 2px}.rekap-table input{padding:5px 2px;height:30px}
+.day-title{font-size:13px;padding:10px}
+}
+@media(max-width:700px){
+.container{padding:10px}.card{padding:10px}
+.top-bar{grid-template-columns:1fr 1fr}.top-bar button{width:100%}
+.rekap-table{min-width:850px;table-layout:fixed}
+.rekap-table th,.rekap-table td,.rekap-table input{font-size:14px}
+.exp-summary{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+    .exp-toolbar{grid-template-columns:1fr 1fr}
+    .exp-toolbar button{width:100%}
+    .exp-ledger th,.exp-ledger td{padding:7px 6px;font-size:12px}
+    .exp-ledger th:first-child{width:34%}
+    .exp-ledger th:nth-child(2){width:43%}
+    .exp-ledger th:last-child{width:23%}
+    .exp-expense-row{grid-template-columns:minmax(0,1fr) 125px 38px;gap:5px;padding:4px}
+    .exp-expense-row input{font-size:12px}
+}
+
+
+/* =========================
+   BUKU TUNAI
+========================= */
+.tunai-toolbar{display:grid;grid-template-columns:1fr 1fr auto auto;gap:12px;align-items:end;margin-bottom:18px}
+.tunai-book{background:#fff;border:1px solid #d5d9df;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:22px}
+.tunai-date{background:#222;color:#fff;padding:11px 14px;font-weight:bold;font-size:16px;letter-spacing:.2px}
+.tunai-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.tunai-table th,.tunai-table td{border:1px solid #d7dbe0;padding:7px 7px;vertical-align:middle}
+.tunai-table th{background:#edf3fc;color:#222;text-align:center;font-size:13px}
+.tunai-table th:nth-child(1){width:16%}
+.tunai-table th:nth-child(2){width:14%}
+.tunai-table th:nth-child(3){width:14%}
+.tunai-table th:nth-child(4){width:14%}
+.tunai-table th:nth-child(5){width:14%}
+.tunai-table th:nth-child(6){width:18%}
+.tunai-table th:nth-child(7){width:10%}
+.tunai-table td.amount{text-align:right;font-weight:bold;white-space:nowrap}
+.tunai-table td.resort{font-weight:bold;background:#f1f5ff}
+.tunai-source{background:#f5f5f5;font-weight:bold}
+.tunai-input{width:100%;height:34px;padding:6px 7px;border-radius:6px;font-size:14px;text-align:right}
+.tunai-dll-cell{padding:4px!important}
+.tunai-dll-list{display:flex;flex-direction:column;gap:5px}
+.tunai-dll-row{display:grid;grid-template-columns:minmax(0,1fr) 105px 34px;gap:5px;align-items:center}
+.tunai-dll-row input{height:32px;padding:5px 6px;border-radius:6px;font-size:12px}
+.tunai-dll-row input[type="text"]:last-of-type{text-align:right}
+.tunai-add{margin-top:5px;background:#fff;color:#1261e8;border:1px solid #b8cdf5;padding:6px 9px;font-size:12px}
+.tunai-add:hover{background:#eef5ff}
+.tunai-delete{background:#fff0f0;color:#d62828;border:1px solid #f1b5b5;padding:5px 6px;border-radius:6px;font-size:12px}
+.tunai-delete:hover{background:#ffe0e0;color:#b71c1c}
+.tunai-result{text-align:right;font-weight:bold;white-space:nowrap}
+.tunai-result.negative{color:#d62828}
+.tunai-result.positive{color:#222}
+.tunai-note{background:#eef5ff;border-left:4px solid #1261e8;padding:12px;margin-bottom:15px;border-radius:6px}
+
+@media(max-width:700px){
+    .tunai-toolbar{grid-template-columns:1fr 1fr}
+    .tunai-toolbar button{width:100%}
+    .tunai-table{min-width:900px}
+    .tunai-table th,.tunai-table td{padding:6px 5px;font-size:12px}
+    .tunai-table th{font-size:11px}
+    .tunai-input{font-size:12px}
+    .tunai-dll-row{grid-template-columns:minmax(0,1fr) 90px 32px}
+    .tunai-dll-row input{font-size:11px}
+}
+@media print{
+body{background:white}
+.no-print,#loginPage,#dashboardPage{display:none !important}
+#rekapPage,#ekspedisiPage,#tunaiPage{display:block !important}
+.card{box-shadow:none;border:0}
+.day-title,.rekap-table th{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
+
+/* =====================================================
+   MODERN UI â€” MINIMALIS ICON & CLEAN LEDGER
+   Hanya mengubah tampilan; logika perhitungan tetap.
+===================================================== */
+:root{
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --ink:#172033;
+    --muted:#667085;
+    --line:#e6eaf0;
+    --surface:#ffffff;
+    --soft:#f6f8fc;
+    --success:#16803c;
+    --danger:#d62828;
+}
+
+body{
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    background:linear-gradient(180deg,#f7f9fc 0%,#eef3f9 100%);
+    color:var(--ink);
+}
+
+.container{max-width:1240px;padding:22px}
+.card{
+    background:rgba(255,255,255,.96);
+    border:1px solid rgba(15,23,42,.06);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:20px;
+    box-shadow:0 10px 30px rgba(15,23,42,.06);
+}
+
+h1{font-size:30px;letter-spacing:-.7px}
+h2{letter-spacing:-.4px}
+p{color:#475467}
+
+button{
+    min-height:44px;
+    border-radius:11px;
+    padding:11px 16px;
+    background:var(--primary);
+    transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+    box-shadow:0 4px 12px rgba(37,99,235,.18);
+}
+button:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 7px 16px rgba(37,99,235,.22)}
+button:active{transform:translateY(0)}
+.btn-secondary{background:#eef1f5;color:#344054;box-shadow:none;border:1px solid #d9dee7}
+.btn-secondary:hover{background:#e4e8ef;color:#172033;box-shadow:none}
+.btn-danger{background:#fff0f0;color:#b42318;border:1px solid #f4c7c7;box-shadow:none}
+.btn-danger:hover{background:#ffe5e5}
+
+.btn-icon{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+
+input,select{
+    border:1px solid #d9dee7;
+    border-radius:10px;
+    min-height:44px;
+    color:#172033;
+    box-shadow:inset 0 1px 2px rgba(15,23,42,.02);
+    outline:none;
+    transition:border-color .15s ease,box-shadow .15s ease;
+}
+input:focus,select:focus{border-color:#7aa2f7;box-shadow:0 0 0 3px rgba(37,99,235,.10)}
+
+.dashboard-header{
+    padding:38px 20px;
+    background:linear-gradient(135deg,#ffffff 0%,#f5f8ff 100%);
+}
+.dashboard-header h1{margin-bottom:8px}
+.dashboard-header p{margin:0}
+.menu-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.menu-button{
+    min-height:170px;
+    background:#fff;
+    color:var(--ink);
+    border:1px solid #e1e6ef;
+    box-shadow:0 8px 22px rgba(15,23,42,.06);
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    gap:8px;
+    text-align:left;
+    padding:22px;
+}
+.menu-button:hover{background:#f8faff;color:#173b8f;border-color:#bfd0f5}
+.menu-button .menu-icon{
+    width:48px;height:48px;border-radius:14px;
+    display:grid;place-items:center;
+    background:#edf3ff;color:var(--primary);
+    margin-bottom:6px;
+}
+.menu-button .menu-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.menu-button span:not(.menu-icon){font-size:18px;font-weight:800}
+.menu-button small{font-size:12px;color:#667085;font-weight:500}
+.menu-exit .menu-icon{background:#fff0f0;color:#c43232}
+.menu-exit:hover{color:#9f1d1d}
+
+.top-bar,.exp-toolbar,.tunai-toolbar{gap:14px}
+.info,.tunai-note{
+    background:#f2f6ff;
+    border-left:4px solid var(--primary);
+    border-radius:10px;
+    color:#344054;
+}
+
+.day-title,.exp-date,.tunai-date{
+    background:linear-gradient(90deg,#182230,#263447);
+    border-radius:10px 10px 0 0;
+    padding:13px 15px;
+    font-size:14px;
+}
+.rekap-table th{background:#eef3fb;color:#344054;border-color:#dfe5ee}
+.rekap-table td{border-color:#e3e7ed}
+.resort-name{background:#f7f9fc}
+.calculated{background:#fafbfc}
+.total-row{background:#f2f6ff}
+.saldo-awal-row{background:#f1fbf5}
+.saldo-akhir-row{background:#eaf8ef}
+
+.exp-book,.tunai-book{border:1px solid #e0e5ed;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.045)}
+.exp-ledger th,.tunai-table th{background:#f4f6fa;color:#344054;border-color:#e1e5eb}
+.exp-ledger td,.tunai-table td{border-color:#e4e7ec}
+.exp-final{background:#edf9f1}
+
+.save-popup{top:20px;border-radius:999px;padding:11px 20px;background:#16803c;box-shadow:0 10px 25px rgba(22,128,60,.22)}
+
+@media(max-width:900px){
+    .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+    .container{padding:12px}
+    .card{border-radius:15px;padding:15px}
+    .dashboard-header{padding:28px 16px}
+    .dashboard-header h1{font-size:26px}
+    .menu-grid{grid-template-columns:1fr 1fr;gap:10px}
+    .menu-button{min-height:145px;padding:16px}
+    .menu-button .menu-icon{width:42px;height:42px;border-radius:12px}
+    .menu-button span:not(.menu-icon){font-size:16px}
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://tnfylfudwsweompnqvvl.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_ghOqY5cjfgAYWXs2OQjigg_Vznmv2Xa";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+
+document.addEventListener("DOMContentLoaded",async()=>{
+    const {data:{session}}=await supabaseClient.auth.getSession();
+    if(session){
+        document.getElementById("loginPage").classList.add("hidden");
+        const halamanTerakhir=localStorage.getItem("halamanTerakhir");
+        if(halamanTerakhir==="rekap") bukaRekap();
+        else if(halamanTerakhir==="ekspedisi") bukaEkspedisi();
+        else if(halamanTerakhir==="tunai") bukaTunai();
+        else document.getElementById("dashboardPage").classList.remove("hidden");
+    }
+});
+
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+    if(session){
+        document.getElementById("loginPage").classList.add("hidden");
+        const halamanTerakhir=localStorage.getItem("halamanTerakhir");
+        if(halamanTerakhir==="rekap") bukaRekap();
+        else if(halamanTerakhir==="ekspedisi") bukaEkspedisi();
+        else if(halamanTerakhir==="tunai") bukaTunai();
+        else document.getElementById("dashboardPage").classList.remove("hidden");
+    }
+});
+</script>
+</head>
+
+<body>
+
+<div id="savePopup" class="save-popup"><span class="save-popup-icon" aria-hidden="true"></span><span class="save-popup-text">Tersimpan</span></div>
+
+<!-- LOGIN -->
+<div id="loginPage" class="container">
+<div class="card login-box">
+<h2>Login</h2>
+<p>Silakan masuk ke Koperasi Digital Jaya.</p>
+<div class="form-group"><label>Email</label><input type="email" id="email" placeholder="Masukkan email"></div>
+<div class="form-group"><label>Password</label><input type="password" id="password" placeholder="Masukkan password"></div>
+<button onclick="login()" style="width:100%;">LOGIN</button>
+<p id="loginMessage"></p>
+</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboardPage" class="container hidden">
+<div class="card dashboard-header">
+<h1>Dashboard Koperasi</h1>
+<p>Selamat datang di Koperasi Digital Jaya.</p>
+</div>
+<div class="card">
+<div class="menu-grid">
+<button class="menu-button" onclick="bukaRekap()"><span class="menu-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16"/><path d="M7 16v-5M12 16V8M17 16V4"/></svg></span><span>Rekap Harian</span><small>Catatan operasional</small></button>
+<button class="menu-button" onclick="bukaEkspedisi()"><span class="menu-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 7 9-4 9 4-9 4-9-4Z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/></svg></span><span>Ekspedisi</span><small>Kas dan pengeluaran</small></button>
+<button class="menu-button" onclick="bukaTunai()"><span class="menu-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M17 14h.01M12 10.5a2 2 0 1 0 0 3 2 2 0 0 0 0-3Z"/></svg></span><span>Buku Tunai</span><small>Tunai karyawan</small></button>
+<button class="menu-button menu-exit" onclick="logout()"><span class="menu-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5M14 8l4 4-4 4M9 12h9"/></svg></span><span>Keluar</span><small>Keluar dari sistem</small></button>
+</div>
+</div>
+</div>
+
+<!-- BUKU EKSPEDISI -->
+<div id="ekspedisiPage" class="container hidden">
+
+<div class="no-print" style="margin-bottom:15px">
+<button type="button" class="btn-secondary btn-icon" onclick="kembaliDashboardDariEkspedisi()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 5-7 7 7 7M4 12h16"/></svg><span>Kembali</span></button>
+</div>
+
+<div class="card">
+<h1>Buku Ekspedisi</h1>
+<p>Kas masuk, pengeluaran, kas sementara, tunai pasar, dan saldo kas harian.</p>
+
+<div class="exp-toolbar no-print">
+<div>
+<label>Bulan</label>
+<select id="ekspedisiBulan" onchange="buatEkspedisi()">
+<option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
+<option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
+<option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
+<option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+</select>
+</div>
+<div>
+<label>Tahun</label>
+<input type="number" id="ekspedisiTahun" onchange="buatEkspedisi()">
+</div>
+<button class="btn-icon" onclick="simpanEkspedisi()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l2 2v14H5V4Z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></svg><span>Simpan</span></button>
+<button class="btn-secondary btn-icon" onclick="cetakEkspedisi()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M7 14h10v6H7z"/></svg><span>Cetak</span></button>
+</div>
+
+<div class="info">
+<strong>Alur:</strong>
+Saldo kas awal + Kas masuk dari Saldo Rekap âˆ’ Total pengeluaran = Kas sementara.
+Kas sementara âˆ’ Tunai pasar Rekap = Saldo kas akhir.
+Saldo kas akhir hari ini otomatis menjadi saldo kas awal hari berikutnya.
+</div>
+</div>
+
+<div id="ekspedisiContainer"></div>
+
+<div class="card no-print">
+    <div class="exp-actions">
+        <button type="button" class="exp-nav" onclick="hariEkspedisiSebelumnya()">Sebelumnya</button>
+        <div class="exp-save-wrap"><button type="button" class="exp-save btn-icon" onclick="simpanEkspedisi()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l2 2v14H5V4Z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></svg><span>Simpan</span></button></div>
+        <button type="button" class="exp-nav" onclick="hariEkspedisiBerikutnya()">Berikutnya</button>
+    </div>
+</div>
+
+<div class="card no-print">
+<h3>Data Tersimpan</h3>
+<p id="statusEkspedisi">Belum ada perubahan.</p>
+</div>
+</div>
+
+
+<!-- BUKU TUNAI -->
+<div id="tunaiPage" class="container hidden">
+
+<div class="no-print" style="margin-bottom:15px">
+<button type="button" class="btn-secondary btn-icon" onclick="kembaliDashboardDariTunai()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 5-7 7 7 7M4 12h16"/></svg><span>Kembali</span></button>
+</div>
+
+<div class="card">
+<h1>Buku Tunai</h1>
+<p>Tunai dari karyawan untuk kasir.</p>
+
+<div class="tunai-toolbar no-print">
+<div>
+<label>Bulan</label>
+<select id="tunaiBulan" onchange="buatTunai()">
+<option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option>
+<option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
+<option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
+<option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+</select>
+</div>
+<div>
+<label>Tahun</label>
+<input type="number" id="tunaiTahun" onchange="buatTunai()">
+</div>
+<button class="btn-icon" onclick="simpanTunai()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l2 2v14H5V4Z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></svg><span>Simpan</span></button>
+<button class="btn-secondary btn-icon" onclick="cetakTunai()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M7 14h10v6H7z"/></svg><span>Cetak</span></button>
+</div>
+
+<div class="tunai-note">
+<strong>Alur:</strong>
+Storting diambil dari Buku Rekap pada tanggal yang sama.
+Drop diambil dari Buku Rekap pada tanggal yang sama lalu dikurangi 10%.
+Kasbon, transport, dan DLL diisi manual.
+Jumlah Tunai = Storting + Kasbon âˆ’ Drop âˆ’ Transport âˆ’ DLL.
+</div>
+</div>
+
+<div id="tunaiContainer"></div>
+
+<div class="card no-print">
+<h3>Data Tersimpan</h3>
+<p id="statusTunai">Belum ada perubahan.</p>
+</div>
+</div>
+
+<!-- REKAP HARIAN -->
+<div id="rekapPage" class="container hidden">
+
+<button type="button" class="no-print btn-secondary btn-icon" onclick="kembaliDashboard()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 5-7 7 7 7M4 12h16"/></svg><span>Kembali</span></button>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+<div><h1>Rekap Harian</h1><p>Rekap Operasional Koperasi Digital Jaya</p></div>
+<div class="no-print"><button class="btn-secondary btn-icon" onclick="kembaliDashboard()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m11 5-7 7 7 7M4 12h16"/></svg><span>Dashboard</span></button></div>
+</div>
+</div>
+
+<div class="card no-print">
+<div class="top-bar">
+<div><label>Bulan</label><select id="bulan" onchange="gantiPeriode()">
+<option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option>
+<option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option>
+<option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+</select></div>
+<div><label>Tahun</label><input type="number" id="tahun" onchange="gantiPeriode()"></div>
+<button class="btn-icon" onclick="simpanData()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12l2 2v14H5V4Z"/><path d="M8 4v6h8V4M8 20v-6h8v6"/></svg><span>Simpan</span></button>
+<button class="btn-secondary btn-icon" onclick="cetakRekap()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M7 14h10v6H7z"/></svg><span>Cetak</span></button>
+</div>
+<div class="info"><strong>Petunjuk:</strong> Isi hanya kolom <b>Storting</b>, <b>Drop</b>, dan <b>Tabungan Keluar</b>. Kolom lainnya dihitung otomatis mengikuti sistem Rekap V7.</div>
+</div>
+
+<div id="rekapContainer"></div>
+
+<div class="card no-print">
+<h3>Data Tersimpan</h3>
+<p id="statusData">Belum ada perubahan.</p>
+<button class="btn-danger" onclick="hapusSemuaData()">Hapus Data Bulan Ini</button>
+</div>
+</div>
+
+<script>
+const resortNames=["Jaya 1","Jaya 2","Jaya 3"];
+const namaBulan=["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+
+function tampilTersimpan(pesan="âœ“ Tersimpan"){
+    const el=document.getElementById("savePopup");
+    if(!el)return;
+    const gagal=String(pesan).includes("Gagal") || String(pesan).includes("âœ•");
+    const icon=el.querySelector(".save-popup-icon");
+    const text=el.querySelector(".save-popup-text");
+    if(icon)icon.innerHTML=gagal
+        ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"></path></svg>'
+        : '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 2.5 2.5L16 9"></path></svg>';
+    if(text)text.textContent=String(pesan).replace(/^âœ“\s*|^âœ•\s*/,'');
+    el.classList.toggle("save-popup-error",gagal);
+    el.classList.add("show");
+    clearTimeout(window.savePopupTimer);
+    window.savePopupTimer=setTimeout(()=>el.classList.remove("show"),1800);
+}
+
+async function login(){
+    const email=document.getElementById("email").value.trim();
+    const password=document.getElementById("password").value.trim();
+    const message=document.getElementById("loginMessage");
+    if(!email||!password){message.textContent="Email dan password wajib diisi.";return}
+    message.textContent="Memeriksa login...";
+    const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+    if(error){console.error(error);message.textContent=error.message;return}
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("dashboardPage").classList.remove("hidden");
+    message.textContent="";
+}
+
+function bukaRekap(){
+    localStorage.setItem("halamanTerakhir","rekap");
+    document.getElementById("dashboardPage").classList.add("hidden");
+    document.getElementById("ekspedisiPage").classList.add("hidden");
+    document.getElementById("tunaiPage").classList.add("hidden");
+    document.getElementById("rekapPage").classList.remove("hidden");
+    buatRekap();
+}
+
+function kembaliDashboard(){
+    mulaiRender();
+    localStorage.removeItem("halamanTerakhir");
+    document.getElementById("rekapPage").classList.add("hidden");
+    document.getElementById("tunaiPage").classList.add("hidden");
+    document.getElementById("dashboardPage").classList.remove("hidden");
+}
+
+function bukaEkspedisi(){
+    localStorage.setItem("halamanTerakhir","ekspedisi");
+    document.getElementById("dashboardPage").classList.add("hidden");
+    document.getElementById("rekapPage").classList.add("hidden");
+    document.getElementById("tunaiPage").classList.add("hidden");
+    document.getElementById("ekspedisiPage").classList.remove("hidden");
+    sinkronPeriodeEkspedisi();
+    buatEkspedisi();
+}
+
+function kembaliDashboardDariEkspedisi(){
+    mulaiRender();
+    localStorage.removeItem("halamanTerakhir");
+    document.getElementById("ekspedisiPage").classList.add("hidden");
+    document.getElementById("tunaiPage").classList.add("hidden");
+    document.getElementById("dashboardPage").classList.remove("hidden");
+}
+
+
+function bukaTunai(){
+    localStorage.setItem("halamanTerakhir","tunai");
+    document.getElementById("dashboardPage").classList.add("hidden");
+    document.getElementById("rekapPage").classList.add("hidden");
+    document.getElementById("ekspedisiPage").classList.add("hidden");
+    document.getElementById("tunaiPage").classList.remove("hidden");
+    sinkronPeriodeTunai();
+    buatTunai();
+}
+
+function kembaliDashboardDariTunai(){
+    mulaiRender();
+    localStorage.removeItem("halamanTerakhir");
+    document.getElementById("tunaiPage").classList.add("hidden");
+    document.getElementById("dashboardPage").classList.remove("hidden");
+}
+
+
+async function logout(){
+    const {error}=await supabaseClient.auth.signOut();
+    if(error){alert("Gagal logout: "+error.message);return}
+    localStorage.removeItem("halamanTerakhir");
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("dashboardPage").classList.add("hidden");
+    document.getElementById("rekapPage").classList.add("hidden");
+    document.getElementById("ekspedisiPage").classList.add("hidden");
+    document.getElementById("tunaiPage").classList.add("hidden");
+}
+
+/* =========================
+   REKAP
+========================= */
+function jumlahHari(bulan,tahun){return new Date(tahun,bulan,0).getDate()}
+
+function angka(value){
+    if(value===""||value===null||value===undefined||isNaN(value))return "";
+    return Number(value).toLocaleString("id-ID",{maximumFractionDigits:0});
+}
+
+function parseAngka(value){
+    if(value===null||value===undefined||value==="")return 0;
+    const hasil=parseFloat(String(value).replace(/\./g,"").replace(/,/g,""));
+    return isNaN(hasil)?0:hasil;
+}
+
+function formatInput(el){
+    if(el.value===""){hitungSemuaHari();return}
+    el.value=angka(parseAngka(el.value));
+    hitungSemuaHari();
+}
+
+function nilai(id){
+    const el=document.getElementById(id);
+    return el?parseAngka(el.value):0;
+}
+
+function buatRekap(){
+    const bulan=parseInt(document.getElementById("bulan").value);
+    const tahun=parseInt(document.getElementById("tahun").value);
+    if(!bulan||!tahun)return;
+    const container=document.getElementById("rekapContainer");
+    container.innerHTML="";
+    const token=mulaiRender();
+    const hariList=Array.from({length:jumlahHari(bulan,tahun)},(_,i)=>i+1);
+    renderChunk(token,hariList,0,7,(hari)=>buatHari(hari,bulan,tahun,container),()=>loadData());
+}
+
+function buatHari(hari,bulan,tahun,container){
+    const dayBox=document.createElement("div");
+    dayBox.className="card";
+    dayBox.innerHTML=`
+    <div class="day-title">Tanggal ${hari} â€” ${String(hari).padStart(2,"0")} ${namaBulan[bulan]} ${tahun}</div>
+    <div class="table-wrap"><table class="rekap-table"><thead><tr>
+    <th>Nama Resort</th><th>Storting</th><th>Tunai<br>Pasar</th><th>Tabungan<br>5%</th><th>ADM<br>5%</th><th>Jumlah</th><th>Drop</th><th>Drop<br>20%</th><th>Drop<br>120%</th><th>Tabungan<br>Keluar</th><th>Saldo</th>
+    </tr></thead><tbody id="tbody-${hari}"></tbody></table></div>`;
+    container.appendChild(dayBox);
+    const tbody=document.getElementById(`tbody-${hari}`);
+
+    resortNames.forEach((nama,index)=>{
+        const row=document.createElement("tr");
+        const key=`${tahun}-${bulan}-${hari}-${index}`;
+        row.innerHTML=`
+        <td class="resort-name">${nama}</td>
+        <td><input type="text" inputmode="numeric" id="storting-${key}" placeholder="0" oninput="formatInput(this)"></td>
+        <td class="calculated" id="tunai-${key}">-</td>
+        <td class="calculated" id="tabungan5-${key}">-</td>
+        <td class="calculated" id="adm5-${key}">-</td>
+        <td class="calculated" id="jumlah-${key}">-</td>
+        <td><input type="text" inputmode="numeric" id="drop-${key}" placeholder="0" oninput="formatInput(this)"></td>
+        <td class="calculated" id="drop20-${key}">-</td>
+        <td class="calculated" id="drop120-${key}">-</td>
+        <td><input type="text" inputmode="numeric" id="tabunganKeluar-${key}" placeholder="0" oninput="formatInput(this)"></td>
+        <td class="calculated" id="saldo-${key}">-</td>`;
+        tbody.appendChild(row);
+    });
+
+    const saldoAwalRow=document.createElement("tr");
+    saldoAwalRow.className="saldo-awal-row";
+    saldoAwalRow.innerHTML=`<td>Saldo awal</td><td id="awalStorting-${hari}">0</td><td id="awalTunai-${hari}">0</td><td id="awalTabungan5-${hari}">0</td><td id="awalAdm5-${hari}">0</td><td id="awalJumlah-${hari}">0</td><td id="awalDrop-${hari}">0</td><td id="awalDrop20-${hari}">0</td><td id="awalDrop120-${hari}">0</td><td id="awalTabunganKeluar-${hari}">0</td><td id="awalSaldo-${hari}">0</td>`;
+    tbody.appendChild(saldoAwalRow);
+
+    const totalRow=document.createElement("tr");
+    totalRow.className="total-row";
+    totalRow.innerHTML=`<td>Total hari</td><td id="totalStorting-${hari}">0</td><td id="totalTunai-${hari}">0</td><td id="totalTabungan5-${hari}">0</td><td id="totalAdm5-${hari}">0</td><td id="totalJumlah-${hari}">0</td><td id="totalDrop-${hari}">0</td><td id="totalDrop20-${hari}">0</td><td id="totalDrop120-${hari}">0</td><td id="totalTabunganKeluar-${hari}">0</td><td id="totalSaldo-${hari}">0</td>`;
+    tbody.appendChild(totalRow);
+
+    const saldoAkhirRow=document.createElement("tr");
+    saldoAkhirRow.className="saldo-akhir-row";
+    saldoAkhirRow.innerHTML=`<td>Saldo akhir</td><td id="akhirStorting-${hari}">0</td><td id="akhirTunai-${hari}">0</td><td id="akhirTabungan5-${hari}">0</td><td id="akhirAdm5-${hari}">0</td><td id="akhirJumlah-${hari}">0</td><td id="akhirDrop-${hari}">0</td><td id="akhirDrop20-${hari}">0</td><td id="akhirDrop120-${hari}">0</td><td id="akhirTabunganKeluar-${hari}">0</td><td id="akhirSaldo-${hari}">0</td>`;
+    tbody.appendChild(saldoAkhirRow);
+}
+
+function hitungSemuaHari(){
+    const bulan=parseInt(document.getElementById("bulan").value);
+    const tahun=parseInt(document.getElementById("tahun").value);
+    if(!bulan||!tahun)return;
+    let saldoSebelumnya={storting:0,tunai:0,tabungan5:0,adm5:0,jumlah:0,drop:0,drop20:0,drop120:0,tabunganKeluar:0,saldo:0};
+    for(let hari=1;hari<=jumlahHari(bulan,tahun);hari++){
+        const hasil=hitungHari(hari,bulan,tahun,saldoSebelumnya);
+        saldoSebelumnya=hasil.akhir;
+    }
+}
+
+function hitungHari(hari,bulan,tahun,saldoAwal){
+    let total={storting:0,tunai:0,tabungan5:0,adm5:0,jumlah:0,drop:0,drop20:0,drop120:0,tabunganKeluar:0,saldo:0};
+
+    resortNames.forEach((nama,index)=>{
+        const key=`${tahun}-${bulan}-${hari}-${index}`;
+        const storting=nilai(`storting-${key}`);
+        const drop=nilai(`drop-${key}`);
+        const tabunganKeluar=nilai(`tabunganKeluar-${key}`);
+
+        const tabungan5=drop*0.05;
+        const adm5=drop*0.05;
+        const jumlah=storting+tabungan5+adm5;
+        const drop20=drop*0.20;
+        const drop120=drop*1.20;
+        const kebutuhan=drop+tabunganKeluar;
+
+        let tunai=0,saldo=0;
+        if(jumlah<kebutuhan){tunai=kebutuhan-jumlah;saldo=0}
+        else{saldo=jumlah-kebutuhan}
+
+        setText(`tunai-${key}`,tunai);
+        setText(`tabungan5-${key}`,tabungan5);
+        setText(`adm5-${key}`,adm5);
+        setText(`jumlah-${key}`,jumlah);
+        setText(`drop20-${key}`,drop20);
+        setText(`drop120-${key}`,drop120);
+        setText(`saldo-${key}`,saldo);
+
+        total.storting+=storting;
+        total.tunai+=tunai;
+        total.tabungan5+=tabungan5;
+        total.adm5+=adm5;
+        total.jumlah+=jumlah;
+        total.drop+=drop;
+        total.drop20+=drop20;
+        total.drop120+=drop120;
+        total.tabunganKeluar+=tabunganKeluar;
+        total.saldo+=saldo;
+    });
+
+    setText(`awalStorting-${hari}`,saldoAwal.storting);
+    setText(`awalTunai-${hari}`,saldoAwal.tunai);
+    setText(`awalTabungan5-${hari}`,saldoAwal.tabungan5);
+    setText(`awalAdm5-${hari}`,saldoAwal.adm5);
+    setText(`awalJumlah-${hari}`,saldoAwal.jumlah);
+    setText(`awalDrop-${hari}`,saldoAwal.drop);
+    setText(`awalDrop20-${hari}`,saldoAwal.drop20);
+    setText(`awalDrop120-${hari}`,saldoAwal.drop120);
+    setText(`awalTabunganKeluar-${hari}`,saldoAwal.tabunganKeluar);
+    setText(`awalSaldo-${hari}`,saldoAwal.saldo);
+
+    setText(`totalStorting-${hari}`,total.storting);
+    setText(`totalTunai-${hari}`,total.tunai);
+    setText(`totalTabungan5-${hari}`,total.tabungan5);
+    setText(`totalAdm5-${hari}`,total.adm5);
+    setText(`totalJumlah-${hari}`,total.jumlah);
+    setText(`totalDrop-${hari}`,total.drop);
+    setText(`totalDrop20-${hari}`,total.drop20);
+    setText(`totalDrop120-${hari}`,total.drop120);
+    setText(`totalTabunganKeluar-${hari}`,total.tabunganKeluar);
+    setText(`totalSaldo-${hari}`,total.saldo);
+
+    const akhir={
+        storting:saldoAwal.storting+total.storting,
+        tunai:saldoAwal.tunai+total.tunai,
+        tabungan5:saldoAwal.tabungan5+total.tabungan5,
+        adm5:saldoAwal.adm5+total.adm5,
+        jumlah:saldoAwal.jumlah+total.jumlah,
+        drop:saldoAwal.drop+total.drop,
+        drop20:saldoAwal.drop20+total.drop20,
+        drop120:saldoAwal.drop120+total.drop120,
+        tabunganKeluar:saldoAwal.tabunganKeluar+total.tabunganKeluar,
+        saldo:saldoAwal.saldo+total.saldo
+    };
+
+    setText(`akhirStorting-${hari}`,akhir.storting);
+    setText(`akhirTunai-${hari}`,akhir.tunai);
+    setText(`akhirTabungan5-${hari}`,akhir.tabungan5);
+    setText(`akhirAdm5-${hari}`,akhir.adm5);
+    setText(`akhirJumlah-${hari}`,akhir.jumlah);
+    setText(`akhirDrop-${hari}`,akhir.drop);
+    setText(`akhirDrop20-${hari}`,akhir.drop20);
+    setText(`akhirDrop120-${hari}`,akhir.drop120);
+    setText(`akhirTabunganKeluar-${hari}`,akhir.tabunganKeluar);
+    setText(`akhirSaldo-${hari}`,akhir.saldo);
+
+    return {total,akhir};
+}
+
+function setText(id,value){
+    const el=document.getElementById(id);
+    if(el)el.textContent=angka(value)||"0";
+}
+
+/* Render bertahap agar tabel tanggal berikutnya tidak menunggu seluruh bulan selesai. */
+let renderToken=0;
+function mulaiRender(){return ++renderToken}
+function renderChunk(token,items,index,chunkSize,renderItem,onDone){
+    if(token!==renderToken)return;
+    const end=Math.min(index+chunkSize,items.length);
+    for(let i=index;i<end;i++)renderItem(items[i],i);
+    if(end<items.length){
+        requestAnimationFrame(()=>renderChunk(token,items,end,chunkSize,renderItem,onDone));
+    }else if(token===renderToken && typeof onDone==="function"){
+        onDone();
+    }
+}
+
+function simpanData(){
+    const bulan=parseInt(document.getElementById("bulan").value);
+    const tahun=parseInt(document.getElementById("tahun").value);
+    const data={bulan,tahun,hari:{}};
+
+    for(let hari=1;hari<=jumlahHari(bulan,tahun);hari++){
+        data.hari[hari]=[];
+        resortNames.forEach((nama,index)=>{
+            const key=`${tahun}-${bulan}-${hari}-${index}`;
+            data.hari[hari].push({
+                storting:nilai(`storting-${key}`),
+                drop:nilai(`drop-${key}`),
+                tabunganKeluar:nilai(`tabunganKeluar-${key}`)
+            });
+        });
+    }
+
+    try{
+        localStorage.setItem(`koperasi-rekap-${tahun}-${bulan}`,JSON.stringify(data));
+        document.getElementById("statusData").textContent=`Data ${namaBulan[bulan]} ${tahun} berhasil disimpan.`;
+        document.getElementById("statusData").classList.add("status-success");
+        tampilTersimpan();
+    }catch(error){
+        console.error(error);
+        document.getElementById("statusData").textContent="Gagal menyimpan data.";
+        document.getElementById("statusData").classList.remove("status-success");
+        tampilTersimpan("âœ• Gagal menyimpan");
+    }
+}
+
+function loadData(){
+    const bulan=parseInt(document.getElementById("bulan").value);
+    const tahun=parseInt(document.getElementById("tahun").value);
+    const saved=localStorage.getItem(`koperasi-rekap-${tahun}-${bulan}`);
+    if(!saved){hitungSemuaHari();return}
+
+    try{
+        const data=JSON.parse(saved);
+        Object.keys(data.hari).forEach(hari=>{
+            data.hari[hari].forEach((item,index)=>{
+                const key=`${tahun}-${bulan}-${hari}-${index}`;
+                const s=document.getElementById(`storting-${key}`);
+                const d=document.getElementById(`drop-${key}`);
+                const k=document.getElementById(`tabunganKeluar-${key}`);
+                if(s)s.value=item.storting?angka(item.storting):"";
+                if(d)d.value=item.drop?angka(item.drop):"";
+                if(k)k.value=item.tabunganKeluar?angka(item.tabunganKeluar):"";
+            });
+        });
+        hitungSemuaHari();
+        document.getElementById("statusData").textContent=`Data ${namaBulan[bulan]} ${tahun} berhasil dimuat.`;
+    }catch(error){
+        console.error(error);
+        hitungSemuaHari();
+    }
+}
+
+function gantiPeriode(){buatRekap()}
+
+function hapusSemuaData(){
+    const bulan=parseInt(document.getElementById("bulan").value);
+    const tahun=parseInt(document.getElementById("tahun").value);
+    if(!confirm(`Hapus seluruh data ${namaBulan[bulan]} ${tahun}?`))return;
+    localStorage.removeItem(`koperasi-rekap-${tahun}-${bulan}`);
+    buatRekap();
+    document.getElementById("statusData").textContent="Data bulan ini sudah dihapus.";
+    document.getElementById("statusData").classList.remove("status-success");
+}
+
+function cetakRekap(){window.print()}
+
+/* =========================
+   EKSPEDISI
+========================= */
+
+function sinkronPeriodeEkspedisi(){
+    const b=document.getElementById("bulan");
+    const t=document.getElementById("tahun");
+    const eb=document.getElementById("ekspedisiBulan");
+    const et=document.getElementById("ekspedisiTahun");
+    if(b&&t&&eb&&et){
+        eb.value=b.value;
+        et.value=t.value;
+    }
+}
+
+/*
+   Ambil data Rekap yang tersimpan.
+   Kas masuk = JUMLAH saldo paling kanan dari 3 resort pada hari tersebut.
+   Tunai pasar = JUMLAH Tunai Pasar dari 3 resort pada hari tersebut.
+*/
+function ambilDataRekap(bulan,tahun){
+    const saved=localStorage.getItem(`koperasi-rekap-${tahun}-${bulan}`);
+    if(!saved)return null;
+    try{return JSON.parse(saved)}catch(error){console.error(error);return null}
+}
+
+function ambilKasMasukRekap(hari,bulan,tahun){
+    const data=ambilDataRekap(bulan,tahun);
+    if(!data||!data.hari||!data.hari[hari])return 0;
+
+    let total=0;
+
+    data.hari[hari].forEach((item,index)=>{
+        const storting=parseAngka(item.storting);
+        const drop=parseAngka(item.drop);
+        const tabunganKeluar=parseAngka(item.tabunganKeluar);
+
+        const tabungan5=drop*0.05;
+        const adm5=drop*0.05;
+        const jumlah=storting+tabungan5+adm5;
+        const kebutuhan=drop+tabunganKeluar;
+
+        let saldo=0;
+        if(jumlah>=kebutuhan)saldo=jumlah-kebutuhan;
+
+        total+=saldo;
+    });
+
+    return total;
+}
+
+function ambilTunaiPasarRekap(hari,bulan,tahun){
+    const data=ambilDataRekap(bulan,tahun);
+    if(!data||!data.hari||!data.hari[hari])return 0;
+
+    let total=0;
+
+    data.hari[hari].forEach(item=>{
+        const storting=parseAngka(item.storting);
+        const drop=parseAngka(item.drop);
+        const tabunganKeluar=parseAngka(item.tabunganKeluar);
+
+        const tabungan5=drop*0.05;
+        const adm5=drop*0.05;
+        const jumlah=storting+tabungan5+adm5;
+        const kebutuhan=drop+tabunganKeluar;
+
+        if(jumlah<kebutuhan){
+            total+=kebutuhan-jumlah;
+        }
+    });
+
+    return total;
+}
+
+/*
+   Saldo kas awal hari pertama:
+   - bila bulan yang sama sudah pernah disimpan, gunakan saldoAwal yang tersimpan;
+   - bila belum ada, gunakan 0.
+   Hari berikutnya mengambil saldo akhir hari sebelumnya.
+*/
+function ambilSaldoKasAwalEkspedisi(bulan,tahun){
+    const data=ambilDataEkspedisi(bulan,tahun);
+    if(data&&data.saldoKasAwal!==undefined)return parseAngka(data.saldoKasAwal);
+
+    /*
+       Untuk bulan baru, coba ambil saldo akhir bulan sebelumnya.
+       Jika belum ada, mulai dari 0.
+    */
+    let bulanSebelumnya=bulan-1;
+    let tahunSebelumnya=tahun;
+
+    if(bulanSebelumnya===0){
+        bulanSebelumnya=12;
+        tahunSebelumnya=tahun-1;
+    }
+
+    const dataSebelumnya=ambilDataEkspedisi(bulanSebelumnya,tahunSebelumnya);
+
+    if(dataSebelumnya&&dataSebelumnya.saldoKasAkhir!==undefined){
+        return parseAngka(dataSebelumnya.saldoKasAkhir);
+    }
+
+    return 0;
+}
+
+function ambilDataEkspedisi(bulan,tahun){
+    const saved=localStorage.getItem(`koperasi-ekspedisi-${tahun}-${bulan}`);
+    if(!saved)return null;
+    try{return JSON.parse(saved)}catch(error){console.error(error);return null}
+}
+
+function buatEkspedisi(){
+    const bulan=parseInt(document.getElementById("ekspedisiBulan").value);
+    const tahun=parseInt(document.getElementById("ekspedisiTahun").value);
+    if(!bulan||!tahun)return;
+
+    const container=document.getElementById("ekspedisiContainer");
+    container.innerHTML="";
+
+    const dataTersimpan=ambilDataEkspedisi(bulan,tahun);
+    let saldoKasAwal=ambilSaldoKasAwalEkspedisi(bulan,tahun);
+    const token=mulaiRender();
+    const hariList=Array.from({length:jumlahHari(bulan,tahun)},(_,i)=>i+1);
+
+    renderChunk(token,hariList,0,5,(hari)=>{
+        buatHariEkspedisi(hari,bulan,tahun,container,saldoKasAwal,dataTersimpan);
+        const pengeluaran=dataTersimpan?.hari?.[hari]?.pengeluaran||[];
+        const totalPengeluaran=pengeluaran.reduce((sum,item)=>sum+parseAngka(item.jumlah),0);
+        const kasMasuk=ambilKasMasukRekap(hari,bulan,tahun);
+        const tunaiPasar=ambilTunaiPasarRekap(hari,bulan,tahun);
+        const kasSementara=saldoKasAwal+kasMasuk-totalPengeluaran;
+        saldoKasAwal=kasSementara-tunaiPasar;
+    },()=>loadEkspedisi());
+}
+
+function buatHariEkspedisi(hari,bulan,tahun,container,saldoKasAwal,dataTersimpan){
+    const key=`${tahun}-${bulan}-${hari}`;
+    const box=document.createElement("div");
+    box.className="exp-book";
+
+    box.innerHTML=`
+    <div class="exp-date">${String(hari).padStart(2,"0")}/${String(bulan).padStart(2,"0")}/${tahun}</div>
+
+    <table class="exp-ledger">
+        <thead>
+            <tr>
+                <th>Keterangan</th>
+                <th>Catatan</th>
+                <th>Jumlah (Rp)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="exp-opening">
+                <td class="label">Saldo kas</td>
+                <td class="note">saldo hari sebelumnya</td>
+                <td class="amount" id="exp-awal-${key}">0</td>
+            </tr>
+            <tr class="exp-income">
+                <td class="label">Kas masuk</td>
+                <td class="note">dari Saldo Buku Rekap</td>
+                <td class="amount" id="exp-masuk-${key}">0</td>
+            </tr>
+            <tr>
+                <td class="label">Pengeluaran</td>
+                <td class="exp-expense-cell" colspan="2">
+                    <div class="exp-expense-list" id="exp-body-${key}"></div>
+                    <button type="button" class="exp-add no-print" onclick="tambahPengeluaran('${key}')">ï¼‹ Tambah Pengeluaran</button>
+                </td>
+            </tr>
+            <tr class="exp-expense-total">
+                <td class="label">Jumlah pengeluaran</td>
+                <td class="note"></td>
+                <td class="amount" id="exp-pengeluaran-${key}">0</td>
+            </tr>
+            <tr class="exp-temporary">
+                <td class="label">Kas sementara</td>
+                <td class="note">saldo kas + kas masuk âˆ’ pengeluaran</td>
+                <td class="amount" id="exp-sementara-${key}">0</td>
+            </tr>
+            <tr>
+                <td class="label">Tunai pasar</td>
+                <td class="note">dari Buku Rekap</td>
+                <td class="amount" id="exp-tunai-${key}">0</td>
+            </tr>
+            <tr class="exp-final">
+                <td class="label">Saldo kas</td>
+                <td class="note">menjadi saldo awal besok</td>
+                <td class="amount" id="exp-akhir-${key}">0</td>
+            </tr>
+        </tbody>
+    </table>
+    `;
+
+    container.appendChild(box);
+
+    const tbody=document.getElementById(`exp-body-${key}`);
+    const pengeluaran=dataTersimpan?.hari?.[hari]?.pengeluaran||[];
+
+    if(pengeluaran.length){
+        pengeluaran.forEach((item,index)=>{
+            buatBarisPengeluaran(tbody,key,index,item.keterangan,item.jumlah);
+        });
+    }else{
+        buatBarisPengeluaran(tbody,key,0,"","");
+    }
+}
+
+function buatBarisPengeluaran(tbody,key,index,keterangan,jumlah){
+    const row=document.createElement("div");
+    row.className="exp-expense-row";
+    row.dataset.index=index;
+
+    row.innerHTML=`
+        <input type="text"
+               id="exp-ket-${key}-${index}"
+               value="${escapeHtml(keterangan||"")}"
+               placeholder="Keterangan pengeluaran"
+               oninput="hitungEkspedisi()">
+        <input type="text"
+               inputmode="numeric"
+               id="exp-jml-${key}-${index}"
+               value="${jumlah?angka(jumlah):""}"
+               placeholder="0"
+               oninput="formatInputEkspedisi(this)">
+        <button type="button" class="exp-delete no-print btn-icon" aria-label="Hapus pengeluaran" title="Hapus pengeluaran" onclick="hapusPengeluaran('${key}',${index})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path></svg></button>
+    `;
+
+    tbody.appendChild(row);
+}
+
+function escapeHtml(value){
+    return String(value||"").replace(/[&<>"']/g,m=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+    }[m]));
+}
+
+function tambahPengeluaran(key){
+    const tbody=document.getElementById(`exp-body-${key}`);
+    if(!tbody)return;
+    const index=tbody.querySelectorAll(".exp-expense-row").length;
+    buatBarisPengeluaran(tbody,key,index,"","");
+}
+
+function hapusPengeluaran(key,index){
+    const row=document.querySelector(`#exp-ket-${key}-${index}`)?.closest(".exp-expense-row");
+    if(row)row.remove();
+    const tbody=document.getElementById(`exp-body-${key}`);
+    if(!tbody)return;
+
+    const rows=[...tbody.querySelectorAll(".exp-expense-row")];
+    rows.forEach((r,i)=>{
+        r.dataset.index=i;
+        const ket=r.querySelector("input[type=text]:first-child");
+        const jml=r.querySelector("input[inputmode=numeric]");
+        const del=r.querySelector("button");
+        if(ket)ket.id=`exp-ket-${key}-${i}`;
+        if(jml)jml.id=`exp-jml-${key}-${i}`;
+        if(del)del.setAttribute("onclick",`hapusPengeluaran('${key}',${i})`);
+    });
+
+    if(rows.length===0)buatBarisPengeluaran(tbody,key,0,"","");
+    hitungEkspedisi();
+}
+
+function formatInputEkspedisi(el){
+    if(el.value===""){
+        hitungEkspedisi();
+        return;
+    }
+    el.value=angka(parseAngka(el.value));
+    hitungEkspedisi();
+}
+
+function hitungEkspedisi(){
+    const bulan=parseInt(document.getElementById("ekspedisiBulan").value);
+    const tahun=parseInt(document.getElementById("ekspedisiTahun").value);
+    if(!bulan||!tahun)return;
+
+    let saldoKasAwal=ambilSaldoKasAwalEkspedisi(bulan,tahun);
+
+    for(let hari=1;hari<=jumlahHari(bulan,tahun);hari++){
+        const key=`${tahun}-${bulan}-${hari}`;
+        const pengeluaran=[];
+
+        document.querySelectorAll(`#exp-body-${key} .exp-expense-row`).forEach((row,index)=>{
+            const ket=document.getElementById(`exp-ket-${key}-${index}`);
+            const jml=document.getElementById(`exp-jml-${key}-${index}`);
+
+            if(ket&&jml){
+                pengeluaran.push({
+                    keterangan:ket.value,
+                    jumlah:parseAngka(jml.value)
+                });
+            }
+        });
+
+        const totalPengeluaran=pengeluaran.reduce((sum,item)=>sum+item.jumlah,0);
+        const kasMasuk=ambilKasMasukRekap(hari,bulan,tahun);
+        const tunaiPasar=ambilTunaiPasarRekap(hari,bulan,tahun);
+
+        const kasSementara=saldoKasAwal+kasMasuk-totalPengeluaran;
+        const saldoKasAkhir=kasSementara-tunaiPasar;
+
+        setTextExp(`exp-awal-${key}`,saldoKasAwal);
+        setTextExp(`exp-masuk-${key}`,kasMasuk);
+        setTextExp(`exp-pengeluaran-${key}`,totalPengeluaran);
+        setTextExp(`exp-sementara-${key}`,kasSementara);
+        setTextExp(`exp-tunai-${key}`,tunaiPasar);
+        setTextExp(`exp-akhir-${key}`,saldoKasAkhir);
+
+        saldoKasAwal=saldoKasAkhir;
+    }
+}
+
+function setTextExp(id,value){
+    const el=document.getElementById(id);
+    if(el)el.textContent=angka(value)||"0";
+}
+
+function loadEkspedisi(){
+    const bulan=parseInt(document.getElementById("ekspedisiBulan").value);
+    const tahun=parseInt(document.getElementById("ekspedisiTahun").value);
+    const saved=ambilDataEkspedisi(bulan,tahun);
+
+    if(saved){
+        document.querySelectorAll("#ekspedisiContainer .exp-expense-list").forEach(tbody=>{
+            tbody.innerHTML="";
+        });
+
+        Object.keys(saved.hari||{}).forEach(hari=>{
+            const key=`${tahun}-${bulan}-${hari}`;
+            const tbody=document.getElementById(`exp-body-${key}`);
+            if(!tbody)return;
+
+            const pengeluaran=saved.hari[hari].pengeluaran||[];
+
+            pengeluaran.forEach((item,index)=>{
+                buatBarisPengeluaran(tbody,key,index,item.keterangan,item.jumlah);
+            });
+
+            if(tbody.children.length===0){
+                buatBarisPengeluaran(tbody,key,0,"","");
+            }
+        });
+
+        hitungEkspedisi();
+        document.getElementById("statusEkspedisi").textContent=`Data ${namaBulan[bulan]} ${tahun} berhasil dimuat.`;
+        document.getElementById("statusEkspedisi").className="status-success";
+    }else{
+        hitungEkspedisi();
+    }
+}
+
+function simpanEkspedisi(){
+    const bulan=parseInt(document.getElementById("ekspedisiBulan").value);
+    const tahun=parseInt(document.getElementById("ekspedisiTahun").value);
+
+    const data={
+        bulan,
+        tahun,
+        saldoKasAwal:ambilSaldoKasAwalEkspedisi(bulan,tahun),
+        hari:{}
+    };
+
+    for(let hari=1;hari<=jumlahHari(bulan,tahun);hari++){
+        const key=`${tahun}-${bulan}-${hari}`;
+        const pengeluaran=[];
+
+        document.querySelectorAll(`#exp-body-${key} .exp-expense-row`).forEach((row,index)=>{
+            const ket=document.getElementById(`exp-ket-${key}-${index}`);
+            const jml=document.getElementById(`exp-jml-${key}-${index}`);
+
+            if(ket&&jml){
+                pengeluaran.push({
+                    keterangan:ket.value,
+                    jumlah:parseAngka(jml.value)
+                });
+            }
+        });
+
+        data.hari[hari]={pengeluaran};
+    }
+
+    /*
+       Simpan juga saldo akhir bulan agar bulan berikutnya
+       dapat otomatis mengambilnya sebagai saldo awal.
+    */
+    const jumlahHariBulan=jumlahHari(bulan,tahun);
+    let saldoAwal=data.saldoKasAwal;
+
+    for(let hari=1;hari<=jumlahHariBulan;hari++){
+        const totalPengeluaran=(data.hari[hari].pengeluaran||[]).reduce((sum,item)=>sum+parseAngka(item.jumlah),0);
+        const kasMasuk=ambilKasMasukRekap(hari,bulan,tahun);
+        const tunaiPasar=ambilTunaiPasarRekap(hari,bulan,tahun);
+        const kasSementara=saldoAwal+kasMasuk-totalPengeluaran;
+        const saldoAkhir=kasSementara-tunaiPasar;
+        saldoAwal=saldoAkhir;
+    }
+
+    data.saldoKasAkhir=saldoAwal;
+
+    try{
+        const storageKey=`koperasi-ekspedisi-${tahun}-${bulan}`;
+        const payload=JSON.stringify(data);
+        localStorage.setItem(storageKey,payload);
+        const verified=localStorage.getItem(storageKey);
+        if(verified!==payload)throw new Error("Data Ekspedisi tidak dapat diverifikasi setelah disimpan.");
+        hitungEkspedisi();
+        document.getElementById("statusEkspedisi").textContent=`Data ${namaBulan[bulan]} ${tahun} berhasil disimpan.`;
+        document.getElementById("statusEkspedisi").className="status-success";
+        tampilTersimpan("âœ“ Tersimpan");
+    }catch(error){
+        console.error(error);
+        document.getElementById("statusEkspedisi").textContent="Gagal menyimpan data.";
+        document.getElementById("statusEkspedisi").className="status-error";
+        tampilTersimpan("âœ• Gagal menyimpan");
+    }
+}
+
+function hariEkspedisiSebelumnya(){
+    window.scrollBy({top:-window.innerHeight*0.85,behavior:"smooth"});
+}
+
+function hariEkspedisiBerikutnya(){
+    window.scrollBy({top:window.innerHeight*0.85,behavior:"smooth"});
+}
+
+/* =========================
+   BUKU TUNAI
+========================= */
+
+function sinkronPeriodeTunai(){
+    const b=document.getElementById("bulan");
+    const t=document.getElementById("tahun");
+    const tb=document.getElementById("tunaiBulan");
+    const tt=document.getElementById("tunaiTahun");
+
+    if(b&&t&&tb&&tt){
+        tb.value=b.value;
+        tt.value=t.value;
+    }
+}
+
+function ambilDataTunai(bulan,tahun){
+    const saved=localStorage.getItem(`koperasi-tunai-${tahun}-${bulan}`);
+    if(!saved)return null;
+    try{return JSON.parse(saved)}
+    catch(error){console.error(error);return null}
+}
+
+function ambilStortingRekap(hari,index,bulan,tahun){
+    const data=ambilDataRekap(bulan,tahun);
+    if(!data||!data.hari||!data.hari[hari]||!data.hari[hari][index])return 0;
+    return parseAngka(data.hari[hari][index].storting);
+}
+
+function ambilDropTunaiRekap(hari,index,bulan,tahun){
+    const data=ambilDataRekap(bulan,tahun);
+    if(!data||!data.hari||!data.hari[hari]||!data.hari[hari][index])return 0;
+
+    const dropRekap=parseAngka(data.hari[hari][index].drop);
+
+    // Buku Tunai memakai 90% dari Drop Buku Rekap.
+    return dropRekap*0.90;
+}
+
+function buatTunai(){
+    const bulan=parseInt(document.getElementById("tunaiBulan").value);
+    const tahun=parseInt(document.getElementById("tunaiTahun").value);
+    if(!bulan||!tahun)return;
+
+    const container=document.getElementById("tunaiContainer");
+    container.innerHTML="";
+
+    const dataTersimpan=ambilDataTunai(bulan,tahun);
+    const token=mulaiRender();
+    const hariList=Array.from({length:jumlahHari(bulan,tahun)},(_,i)=>i+1);
+    renderChunk(token,hariList,0,4,(hari)=>{
+        buatHariTunai(hari,bulan,tahun,container,dataTersimpan);
+    },()=>loadTunai());
+}
+
+function buatHariTunai(hari,bulan,tahun,container,dataTersimpan){
+    const keyBase=`${tahun}-${bulan}-${hari}`;
+    const box=document.createElement("div");
+    box.className="tunai-book";
+
+    box.innerHTML=`
+    <div class="tunai-date">${String(hari).padStart(2,"0")}/${String(bulan).padStart(2,"0")}/${tahun}</div>
+
+    <div class="table-wrap">
+    <table class="tunai-table">
+        <thead>
+            <tr>
+                <th>Resort</th>
+                <th>Storting</th>
+                <th>Kasbon</th>
+                <th>Drop</th>
+                <th>Transport</th>
+                <th>DLL</th>
+                <th>Jumlah Tunai</th>
+            </tr>
+        </thead>
+        <tbody id="tunai-body-${keyBase}"></tbody>
+    </table>
+    </div>
+    `;
+
+    container.appendChild(box);
+
+    const tbody=document.getElementById(`tunai-body-${keyBase}`);
+
+    resortNames.forEach((nama,index)=>{
+        const saved=dataTersimpan?.hari?.[hari]?.[index]||{};
+        const row=document.createElement("tr");
+
+        row.innerHTML=`
+            <td class="resort">${nama}</td>
+
+            <td class="amount tunai-source"
+                id="tunai-storting-${keyBase}-${index}">0</td>
+
+            <td>
+                <input class="tunai-input"
+                       type="text"
+                       inputmode="numeric"
+                       id="tunai-kasbon-${keyBase}-${index}"
+                       value="${saved.kasbon?angka(saved.kasbon):""}"
+                       placeholder="0"
+                       oninput="formatInputTunai(this)">
+            </td>
+
+            <td class="amount tunai-source"
+                id="tunai-drop-${keyBase}-${index}">0</td>
+
+            <td>
+                <input class="tunai-input"
+                       type="text"
+                       inputmode="numeric"
+                       id="tunai-transport-${keyBase}-${index}"
+                       value="${saved.transport?angka(saved.transport):""}"
+                       placeholder="0"
+                       oninput="formatInputTunai(this)">
+            </td>
+
+            <td class="tunai-dll-cell">
+                <div class="tunai-dll-list"
+                     id="tunai-dll-list-${keyBase}-${index}"></div>
+                <button type="button"
+                        class="tunai-add no-print"
+                        onclick="tambahDllTunai('${keyBase}',${index})">
+                    ï¼‹ Tambah DLL
+                </button>
+            </td>
+
+            <td class="tunai-result positive"
+                id="tunai-jumlah-${keyBase}-${index}">0</td>
+        `;
+
+        tbody.appendChild(row);
+
+        const list=document.getElementById(`tunai-dll-list-${keyBase}-${index}`);
+        const dll=saved.dll||[];
+
+        if(dll.length){
+            dll.forEach((item,dllIndex)=>{
+                buatBarisDllTunai(list,keyBase,index,dllIndex,item.keterangan,item.jumlah);
+            });
+        }else{
+            buatBarisDllTunai(list,keyBase,index,0,"","");
+        }
+    });
+}
+
+function buatBarisDllTunai(list,keyBase,resortIndex,dllIndex,keterangan,jumlah){
+    const row=document.createElement("div");
+    row.className="tunai-dll-row";
+    row.dataset.index=dllIndex;
+
+    row.innerHTML=`
+        <input type="text"
+               id="tunai-dll-ket-${keyBase}-${resortIndex}-${dllIndex}"
+               value="${escapeHtml(keterangan||"")}"
+               placeholder="Keterangan"
+               oninput="hitungTunai()">
+
+        <input type="text"
+               inputmode="numeric"
+               id="tunai-dll-jml-${keyBase}-${resortIndex}-${dllIndex}"
+               value="${jumlah?angka(jumlah):""}"
+               placeholder="0"
+               oninput="formatInputTunai(this)">
+
+        <button type="button"
+                class="tunai-delete no-print btn-icon"
+                aria-label="Hapus DLL" title="Hapus DLL"
+                onclick="hapusDllTunai('${keyBase}',${resortIndex},${dllIndex})">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path></svg>
+        </button>
+    `;
+
+    list.appendChild(row);
+}
+
+function tambahDllTunai(keyBase,resortIndex){
+    const list=document.getElementById(`tunai-dll-list-${keyBase}-${resortIndex}`);
+    if(!list)return;
+
+    const index=list.querySelectorAll(".tunai-dll-row").length;
+    buatBarisDllTunai(list,keyBase,resortIndex,index,"","");
+}
+
+function hapusDllTunai(keyBase,resortIndex,dllIndex){
+    const row=document.getElementById(`tunai-dll-ket-${keyBase}-${resortIndex}-${dllIndex}`)?.closest(".tunai-dll-row");
+    if(row)row.remove();
+
+    const list=document.getElementById(`tunai-dll-list-${keyBase}-${resortIndex}`);
+    if(!list)return;
+
+    const rows=[...list.querySelectorAll(".tunai-dll-row")];
+
+    rows.forEach((r,i)=>{
+        const ket=r.querySelector("input[type=text]");
+        const jml=r.querySelector("input[inputmode=numeric]");
+        const del=r.querySelector("button");
+
+        if(ket)ket.id=`tunai-dll-ket-${keyBase}-${resortIndex}-${i}`;
+        if(jml)jml.id=`tunai-dll-jml-${keyBase}-${resortIndex}-${i}`;
+        if(del)del.setAttribute("onclick",`hapusDllTunai('${keyBase}',${resortIndex},${i})`);
+        r.dataset.index=i;
+    });
+
+    if(rows.length===0){
+        buatBarisDllTunai(list,keyBase,resortIndex,0,"","");
+    }
+
+    hitungTunai();
+}
+
+function formatInputTunai(el){
+    if(el.value===""){
+        hitungTunai();
+        return;
+    }
+
+    el.value=angka(parseAngka(el.value));
+    hitungTunai();
+}
+
+function hitungTunai(){
+    const bulan=parseInt(document.getElementById("tunaiBulan").value);
+    const tahun=parseInt(document.getElementById("tunaiTahun").value);
+    if(!bulan||!tahun)return;
+
+    for(let hari=1;hari<=jumlahHari(bulan,tahun);hari++){
+        const keyBase=`${tahun}-${bulan}-${hari}`;
+
+        resortNames.forEach((nama,index)=>{
+            const storting=ambilStortingRekap(hari,index,bulan,tahun);
+            const drop=ambilDropTunaiRekap(hari,index,bulan,tahun);
+
+            const kasbon=parseAngka(document.getElementById(`tunai-kasbon-${keyBase}-${index}`)?.value);
+            const transport=parseAngka(document.getElementById(`tunai-transport-${keyBase}-${index}`)?.value);
+
+            let totalDll=0;
+
+            document.querySelectorAll(`#tunai-dll-list-${keyBase}-${index} .tunai-dll-row`)
+                .forEach((row,dllIndex)=>{
+                    const jml=document.getElementById(`tunai-dll-jml-${keyBase}-${index}-${dllIndex}`);
+                    if(jml)totalDll+=parseAngka(jml.value);
+                });
+
+            const jumlahTunai=storting+kasbon-drop-transport-totalDll;
+
+            const el=document.getElementById(`tunai-jumlah-${keyBase}-${index}`);
+            if(el){
+                el.textContent=angka(jumlahTunai)||"0";
+                el.classList.toggle("negative",jumlahTunai<0);
+                el.classList.toggle("positive",jumlahTunai>=0);
+            }
+
+            setTextTunai(`tunai-storting-${keyBase}-${index}`,storting);
+            setTextTunai(`tunai-drop-${keyBase}-${index}`,drop);
+        });
+    }
+}
+
+function setTextTunai(id,value){
+    const el=document.getElementById(id);
+    if(el)el.textContent=angka(value)||"0";
+}
+
+function loadTunai(){
+    const bulan=parseInt(document.getElementById("tunaiBulan").value);
+    const tahun=parseInt(document.getElementById("tunaiTahun").value);
+    const saved=ambilDataTunai(bulan,tahun);
+
+    if(saved){
+        Object.keys(saved.hari||{}).forEach(hari=>{
+            (saved.hari[hari]||[]).forEach((item,index)=>{
+                const keyBase=`${tahun}-${bulan}-${hari}`;
+
+                const kasbon=document.getElementById(`tunai-kasbon-${keyBase}-${index}`);
+                const transport=document.getElementById(`tunai-transport-${keyBase}-${index}`);
+                const list=document.getElementById(`tunai-dll-list-${keyBase}-${index}`);
+
+                if(kasbon)kasbon.value=item.kasbon?angka(item.kasbon):"";
+                if(transport)transport.value=item.transport?angka(item.transport):"";
+
+                if(list){
+                    list.innerHTML="";
+                    const dll=item.dll||[];
+
+                    if(dll.length){
+                        dll.forEach((dllItem,dllIndex)=>{
+                            buatBarisDllTunai(list,keyBase,index,dllIndex,dllItem.keterangan,dllItem.jumlah);
+                        });
+                    }else{
+                        buatBarisDllTunai(list,keyBase,index,0,"","");
+                    }
+                }
+            });
+        });
+
+        hitungTunai();
+        document.getElementById("statusTunai").textContent=`Data ${namaBulan[bulan]} ${tahun} berhasil dimuat.`;
+        document.getElementById("statusTunai").className="status-success";
+    }else{
+        hitungTunai();
+        document.getElementById("statusTunai").textContent="Belum ada data tersimpan.";
+        document.getElementById("statusTunai").className="";
+    }
+}
+
+function simpanTunai(){
+    const bulan=parseInt(document.getElementById("tunaiBulan").value);
+    const tahun=parseInt(document.getElementById("tunaiTahun").value);
+
+    const data={
+        bulan,
+        tahun,
+        hari:{}
+    };
+
+    for(let hari=1;hari<=jumlahHari(bulan,tahun);hari++){
+        const keyBase=`${tahun}-${bulan}-${hari}`;
+        data.hari[hari]=[];
+
+        resortNames.forEach((nama,index)=>{
+            const kasbon=parseAngka(document.getElementById(`tunai-kasbon-${keyBase}-${index}`)?.value);
+            const transport=parseAngka(document.getElementById(`tunai-transport-${keyBase}-${index}`)?.value);
+            const dll=[];
+
+            document.querySelectorAll(`#tunai-dll-list-${keyBase}-${index} .tunai-dll-row`)
+                .forEach((row,dllIndex)=>{
+                    const ket=document.getElementById(`tunai-dll-ket-${keyBase}-${index}-${dllIndex}`);
+                    const jml=document.getElementById(`tunai-dll-jml-${keyBase}-${index}-${dllIndex}`);
+
+                    if(ket&&jml&&(ket.value.trim()!==""||parseAngka(jml.value)!==0)){
+                        dll.push({
+                            keterangan:ket.value,
+                            jumlah:parseAngka(jml.value)
+                        });
+                    }
+                });
+
+            data.hari[hari].push({
+                kasbon,
+                transport,
+                dll
+            });
+        });
+    }
+
+    try{
+        const storageKey=`koperasi-tunai-${tahun}-${bulan}`;
+        const payload=JSON.stringify(data);
+        localStorage.setItem(storageKey,payload);
+        const verified=localStorage.getItem(storageKey);
+        if(verified!==payload)throw new Error("Data Buku Tunai tidak dapat diverifikasi setelah disimpan.");
+        hitungTunai();
+
+        document.getElementById("statusTunai").textContent=`Data ${namaBulan[bulan]} ${tahun} berhasil disimpan.`;
+        document.getElementById("statusTunai").className="status-success";
+
+        tampilTersimpan();
+    }catch(error){
+        console.error(error);
+        document.getElementById("statusTunai").textContent="Gagal menyimpan data.";
+        document.getElementById("statusTunai").className="status-error";
+        tampilTersimpan("âœ• Gagal menyimpan");
+    }
+}
+
+function cetakTunai(){
+    window.print();
+}
+
+function cetakEkspedisi(){
+    window.print();
+}
+
+    const sekarang=new Date();
+
+    document.getElementById("bulan").value=sekarang.getMonth()+1;
+    document.getElementById("tahun").value=sekarang.getFullYear();
+
+    document.getElementById("ekspedisiBulan").value=sekarang.getMonth()+1;
+    document.getElementById("ekspedisiTahun").value=sekarang.getFullYear();
+
+    document.getElementById("tunaiBulan").value=sekarang.getMonth()+1;
+    document.getElementById("tunaiTahun").value=sekarang.getFullYear();
+</script>
+<!-- =========================================================
+     V4 - TOMBOL MELAYANG SIMPAN + KEMBALI
+     Tidak mengubah fungsi tombol asli
+========================================================= -->
+
+<style>
+/* Bar tombol melayang */
+#v4FloatingActions{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:9999;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+
+    padding:10px 12px;
+
+    background:rgba(255,255,255,.94);
+    border-top:1px solid rgba(20,35,55,.10);
+
+    box-shadow:0 -4px 18px rgba(0,0,0,.10);
+
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+
+    box-sizing:border-box;
+}
+
+/* Tombol melayang */
+#v4FloatingActions button{
+    border:0;
+    border-radius:10px;
+
+    min-height:42px;
+    padding:0 18px;
+
+    font-family:inherit;
+    font-size:14px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+
+    transition:
+        transform .12s ease,
+        opacity .12s ease;
+}
+
+/* Tombol Simpan */
+#v4FloatingSave{
+    background:#2563eb;
+    color:white;
+}
+
+/* Tombol Kembali */
+#v4FloatingBack{
+    background:#eef1f5;
+    color:#263445;
+}
+
+/* Efek tekan */
+#v4FloatingActions button:active{
+    transform:scale(.96);
+}
+
+/* Saat tidak ada halaman aktif */
+#v4FloatingActions.v4-hidden{
+    display:none;
+}
+
+/* Agar isi paling bawah tidak tertutup bar */
+body.v4-floating-active{
+    padding-bottom:72px;
+}
+
+/* Tampilan tablet / HP */
+@media(max-width:600px){
+
+    #v4FloatingActions{
+        gap:8px;
+        padding:8px 10px;
+    }
+
+    #v4FloatingActions button{
+        flex:1;
+        max-width:180px;
+        min-height:44px;
+        padding:0 12px;
+        font-size:13px;
+    }
+
+}
+
+/* Saat print jangan tampil */
+@media print{
+    #v4FloatingActions{
+        display:none !important;
+    }
+
+    body.v4-floating-active{
+        padding-bottom:0 !important;
+    }
+}
+</style>
+
+
+<div id="v4FloatingActions" class="v4-hidden">
+
+    <button
+        type="button"
+        id="v4FloatingBack">
+        <span>↩</span>
+        <span>Kembali</span>
+    </button>
+
+    <button
+        type="button"
+        id="v4FloatingSave">
+        <span>💾</span>
+        <span>Simpan</span>
+    </button>
+
+</div>
+
+
+<script>
+(function(){
+
+    "use strict";
+
+    /*
+     * ========================================================
+     * V4 FLOATING ACTIONS
+     * ========================================================
+     *
+     * Tidak mengganti fungsi asli.
+     * Tombol melayang hanya memanggil tombol asli.
+     *
+     * Halaman:
+     * - Rekap       : simpanData()
+     * - Ekspedisi   : simpanEkspedisi()
+     * - Buku Tunai  : simpanTunai()
+     *
+     * Kembali:
+     * - Rekap       : kembaliDashboard()
+     * - Ekspedisi   : kembaliDashboardDariEkspedisi()
+     * - Tunai       : kembaliDashboardDariTunai()
+     *
+     * ========================================================
+     */
+
+    function halamanAktif(){
+
+        const rekap = document.getElementById("rekapPage");
+        const ekspedisi = document.getElementById("ekspedisiPage");
+        const tunai = document.getElementById("tunaiPage");
+
+        if(
+            rekap &&
+            !rekap.classList.contains("hidden")
+        ){
+            return "rekap";
+        }
+
+        if(
+            ekspedisi &&
+            !ekspedisi.classList.contains("hidden")
+        ){
+            return "ekspedisi";
+        }
+
+        if(
+            tunai &&
+            !tunai.classList.contains("hidden")
+        ){
+            return "tunai";
+        }
+
+        return null;
+    }
+
+
+    function tampilkanFloating(){
+
+        const bar =
+            document.getElementById("v4FloatingActions");
+
+        if(!bar) return;
+
+        const halaman = halamanAktif();
+
+        if(halaman){
+
+            bar.classList.remove("v4-hidden");
+
+            document.body.classList.add(
+                "v4-floating-active"
+            );
+
+        }else{
+
+            bar.classList.add("v4-hidden");
+
+            document.body.classList.remove(
+                "v4-floating-active"
+            );
+
+        }
+    }
+
+
+    function klikTombolAsli(teks){
+
+        /*
+         * Cari tombol berdasarkan tulisan.
+         * Tombol asli tetap dipakai sehingga
+         * onclick dan fungsi V4 tidak berubah.
+         */
+
+        const semua =
+            document.querySelectorAll(
+                "button"
+            );
+
+        for(const tombol of semua){
+
+            if(
+                tombol.closest("#v4FloatingActions")
+            ){
+                continue;
+            }
+
+            const tulisan =
+                tombol.innerText
+                    .replace(/\s+/g," ")
+                    .trim()
+                    .toLowerCase();
+
+            if(tulisan === teks.toLowerCase()){
+
+                tombol.click();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /*
+     * TOMBOL SIMPAN MELAYANG
+     */
+    document
+        .getElementById("v4FloatingSave")
+        .addEventListener("click",function(){
+
+            const halaman = halamanAktif();
+
+            if(halaman === "rekap"){
+
+                /*
+                 * Cari tombol Simpan di Rekap.
+                 */
+                const tombol =
+                    document.querySelector(
+                        '#rekapPage button[onclick*="simpanData"]'
+                    );
+
+                if(tombol){
+                    tombol.click();
+                    return;
+                }
+
+                /*
+                 * Cadangan langsung ke fungsi lama.
+                 */
+                if(typeof window.simpanData === "function"){
+                    window.simpanData();
+                }
+
+                return;
+            }
+
+
+            if(halaman === "ekspedisi"){
+
+                const tombol =
+                    document.querySelector(
+                        '#ekspedisiPage button[onclick*="simpanEkspedisi"]'
+                    );
+
+                if(tombol){
+                    tombol.click();
+                    return;
+                }
+
+                if(
+                    typeof window.simpanEkspedisi ===
+                    "function"
+                ){
+                    window.simpanEkspedisi();
+                }
+
+                return;
+            }
+
+
+            if(halaman === "tunai"){
+
+                const tombol =
+                    document.querySelector(
+                        '#tunaiPage button[onclick*="simpanTunai"]'
+                    );
+
+                if(tombol){
+                    tombol.click();
+                    return;
+                }
+
+                if(
+                    typeof window.simpanTunai ===
+                    "function"
+                ){
+                    window.simpanTunai();
+                }
+
+                return;
+            }
+
+        });
+
+
+    /*
+     * TOMBOL KEMBALI MELAYANG
+     */
+    document
+        .getElementById("v4FloatingBack")
+        .addEventListener("click",function(){
+
+            const halaman = halamanAktif();
+
+            if(halaman === "rekap"){
+
+                if(
+                    typeof window.kembaliDashboard ===
+                    "function"
+                ){
+                    window.kembaliDashboard();
+                }
+
+                return;
+            }
+
+
+            if(halaman === "ekspedisi"){
+
+                if(
+                    typeof window.kembaliDashboardDariEkspedisi ===
+                    "function"
+                ){
+                    window.kembaliDashboardDariEkspedisi();
+                }
+
+                return;
+            }
+
+
+            if(halaman === "tunai"){
+
+                if(
+                    typeof window.kembaliDashboardDariTunai ===
+                    "function"
+                ){
+                    window.kembaliDashboardDariTunai();
+                }
+
+                return;
+            }
+
+        });
+
+
+    /*
+     * Cek halaman secara berkala.
+     *
+     * Ini penting karena sistem V4 Anda
+     * berpindah halaman dengan class "hidden",
+     * bukan pindah URL.
+     */
+    function pantauHalaman(){
+
+        tampilkanFloating();
+
+    }
+
+
+    /*
+     * Saat halaman pertama kali dibuka
+     */
+    if(
+        document.readyState === "loading"
+    ){
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function(){
+
+                tampilkanFloating();
+
+                setInterval(
+                    pantauHalaman,
+                    500
+                );
+
+            }
+        );
+
+    }else{
+
+        tampilkanFloating();
+
+        setInterval(
+            pantauHalaman,
+            500
+        );
+
+    }
+
+})();
+</script>
+   
+</body>
+</html>
