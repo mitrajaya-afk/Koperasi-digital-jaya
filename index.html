@@ -10,8 +10,8 @@
 body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#f7f9fc,#eef3f9);color:var(--dark)}
 .hidden{display:none!important}.container{max-width:1240px;margin:auto;padding:12px}
 .card{background:#fff;border:1px solid #e1e6ef;border-radius:15px;padding:16px;margin-bottom:16px;box-shadow:0 6px 18px rgba(15,23,42,.05)}
-tombol{border:0;radius-border:10px;tinggi-minimal:42px;padding:10px 15px;latar-belakang:var(--primary);warna:#fff;berat-font:700;kursor:penunjuk}
-tombol:hover{latar belakang:#0b4fc7}.btn-sekunder{latar belakang:#eef1f5;warna:#344054;batas:1px solid #d9dee7;bayangan kotak:tidak ada}.btn-bahaya{latar belakang:#fff0f0;warna:#b42318;batas:1px solid #f4c7c7}
+button{border:0;border-radius:10px;min-height:42px;padding:10px 15px;background:var(--primary);color:#fff;font-weight:700;cursor:pointer}
+button:hover{background:#0b4fc7}.btn-secondary{background:#eef1f5;color:#344054;border:1px solid #d9dee7;box-shadow:none}.btn-danger{background:#fff0f0;color:#b42318;border:1px solid #f4c7c7}
 input,select{width:100%;min-height:42px;padding:9px 10px;border:1px solid #d9dee7;border-radius:9px;background:#fff;font-size:14px}
 label{display:block;font-weight:700;margin-bottom:5px}.form-group{margin-bottom:14px}
 .login-box{max-width:420px;margin:70px auto}.status-success{color:var(--success);font-weight:700}.status-error{color:var(--danger);font-weight:700}
@@ -40,51 +40,51 @@ label{display:block;font-weight:700;margin-bottom:5px}.form-group{margin-bottom:
 <script>
 const SUPABASE_URL="https://tnfylfudwsweompnqvvl.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_ghOqY5cjfgAYWXs2OQjigg_Vznmv2Xa";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const resortNames=["Jaya 1","Jaya 2","Jaya 3"];
 const namaBulan=["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-biarkan renderToken=0;
+let renderToken=0;
 
 
 document.addEventListener("DOMContentLoaded",async()=>{
  setDefaultPeriod();
  const {data:{session}}=await supabaseClient.auth.getSession();
- jika(session)masukAplikasi();
+ if(session)masukAplikasi();
 });
 supabaseClient.auth.onAuthStateChange((event,session)=>{if(session)masukAplikasi();});
-fungsi masukAplikasi(){
+function masukAplikasi(){
  document.getElementById("loginPage").classList.add("hidden");
  document.getElementById("appHeader").classList.remove("hidden");
  const last=localStorage.getItem("halamanTerakhir");
  if(last==="rekap")bukaRekap();else if(last==="ekspedisi")bukaEkspedisi();else if(last==="tunai")bukaTunai();else tampilDashboard();
 }
 function tampilDashboard(){hidePages();document.getElementById("dashboardPage").classList.remove("hidden");setActiveNav("");localStorage.removeItem("halamanTerakhir")}
-fungsi hidePages(){["dashboardPage","rekapPage","ekspedisiPage","tunaiPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden")))}
-fungsi setActiveNav(nama){document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.page===nama))}
+function hidePages(){["dashboardPage","rekapPage","ekspedisiPage","tunaiPage"].forEach(id=>document.getElementById(id)?.classList.add("hidden"))}
+function setActiveNav(name){document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.page===name))}
 function bukaRekap(){hidePages();document.getElementById("rekapPage").classList.remove("hidden");localStorage.setItem("halamanTerakhir","rekap");setActiveNav("rekap");buatRekap()}
 function bukaEkspedisi(){hidePages();document.getElementById("ekspedisiPage").classList.remove("hidden");localStorage.setItem("halamanTerakhir","ekspedisi");setActiveNav("ekspedisi");sinkronPeriodeEkspedisi();buatEkspedisi()}
 function bukaTunai(){hidePages();document.getElementById("tunaiPage").classList.remove("hidden");localStorage.setItem("halamanTerakhir","tunai");setActiveNav("tunai");sinkronPeriodeTunai();buatTunai()}
 async function logout(){const {error}=await supabaseClient.auth.signOut();if(error){alert("Gagal logout: "+error.message);return}localStorage.removeItem("halamanTerakhir");document.getElementById("appHeader").classList.add("hidden");hidePages();document.getElementById("loginPage").classList.remove("hidden")}
-async function login(){const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value.trim(),msg=document.getElementById("loginMessage");if(!email||!password){msg.textContent="Email dan password wajib diisi.";return}msg.textContent="Memeriksa login...";const {error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){msg.textContent=error.message;return}msg.textContent=""}
-fungsi jumlahHari(b,t){return new Date(t,b,0).getDate()}
-fungsi angka(v){jika(v===""||v===null||v===undefined||isNaN(v))return "";return Number(v).toLocaleString("id-ID",{maximumFractionDigits:0})}
-fungsi parseAngka(v){jika(v===null||v===undefined||v==="")return 0;konstanta n=parseFloat(String(v).replace(/\./g,"").replace(/,/g,""));return isNaN(n)?0:n}
+async function login(){const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value.trim(),msg=document.getElementById("loginMessage");if(!email||!password){msg.textContent="Email dan password wajib diisi.";return}msg.textContent="Memeriksa login...";const {error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){msg.textContent=error.message;return}msg.textContent="";masukAplikasi()}
+function jumlahHari(b,t){return new Date(t,b,0).getDate()}
+function angka(v){if(v===""||v===null||v===undefined||isNaN(v))return "";return Number(v).toLocaleString("id-ID",{maximumFractionDigits:0})}
+function parseAngka(v){if(v===null||v===undefined||v==="")return 0;const n=parseFloat(String(v).replace(/\./g,"").replace(/,/g,""));return isNaN(n)?0:n}
 function nilai(id){const e=document.getElementById(id);return e?parseAngka(e.value):0}
 function setText(id,v){const e=document.getElementById(id);if(e)e.textContent=angka(v)||"0"}
 function formatInput(el){if(el.value!=="")el.value=angka(parseAngka(el.value));hitungSemuaHari()}
-function tampilTersimpan(pesan="✓ Tersimpan"){const e=document.getElementById("savePopup");e.textContent=pesan;e.classList.add("show");clearTimeout(window.spt);window.spt=setTimeout(()=>e.classList.remove("show"),1800)}
-fungsi mulaiRender(){return ++renderToken}
+function tampilTersimpan(pesan="âœ“ Tersimpan"){const e=document.getElementById("savePopup");e.textContent=pesan;e.classList.add("show");clearTimeout(window.spt);window.spt=setTimeout(()=>e.classList.remove("show"),1800)}
+function mulaiRender(){return ++renderToken}
 function renderChunk(token,items,index,size,fn,done){if(token!==renderToken)return;const end=Math.min(index+size,items.length);for(let i=index;i<end;i++)fn(items[i]);if(end<items.length)requestAnimationFrame(()=>renderChunk(token,items,end,size,fn,done));else if(done)done()}
 
 
 /* REKAP: tanggal manual menjadi kolom pertama */
-fungsi buatRekap(){
+function buatRekap(){
  const b=+document.getElementById("bulan").value,t=+document.getElementById("tahun").value;if(!b||!t)return;
  const c=document.getElementById("rekapContainer");c.innerHTML="";const token=mulaiRender();
  renderChunk(token,Array.from({length:jumlahHari(b,t)},(_,i)=>i+1),0,7,h=>buatHari(h,b,t,c),loadData);
 }
-fungsi buatHari(h,b,t,c){
- const box = document.createElement("div"); box.className="card";
+function buatHari(h,b,t,c){
+ const box=document.createElement("div");box.className="card";
  box.innerHTML=`<div class="table-wrap"><table class="rekap-table"><thead><tr>
  <th>Tanggal</th><th>Nama Resort</th><th>Storting</th><th>Tunai<br>Pasar</th><th>Tabungan<br>5%</th><th>ADM<br>5%</th><th>Jumlah</th><th>Drop</th><th>Drop<br>20%</th><th>Drop<br>120%</th><th>Tabungan<br>Keluar</th><th>Saldo</th></tr></thead><tbody id="tbody-${h}"></tbody></table></div>`;
  c.appendChild(box);const tb=document.getElementById(`tbody-${h}`);const keyDate=`${t}-${b}-${h}`;
@@ -99,25 +99,25 @@ fungsi buatHari(h,b,t,c){
   tb.appendChild(r);
  });
  const mk=(cls,label,prefix)=>{const r=document.createElement("tr");r.className=cls;r.innerHTML=`<td colspan="2">${label}</td><td id="${prefix}Storting-${h}">0</td><td id="${prefix}Tunai-${h}">0</td><td id="${prefix}Tabungan5-${h}">0</td><td id="${prefix}Adm5-${h}">0</td><td id="${prefix}Jumlah-${h}">0</td><td id="${prefix}Drop-${h}">0</td><td id="${prefix}Drop20-${h}">0</td><td id="${prefix}Drop120-${h}">0</td><td id="${prefix}TabunganKeluar-${h}">0</td><td id="${prefix}Saldo-${h}">0</td>`;tb.appendChild(r)};
- mk("saldo-awal-baris","Saldo-awal","awal-baris");mk("total-baris","Jumlah hari","total");mk("saldo-akhir-baris","Saldo akhir","akhir");
+ mk("saldo-awal-row","Saldo awal","awal");mk("total-row","Total hari","total");mk("saldo-akhir-row","Saldo akhir","akhir");
 }
-function hitungSemuaHari(){const b=+document.getElementById("bulan").value,t=+document.getElementById("tahun").value;if(!b||!t)return;let s={storting:0,tuna:0,tabungan5:0,adm5:0,jumlah:0,drop:0,drop20:0,drop120:0,tabunganKeluar:0,saldo:0};for(let h=1;h<=jumlahHari(b,t);h++)s=hitungHari(h,b,t,s).akhir}
-fungsi hitungHari(h,b,t,saldoAwal){
- let total={storting:0,tuna:0,tabungan5:0,adm5:0,jumlah:0,drop:0,drop20:0,drop120:0,tabunganKeluar:0,saldo:0};
- resortNames.forEach((n,i)=>{const k=`${t}-${b}-${h}-${i}`,st=nilai(`storting-${k}`),dr=nilai(`drop-${k}`),tk=nilai(`tabung anKeluar-${k}`),tb5=dr*.05,adm=dr*.05,jml=st+tb5+adm,d20=dr*.2,d120=dr*1.2,keb=dr+tk;biarkan tun=0,sd=0;if(jml<keb)tun=keb-jml;else sd=jml-keb;
-  setText(`tunai-${k}`,tun);setText(`tabungan5-${k}`,tb5);setText(`adm5-${k}`,adm);setText(`juml ah-${k}`,jml);setText(`drop20-${k}`,d20);setText(`drop120-${k}`,d120);setText(`saldo-${k}`,sd);
+function hitungSemuaHari(){const b=+document.getElementById("bulan").value,t=+document.getElementById("tahun").value;if(!b||!t)return;let s={storting:0,tunai:0,tabungan5:0,adm5:0,jumlah:0,drop:0,drop20:0,drop120:0,tabunganKeluar:0,saldo:0};for(let h=1;h<=jumlahHari(b,t);h++)s=hitungHari(h,b,t,s).akhir}
+function hitungHari(h,b,t,saldoAwal){
+ let total={storting:0,tunai:0,tabungan5:0,adm5:0,jumlah:0,drop:0,drop20:0,drop120:0,tabunganKeluar:0,saldo:0};
+ resortNames.forEach((n,i)=>{const k=`${t}-${b}-${h}-${i}`,st=nilai(`storting-${k}`),dr=nilai(`drop-${k}`),tk=nilai(`tabunganKeluar-${k}`),tb5=dr*.05,adm=dr*.05,jml=st+tb5+adm,d20=dr*.2,d120=dr*1.2,keb=dr+tk;let tun=0,sd=0;if(jml<keb)tun=keb-jml;else sd=jml-keb;
+  setText(`tunai-${k}`,tun);setText(`tabungan5-${k}`,tb5);setText(`adm5-${k}`,adm);setText(`jumlah-${k}`,jml);setText(`drop20-${k}`,d20);setText(`drop120-${k}`,d120);setText(`saldo-${k}`,sd);
   total.storting+=st;total.tunai+=tun;total.tabungan5+=tb5;total.adm5+=adm;total.jumlah+=jml;total.drop+=dr;total.drop20+=d20;total.drop120+=d120;total.tabunganKeluar+=tk;total.saldo+=sd});
- ["storting","tuna","tabungan5","adm5","jumlah","drop","drop20","drop120","tabunganKeluar","saldo"].forEach(x=>{setText(`a wal${x[0].toUpperCase()+x.slice(1)}-${h}`,saldoAwal[x]);setText(`total${x[0].toUpperCase()+x.slice(1)}-${h}`,total[x]);});
+ ["storting","tunai","tabungan5","adm5","jumlah","drop","drop20","drop120","tabunganKeluar","saldo"].forEach(x=>{setText(`awal${x[0].toUpperCase()+x.slice(1)}-${h}`,saldoAwal[x]);setText(`total${x[0].toUpperCase()+x.slice(1)}-${h}`,total[x]);});
  const akhir={};Object.keys(total).forEach(x=>akhir[x]=saldoAwal[x]+total[x]);Object.keys(akhir).forEach(x=>setText(`akhir${x[0].toUpperCase()+x.slice(1)}-${h}`,akhir[x]));return {total,akhir}
 }
-fungsi simpanData(){
+function simpanData(){
  const b=+document.getElementById("bulan").value,t=+document.getElementById("tahun").value,data={bulan:b,tahun:t,hari:{}};
- for(misalkan h=1;h<=jumlahHari(b,t);h++){const dk=`${t}-${b}-${h}`;data.hari[h]={tanggal:document.getElementById(`tanggal-${dk}`)?.value||"",items:[]};resortNames.forEach((n,i)=>{const k=`${dk}-${i}`;data.hari[h].items.push({storting:nilai(`storting-${k}`),drop:nilai(`drop-${k}`),tabunganKeluar:nilai(`tabunganKeluar-${k}`)})})}
+ for(let h=1;h<=jumlahHari(b,t);h++){const dk=`${t}-${b}-${h}`;data.hari[h]={tanggal:document.getElementById(`tanggal-${dk}`)?.value||"",items:[]};resortNames.forEach((n,i)=>{const k=`${dk}-${i}`;data.hari[h].items.push({storting:nilai(`storting-${k}`),drop:nilai(`drop-${k}`),tabunganKeluar:nilai(`tabunganKeluar-${k}`)})})}
  try{localStorage.setItem(`koperasi-rekap-${t}-${b}`,JSON.stringify(data));document.getElementById("statusData").textContent=`Data ${namaBulan[b]} ${t} berhasil disimpan.`;document.getElementById("statusData").className="status-success";tampilTersimpan()}catch(e){console.error(e);tampilTersimpan("Gagal menyimpan")}}
-fungsi loadData(){
+function loadData(){
  const b=+document.getElementById("bulan").value,t=+document.getElementById("tahun").value,saved=localStorage.getItem(`koperasi-rekap-${t}-${b}`);if(!saved){hitungSemuaHari();return}
- coba{const d=JSON.parse(saved);Object.keys(d.hari||{}).forEach(h=>{const dk=`${t}-${b}-${h}`,day=d.hari[h],date=document.getElementById(`tanggal-${dk}`);if(date)date.value=day.tanggal||"";(day.items||day||[]).forEach((item,i)=>{if(!item||i>=3)return;const k=`${dk}-${i}`;const s=document.getElementById(`storting-${k}`),dr=document.getElementById(`drop-${k}`),tk=document.getElementById(`tabunganKeluar-${k}`);if(s)s.value=item.storting?angka(item.storting):"";i f(dr)dr.value=item.drop?angka(item.drop):"";if(tk)tk.value=item.tabunganKeluar?angka(item.tabunganKeluar):""})});hitungSemuaHari();document.getElementById("statusData").textContent=`Data ${namaBulan[b]} ${t} berhasil dimuat.`}catch(e){console.error(e);hitungSemuaHari()}}
-fungsi gantiPeriode(){buatRekap()}fungsi cetakRekap(){window.print()}
+ try{const d=JSON.parse(saved);Object.keys(d.hari||{}).forEach(h=>{const dk=`${t}-${b}-${h}`,day=d.hari[h],date=document.getElementById(`tanggal-${dk}`);if(date)date.value=day.tanggal||"";(day.items||day||[]).forEach((item,i)=>{if(!item||i>=3)return;const k=`${dk}-${i}`;const s=document.getElementById(`storting-${k}`),dr=document.getElementById(`drop-${k}`),tk=document.getElementById(`tabunganKeluar-${k}`);if(s)s.value=item.storting?angka(item.storting):"";if(dr)dr.value=item.drop?angka(item.drop):"";if(tk)tk.value=item.tabunganKeluar?angka(item.tabunganKeluar):""})});hitungSemuaHari();document.getElementById("statusData").textContent=`Data ${namaBulan[b]} ${t} berhasil dimuat.`}catch(e){console.error(e);hitungSemuaHari()}}
+function gantiPeriode(){buatRekap()}function cetakRekap(){window.print()}
 function hapusSemuaData(){const b=+document.getElementById("bulan").value,t=+document.getElementById("tahun").value;if(!confirm(`Hapus seluruh data ${namaBulan[b]} ${t}?`))return;localStorage.removeItem(`koperasi-rekap-${t}-${b}`);buatRekap()}
 
 
@@ -125,30 +125,30 @@ function hapusSemuaData(){const b=+document.getElementById("bulan").value,t=+doc
 function sinkronPeriodeEkspedisi(){document.getElementById("ekspedisiBulan").value=document.getElementById("bulan").value;document.getElementById("ekspedisiTahun").value=document.getElementById("tahun").value}
 function ambilDataRekap(b,t){const s=localStorage.getItem(`koperasi-rekap-${t}-${b}`);if(!s)return null;try{return JSON.parse(s)}catch(e){return null}}
 function ambilDataEkspedisi(b,t){const s=localStorage.getItem(`koperasi-ekspedisi-${t}-${b}`);if(!s)return null;try{return JSON.parse(s)}catch(e){return null}}
-function ambilKasMasukRekap(h,b,t){const d=ambilDataRekap(b,t);if(!d?.hari?.[h])return 0;let ​​total=0;const items=d.hari[h].items||d.hari[h];items.forEach(x=>{const dr=parseAngka(x.drop),st=parseAngka(x.storting),tk=parseAngka(x.tabunganKeluar),j=st+dr*.1,k=dr+tk;if(j>=k)total+=jk});return total}
-function ambilTunaiPasarRekap(h,b,t){const d=ambilDataRekap(b,t);if(!d?.hari?.[h])return 0;let ​​total=0;const items=d.hari[h].items||d.hari[h];items.forEach(x=>{const dr=parseAngka(x.drop),st=parseAngka(x.storting),tk=parseAngka(x.tabunganKeluar),j=st+dr*.1,k=dr+tk;if(j<k)total+=kj});return total}
+function ambilKasMasukRekap(h,b,t){const d=ambilDataRekap(b,t);if(!d?.hari?.[h])return 0;let total=0;const items=d.hari[h].items||d.hari[h];items.forEach(x=>{const dr=parseAngka(x.drop),st=parseAngka(x.storting),tk=parseAngka(x.tabunganKeluar),j=st+dr*.1,k=dr+tk;if(j>=k)total+=j-k});return total}
+function ambilTunaiPasarRekap(h,b,t){const d=ambilDataRekap(b,t);if(!d?.hari?.[h])return 0;let total=0;const items=d.hari[h].items||d.hari[h];items.forEach(x=>{const dr=parseAngka(x.drop),st=parseAngka(x.storting),tk=parseAngka(x.tabunganKeluar),j=st+dr*.1,k=dr+tk;if(j<k)total+=k-j});return total}
 function ambilSaldoKasAwalEkspedisi(b,t){const d=ambilDataEkspedisi(b,t);if(d?.saldoKasAwal!==undefined)return parseAngka(d.saldoKasAwal);let pb=b-1,pt=t;if(pb===0){pb=12;pt--}const prev=ambilDataEkspedisi(pb,pt);return prev?.saldoKasAkhir!==undefined?parseAngka(prev.saldoKasAkhir):0}
 function buatEkspedisi(){const b=+document.getElementById("ekspedisiBulan").value,t=+document.getElementById("ekspedisiTahun").value;if(!b||!t)return;const c=document.getElementById("ekspedisiContainer");c.innerHTML="";const saved=ambilDataEkspedisi(b,t),token=mulaiRender();renderChunk(token,Array.from({length:jumlahHari(b,t)},(_,i)=>i+1),0,5,h=>buatHariEkspedisi(h,b,t,c,saved),loadEkspedisi)}
-function buatHariEkspedisi(h,b,t,c,disimpan){
+function buatHariEkspedisi(h,b,t,c,saved){
  const dk=`${t}-${b}-${h}`,day=saved?.hari?.[h]||{},box=document.createElement("div");box.className="book";
  box.innerHTML=`<div class="table-wrap"><table class="exp-table"><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Catatan</th><th>Jumlah (Rp)</th></tr></thead><tbody id="exp-body-${dk}">
  <tr class="exp-opening"><td class="date-cell" rowspan="7"><input class="manual-date" type="date" id="exp-tanggal-${dk}" value="${day.tanggal||""}"></td><td><b>Saldo kas</b></td><td>saldo hari sebelumnya</td><td class="amount" id="exp-awal-${dk}">0</td></tr>
  <tr class="exp-income"><td><b>Kas masuk</b></td><td>dari Saldo Buku Rekap</td><td class="amount" id="exp-masuk-${dk}">0</td></tr>
  <tr><td><b>Pengeluaran</b></td><td class="exp-expense-cell" colspan="2"><div class="exp-expense-list" id="exp-list-${dk}"></div><button class="exp-add no-print" onclick="tambahPengeluaran('${dk}')">ï¼‹ Tambah Pengeluaran</button></td></tr>
  <tr class="exp-expense-total"><td><b>Jumlah pengeluaran</b></td><td></td><td class="amount" id="exp-pengeluaran-${dk}">0</td></tr>
- <tr class="exp-temporary"><td><b>Kas sementara</b></td><td>saldo kas + kas masuk âˆ' pengeluaran</td><td class="amount" id="exp-sementara-${dk}">0</td></tr>
+ <tr class="exp-temporary"><td><b>Kas sementara</b></td><td>saldo kas + kas masuk âˆ’ pengeluaran</td><td class="amount" id="exp-sementara-${dk}">0</td></tr>
  <tr><td><b>Tunai pasar</b></td><td>dari Buku Rekap</td><td class="amount" id="exp-tunai-${dk}">0</td></tr>
  <tr class="exp-final"><td><b>Saldo kas</b></td><td>menjadi saldo awal besok</td><td class="amount" id="exp-akhir-${dk}">0</td></tr></tbody></table></div>`;
  c.appendChild(box);const list=document.getElementById(`exp-list-${dk}`),arr=day.pengeluaran||[];(arr.length?arr:[{}]).forEach((x,i)=>buatBarisPengeluaran(list,dk,i,x.keterangan||"",x.jumlah||""));
 }
-function buatBarisPengeluaran(list,k,i,ket,jml){const r=document.createElement("div");r.className="exp-expense-row";r.innerHTML=`<input type="text" id="exp-ket-${k}-${i}" value="${escapeHtml(ket)}" placeholder="Keterangan" oninput="hitungEkspedisi()"><input type="text" inputmode="numeric" id="exp-jml-${k}-${i}" value="${jml?angka(jml):""}" placeholder="0" oninput="formatInputEkspedisi(this)"><button class="exp-delete no-print" onclick="hapusPengeluaran('${k}',${i})">ðŸ—'</button>`;list.appendChild(r)}
+function buatBarisPengeluaran(list,k,i,ket,jml){const r=document.createElement("div");r.className="exp-expense-row";r.innerHTML=`<input type="text" id="exp-ket-${k}-${i}" value="${escapeHtml(ket)}" placeholder="Keterangan" oninput="hitungEkspedisi()"><input type="text" inputmode="numeric" id="exp-jml-${k}-${i}" value="${jml?angka(jml):""}" placeholder="0" oninput="formatInputEkspedisi(this)"><button class="exp-delete no-print" onclick="hapusPengeluaran('${k}',${i})">ðŸ—‘</button>`;list.appendChild(r)}
 function tambahPengeluaran(k){const l=document.getElementById(`exp-list-${k}`);buatBarisPengeluaran(l,k,l.querySelectorAll(".exp-expense-row").length,"","")}
-fungsi hapusPengeluaran(k,i){const l=document.getElementById(`exp-list-${k}`);const r=l.querySelectorAll(".exp-expense-row")[i];if(r)r.remove();[...l.querySelectorAll(".exp-expense-row")].forEach((r,n)=>{r.querySelector("input[type=text]").id=`exp-ket-${k}-${n}`;r.querySelector("input[inputmode=numeric]").id=`exp-jml-${k}-${n}`;r.querySelector("button").setAttribute("onclick",`hapusPengeluaran('${k}',${n})`)});if(!l.children.length)buatBarisPengeluaran(l,k,0,"","");hitungEkspedisi()}
+function hapusPengeluaran(k,i){const l=document.getElementById(`exp-list-${k}`);const r=l.querySelectorAll(".exp-expense-row")[i];if(r)r.remove();[...l.querySelectorAll(".exp-expense-row")].forEach((r,n)=>{r.querySelector("input[type=text]").id=`exp-ket-${k}-${n}`;r.querySelector("input[inputmode=numeric]").id=`exp-jml-${k}-${n}`;r.querySelector("button").setAttribute("onclick",`hapusPengeluaran('${k}',${n})`)});if(!l.children.length)buatBarisPengeluaran(l,k,0,"","");hitungEkspedisi()}
 function formatInputEkspedisi(e){if(e.value!=="")e.value=angka(parseAngka(e.value));hitungEkspedisi()}
-function hitungEkspedisi(){const b=+document.getElementById("ekspedisiBulan").value,t=+document.getElementById("ekspedisiTahun").value;if(!b||!t)return;let awal=ambilSaldoKasAwalEkspedisi(b,t);for(let h=1;h<=jumlahHari(b,t);h++){const k=`${t}-${b}-${h}`,rows=document.querySelectorAll(`#exp-list-${k} .exp-expense-row`),peng=[];rows.forEach((r,i)=>peng.push({keterangan:document.getElementById(`exp-ket-${k}-${i}`)?.value||"",jumlah:parseAngka(document.getElementById(`exp-jml-${k}-${i}`)?.value)}));const pe=peng.reduce((s,x)=>s+x.jumlah,0),masuk=ambilKasMasukRekap(h,b,t),tunai=ambilTunaiPasarRekap(h,b,t),sementara=awal+masuk-pe,akhir=sementara-tunai;setText(`exp-awal-${k}`,awal);se tText(`exp-masuk-${k}`,masuk);setText(`exp-pengeluaran-${k}`,pe);setText(`exp-sementara-${k}`,sementara);setText(`exp-tunai-${k}`,tuna);setText(`exp-akhir-${k}`,akhir);awal=akhir}}
-fungsi loadEkspedisi(){konstanta b=+document.getElementById("ekspedisiBulan").value,t=+document.getElementById("ekspedisiTahun").value,s=ambilDataEkspedisi(b,t);if(s){Object.keys(s.hari||{}).forEach(h=>{konstanta k=`${t}-${b}-${h}`,d=s.hari[h],date=document.getElementById(`exp-tanggal-${k}`);if(date)date.value=d.tanggal||"";konstanta l=document.getElementById(`exp-list-${k}`);if(l){l.innerHTML="";(d.pengeluaran||[]).forEach((x,i)=>buatBarisPengel uaran(l,k,i,x.keterangan,x.jumlah));if(!l.children.length)buatBarisPengeluaran(l,k,0,"","")}});hitungEkspedisi()}}
-function simpanEkspedisi(){const b=+document.getElementById("ekspedisiBulan").value,t=+document.getElementById("ekspedisiTahun").value,data={bulan:b,tahun:t,saldoKasAwal:ambilSaldoKasAwalEkspedisi(b,t),hari:{}};for(let h=1;h<=jumlahHari(b,t);h++){const k=`${t}-${b}-${h}`,p=[];document.querySelectorAll(`#exp-list-${k} .exp-expense-row`).forEach((r,i)=>p.push({keterangan:document.getElementById(`exp-ket-${k}-${i}`)?.value||"",jumlah:parseAngka(document.get ElementById(`exp-jml-${k}-${i}`)?.value)}));data.hari[h]={tanggal:document.getElementById(`exp-tanggal-${k}`)?.value||"",pengeluaran:p}}biarkan awal=data.saldoKasAwal;for(biarkan h=1;h<=jumlahHari(b,t);h++){const pe=data.hari[h].pengeluaran.reduce((s,x)=>s+x.jumlah,0),m=ambilKasMasukRekap(h,b,t),tp=ambilTunaiPasarRekap(h,b,t);awal=awal+m-pe-tp} data.saldoKasAkhir=awal;localStorage.setItem(`koperasi-ekspedisi-${t}-${b}`,JSON.stringify(data));hitungEkspedisi();tampilTersimpan()}
-fungsi cetakEkspedisi(){window.print()}
+function hitungEkspedisi(){const b=+document.getElementById("ekspedisiBulan").value,t=+document.getElementById("ekspedisiTahun").value;if(!b||!t)return;let awal=ambilSaldoKasAwalEkspedisi(b,t);for(let h=1;h<=jumlahHari(b,t);h++){const k=`${t}-${b}-${h}`,rows=document.querySelectorAll(`#exp-list-${k} .exp-expense-row`),peng=[];rows.forEach((r,i)=>peng.push({keterangan:document.getElementById(`exp-ket-${k}-${i}`)?.value||"",jumlah:parseAngka(document.getElementById(`exp-jml-${k}-${i}`)?.value)}));const pe=peng.reduce((s,x)=>s+x.jumlah,0),masuk=ambilKasMasukRekap(h,b,t),tunai=ambilTunaiPasarRekap(h,b,t),sementara=awal+masuk-pe,akhir=sementara-tunai;setText(`exp-awal-${k}`,awal);setText(`exp-masuk-${k}`,masuk);setText(`exp-pengeluaran-${k}`,pe);setText(`exp-sementara-${k}`,sementara);setText(`exp-tunai-${k}`,tunai);setText(`exp-akhir-${k}`,akhir);awal=akhir}}
+function loadEkspedisi(){const b=+document.getElementById("ekspedisiBulan").value,t=+document.getElementById("ekspedisiTahun").value,s=ambilDataEkspedisi(b,t);if(s){Object.keys(s.hari||{}).forEach(h=>{const k=`${t}-${b}-${h}`,d=s.hari[h],date=document.getElementById(`exp-tanggal-${k}`);if(date)date.value=d.tanggal||"";const l=document.getElementById(`exp-list-${k}`);if(l){l.innerHTML="";(d.pengeluaran||[]).forEach((x,i)=>buatBarisPengeluaran(l,k,i,x.keterangan,x.jumlah));if(!l.children.length)buatBarisPengeluaran(l,k,0,"","")}});hitungEkspedisi()}}
+function simpanEkspedisi(){const b=+document.getElementById("ekspedisiBulan").value,t=+document.getElementById("ekspedisiTahun").value,data={bulan:b,tahun:t,saldoKasAwal:ambilSaldoKasAwalEkspedisi(b,t),hari:{}};for(let h=1;h<=jumlahHari(b,t);h++){const k=`${t}-${b}-${h}`,p=[];document.querySelectorAll(`#exp-list-${k} .exp-expense-row`).forEach((r,i)=>p.push({keterangan:document.getElementById(`exp-ket-${k}-${i}`)?.value||"",jumlah:parseAngka(document.getElementById(`exp-jml-${k}-${i}`)?.value)}));data.hari[h]={tanggal:document.getElementById(`exp-tanggal-${k}`)?.value||"",pengeluaran:p}}let awal=data.saldoKasAwal;for(let h=1;h<=jumlahHari(b,t);h++){const pe=data.hari[h].pengeluaran.reduce((s,x)=>s+x.jumlah,0),m=ambilKasMasukRekap(h,b,t),tp=ambilTunaiPasarRekap(h,b,t);awal=awal+m-pe-tp}data.saldoKasAkhir=awal;localStorage.setItem(`koperasi-ekspedisi-${t}-${b}`,JSON.stringify(data));hitungEkspedisi();tampilTersimpan()}
+function cetakEkspedisi(){window.print()}
 
 
 /* BUKU TUNAI: tanggal manual sebagai kolom pertama */
@@ -158,15 +158,15 @@ function ambilStortingRekap(h,i,b,t){const d=ambilDataRekap(b,t);return d?.hari?
 function ambilDropTunaiRekap(h,i,b,t){const d=ambilDataRekap(b,t);return d?.hari?.[h]?(d.hari[h].items||d.hari[h])[i]?parseAngka((d.hari[h].items||d.hari[h])[i].drop)*.9:0:0}
 function buatTunai(){const b=+document.getElementById("tunaiBulan").value,t=+document.getElementById("tunaiTahun").value;if(!b||!t)return;const c=document.getElementById("tunaiContainer");c.innerHTML="";const saved=ambilDataTunai(b,t),token=mulaiRender();renderChunk(token,Array.from({length:jumlahHari(b,t)},(_,i)=>i+1),0,4,h=>buatHariTunai(h,b,t,c,saved),loadTunai)}
 function buatHariTunai(h,b,t,c,saved){const k=`${t}-${b}-${h}`,day=saved?.hari?.[h]||{},box=document.createElement("div");box.className="book";box.innerHTML=`<div class="table-wrap"><table class="tunai-table"><thead><tr><th>Tanggal</th><th>Resort</th><th>Storting</th><th>Kasbon</th><th>Drop</th><th>Transport</th><th>DLL</th><th>Jumlah Tunai</th></tr></thead><tbody id="tunai-body-${k}"></tbody></table></div>`;c.appendChild(box);const tb=document.getElementById(`tunai-body-${k}`);resortNames.forEach((n,i)=>{const x=day.items?.[i]||{},r=document.createElement("tr");r.innerHTML=`${i===0?`<td class="date-cell" rowspan="3"><input class="manual-date" type="date" id="tunai-tanggal-${k}" value="${day.tanggal||""}"></td>`:""}<td class="resort-name">${n}</td><td class="amount tunai-source" id="tunai-storting-${k}-${i}">0</td><td><input class="tunai-input" type="text" inputmode="numeric" id="tunai-kasbon-${k}-${i}" value="${x.kasbon?angka(x.kasbon):""}" oninput="formatInputTunai(this)"></td><td class="amount tunai-source" id="tunai-drop-${k}-${i}">0</td><td><input class="tunai-input" type="text" inputmode="numeric" id="tunai-transport-${k}-${i}" value="${x.transport?angka(x.transport):""}" oninput="formatInputTunai(this)"></td><td><div id="tunai-dll-list-${k}-${i}"></div><button class="tunai-add no-print" onclick="tambahDllTunai('${k}',${i})">ï¼‹ DLL</button></td><td class="tunai-result" id="tunai-jumlah-${k}-${i}">0</td>`;tb.appendChild(r);const l=document.getElementById(`tunai-dll-list-${k}-${i}`);(x.dll?.length?x.dll:[{}]).forEach((d,j)=>buatBarisDllTunai(l,k,i,j,d.keterangan||"",d.jumlah||""))})}
-function buatBarisDllTunai(l,k,i,j,ket,jml){const r=document.createElement("div");r.className="tunai-dll-row";r.innerHTML=`<input type="text" id="tunai-dll-ket-${k}-${i}-${j}" value="${escapeHtml(ket)}" placeholder="Keterangan" oninput="hitungTunai()"><input type="text" inputmode="numeric" id="tunai-dll-jml-${k}-${i}-${j}" value="${jml?angka(jml):""}" placeholder="0" oninput="formatInputTunai(this)"><button class="tunai-delete no-print" onclick="hapusDllTunai('${k}',${i},${j})">ðŸ—'</button>`;l.appendChild(r)}
+function buatBarisDllTunai(l,k,i,j,ket,jml){const r=document.createElement("div");r.className="tunai-dll-row";r.innerHTML=`<input type="text" id="tunai-dll-ket-${k}-${i}-${j}" value="${escapeHtml(ket)}" placeholder="Keterangan" oninput="hitungTunai()"><input type="text" inputmode="numeric" id="tunai-dll-jml-${k}-${i}-${j}" value="${jml?angka(jml):""}" placeholder="0" oninput="formatInputTunai(this)"><button class="tunai-delete no-print" onclick="hapusDllTunai('${k}',${i},${j})">ðŸ—‘</button>`;l.appendChild(r)}
 function tambahDllTunai(k,i){const l=document.getElementById(`tunai-dll-list-${k}-${i}`);buatBarisDllTunai(l,k,i,l.children.length,"","")}
-fungsi hapusDllTunai(k,i,j){const l=document.getElementById(`tunai-dll-list-${k}-${i}`),r=l.children[j];if(r)r.remove();[...l.children].forEach((r,n)=>{r.querySelector("input[type=text]").id=`tunai-dll-ket-${k}-${i}-${n}`;r.querySelector("input [inputmode=numerik]").id=`tunai-dll-jml-${k}-${i}-${n}`;r.querySelector("button").setAttribute("onclick", `hapusDllTunai('${k}',${i},${n})`)});if(!l.children.length)buatBarisDllTunai(l,k,i,0,"","");hitungTunai()}
+function hapusDllTunai(k,i,j){const l=document.getElementById(`tunai-dll-list-${k}-${i}`),r=l.children[j];if(r)r.remove();[...l.children].forEach((r,n)=>{r.querySelector("input[type=text]").id=`tunai-dll-ket-${k}-${i}-${n}`;r.querySelector("input[inputmode=numeric]").id=`tunai-dll-jml-${k}-${i}-${n}`;r.querySelector("button").setAttribute("onclick",`hapusDllTunai('${k}',${i},${n})`)});if(!l.children.length)buatBarisDllTunai(l,k,i,0,"","");hitungTunai()}
 function formatInputTunai(e){if(e.value!=="")e.value=angka(parseAngka(e.value));hitungTunai()}
-function hitungTunai(){const b=+document.getElementById("tunaiBulan").value,t=+document.getElementById("tunaiTahun").value;if(!b||!t)return;for(let h=1;h<=jumlahHari(b,t);h++){const k=`${t}-${b}-${h}`;resortNames.forEach((n,i)=>{const st=ambilStortingRekap(h,i,b,t),dr=ambilDropTunaiRekap(h,i,b,t),kb=nilai(`tunai-kasbon-${k}-${i}`),tr=nilai(`tunai-transport-${k}-${i}`);let dll=0;document.querySelectorAll(`#tunai-dll-list-${k}-${i} .tunai-dll-row`).forEach((r,j)=>dll+=nilai(`tunai-dll-jml-${k}-${i}-${j}`));const total=st+kb-dr-tr-dll;setText(`tunai-storting-${k}-${i}`,st);setText(`tunai-drop-${k}-${i}`,dr);const e=document.getElementById(`tunai-jumlah-${k}-${i}`);if(e){e.textContent=angka(total)||"0";e.className="hasil tunai "+(total<0?"negatif":"positif")}})}}
-fungsi loadTunai(){const b=+document.getElementById("tunaiBulan").value,t=+document.getElementById("tunaiTahun").value,s=ambilDataTunai(b,t);if(s){Object.keys(s.hari||{}).forEach(h=>{const k=`${t}-${b}-${h}`,d=s.hari[h],date=document.getElementById(`tunai-tanggal-${k}`);if(date)date.value=d.tanggal||"";(d.items||[]).forEach((x,i)=>{const kb=document.getElementById(`tunai-kasbon-${k}-${i}`),tr=document.getElementById(`tunai-transport-${k}-${i}`),l=document.getElementById(`tunai-dll-list-${k}-${i}`);if(kb)kb.value=x.kasbon?angka(x.kas bon):"";if(tr)tr.value=x.transport?angka(x.transport):"";if(l){l.innerHTML="";(x.dll?.length?x.dll:[{}]).forEach((d,j)=>buatBarisDllTunai(l,k,i,j,d.keterangan||"",d.jumlah||""))}})});hitungTunai()}}
-fungsi simpanTunai(){const b=+document.getElementById("tunaiBulan").value,t=+document.getElementById("tunaiTahun").value,data={bulan:b,tahun:t,hari:{}};for(let h=1;h<=jumlahHari(b,t);h++){const k=`${t}-${b}-${h}`;data.hari[h]={tanggal:document.getElementById(`tunai-tanggal-${k}`)?.value||"",items:[]};resortNames.forEach((n,i)=>{const dll=[];document.querySelectorAll(`#tunai-dll-list-${k}-${i} .tunai-dll-row`).forEach((r,j)=>{const ket=document.getElementById(`tunai-dll-ket-${k}-${i}-${j}`),jml=document.getElementById(`tunai-dll-jml-${k}-${i}-${ j}`);if(ket&&jml&&(ket.value.trim()||parseAngka(jml.value)!==0))dll.push({keterangan:ket.value,jumlah:parseAngka(jml .value)})});data.hari[h].items.push({kasbon:nilai(`tunai-kasbon-${k}-${i}`),transport:nilai(`tunai-transport-${k}-$ {i}`),dll})})}localStorage.setItem(`koperasi-tunai-${t}-${b}`,JSON.stringify(data));hitungTunai();tampilTersimpan()}
-fungsi cetakTunai(){window.print()}
-fungsi escapeHtml(v){return String(v||"").replace(/[&<>"']/g,m=>({"&":"&","<":"<",">":">",'"':""","'":"'"}[m]))}
+function hitungTunai(){const b=+document.getElementById("tunaiBulan").value,t=+document.getElementById("tunaiTahun").value;if(!b||!t)return;for(let h=1;h<=jumlahHari(b,t);h++){const k=`${t}-${b}-${h}`;resortNames.forEach((n,i)=>{const st=ambilStortingRekap(h,i,b,t),dr=ambilDropTunaiRekap(h,i,b,t),kb=nilai(`tunai-kasbon-${k}-${i}`),tr=nilai(`tunai-transport-${k}-${i}`);let dll=0;document.querySelectorAll(`#tunai-dll-list-${k}-${i} .tunai-dll-row`).forEach((r,j)=>dll+=nilai(`tunai-dll-jml-${k}-${i}-${j}`));const total=st+kb-dr-tr-dll;setText(`tunai-storting-${k}-${i}`,st);setText(`tunai-drop-${k}-${i}`,dr);const e=document.getElementById(`tunai-jumlah-${k}-${i}`);if(e){e.textContent=angka(total)||"0";e.className="tunai-result "+(total<0?"negative":"positive")}})}}
+function loadTunai(){const b=+document.getElementById("tunaiBulan").value,t=+document.getElementById("tunaiTahun").value,s=ambilDataTunai(b,t);if(s){Object.keys(s.hari||{}).forEach(h=>{const k=`${t}-${b}-${h}`,d=s.hari[h],date=document.getElementById(`tunai-tanggal-${k}`);if(date)date.value=d.tanggal||"";(d.items||[]).forEach((x,i)=>{const kb=document.getElementById(`tunai-kasbon-${k}-${i}`),tr=document.getElementById(`tunai-transport-${k}-${i}`),l=document.getElementById(`tunai-dll-list-${k}-${i}`);if(kb)kb.value=x.kasbon?angka(x.kasbon):"";if(tr)tr.value=x.transport?angka(x.transport):"";if(l){l.innerHTML="";(x.dll?.length?x.dll:[{}]).forEach((d,j)=>buatBarisDllTunai(l,k,i,j,d.keterangan||"",d.jumlah||""))}})});hitungTunai()}}
+function simpanTunai(){const b=+document.getElementById("tunaiBulan").value,t=+document.getElementById("tunaiTahun").value,data={bulan:b,tahun:t,hari:{}};for(let h=1;h<=jumlahHari(b,t);h++){const k=`${t}-${b}-${h}`;data.hari[h]={tanggal:document.getElementById(`tunai-tanggal-${k}`)?.value||"",items:[]};resortNames.forEach((n,i)=>{const dll=[];document.querySelectorAll(`#tunai-dll-list-${k}-${i} .tunai-dll-row`).forEach((r,j)=>{const ket=document.getElementById(`tunai-dll-ket-${k}-${i}-${j}`),jml=document.getElementById(`tunai-dll-jml-${k}-${i}-${j}`);if(ket&&jml&&(ket.value.trim()||parseAngka(jml.value)!==0))dll.push({keterangan:ket.value,jumlah:parseAngka(jml.value)})});data.hari[h].items.push({kasbon:nilai(`tunai-kasbon-${k}-${i}`),transport:nilai(`tunai-transport-${k}-${i}`),dll})})}localStorage.setItem(`koperasi-tunai-${t}-${b}`,JSON.stringify(data));hitungTunai();tampilTersimpan()}
+function cetakTunai(){window.print()}
+function escapeHtml(v){return String(v||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function setDefaultPeriod(){const now=new Date();["bulan","ekspedisiBulan","tunaiBulan"].forEach(id=>document.getElementById(id).value=now.getMonth()+1);["tahun","ekspedisiTahun","tunaiTahun"].forEach(id=>document.getElementById(id).value=now.getFullYear())}
 </script>
 </head>
@@ -178,15 +178,15 @@ function setDefaultPeriod(){const now=new Date();["bulan","ekspedisiBulan","tuna
  <div class="card login-box">
   <h2>Login</h2><p>Silakan masuk ke KOPERASI MITRA JAYA (KMJ).</p>
   <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="Masukkan email"></div>
-  <div class="form-group"><label>Kata Sandi</label><input type="password" id="password" placeholder="Masukkan kata sandi"></div>
-  <button onclick="login()" style="width:100%">MASUK</button><p id="loginMessage"></p>
+  <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="Masukkan password"></div>
+  <button onclick="login()" style="width:100%">LOGIN</button><p id="loginMessage"></p>
  </div>
 </div>
 
 
 <header id="appHeader" class="hidden">
  <div class="header-main">
-  <div class="brand"><div class="brand-mark">KMJ</div><div><div class="brand-title">KOPERASI MITRA JAYA (KMJ)</div><div class="brand-sub">Sistem Laporan Operasional & Rekapitulasi</div></div></div>
+  <div class="brand"><div class="brand-mark">KMJ</div><div><div class="brand-title">KOPERASI MITRA JAYA (KMJ)</div><div class="brand-sub">Sistem Laporan Operasional &amp; Rekapitulasi</div></div></div>
   <button id="logoutTop" onclick="logout()">Keluar</button>
  </div>
  <nav class="nav-bar">
@@ -198,7 +198,7 @@ function setDefaultPeriod(){const now=new Date();["bulan","ekspedisiBulan","tuna
 
 
 <div id="dashboardPage" class="container hidden">
- <div class="card" style="padding:30px 18px;text-align:center"><h1>Dasbor KMJ</h1><p>Gunakan menu di atas untuk memindahkan buku.</p></div>
+ <div class="card" style="padding:30px 18px;text-align:center"><h1>Dashboard KMJ</h1><p>Gunakan menu di atas untuk berpindah buku.</p></div>
 </div>
 
 
@@ -208,7 +208,7 @@ function setDefaultPeriod(){const now=new Date();["bulan","ekspedisiBulan","tuna
   <div class="toolbar no-print">
    <div><label>Bulan</label><select id="bulan" onchange="gantiPeriode()"><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option></select></div>
    <div><label>Tahun</label><input type="number" id="tahun" onchange="gantiPeriode()"></div>
-   <button onclick="simpanData()">ðŸ'¾ Simpan</button><button class="btn-secondary" onclick="cetakRekap()">ðŸ–¨ Cetak</button>
+   <button onclick="simpanData()">ðŸ’¾ Simpan</button><button class="btn-secondary" onclick="cetakRekap()">ðŸ–¨ Cetak</button>
   </div>
   <div class="info"><b>Petunjuk:</b> Isi tanggal secara manual. Isi hanya <b>Storting</b>, <b>Drop</b>, dan <b>Tabungan Keluar</b>. Kolom lainnya dihitung otomatis.</div>
  </div>
@@ -217,9 +217,9 @@ function setDefaultPeriod(){const now=new Date();["bulan","ekspedisiBulan","tuna
 </div>
 
 
-<div id="ekspedisiPage" class="wadah tersembunyi">
+<div id="ekspedisiPage" class="container hidden">
  <div class="card"><div class="page-head"><div><h1>Buku Ekspedisi</h1><p>Kas masuk, pengeluaran, kas sementara, tunai pasar, dan saldo kas harian.</p></div></div>
-  <div class="toolbar no-print"><div><label>Bulan</label><select id="ekspedisiBulan" onchange="buatEkspedisi()"><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option></select></div><div><label>Tahun</label><input type="number" id="ekspedisiTahun" onchange="buatEkspedisi()"></div><button onclick="simpanEkspedisi()">ðŸ'¾ Simpan</button><button class="btn-secondary" onclick="cetakEkspedisi()">ðŸ–¨ Cetak</button></div>
+  <div class="toolbar no-print"><div><label>Bulan</label><select id="ekspedisiBulan" onchange="buatEkspedisi()"><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option></select></div><div><label>Tahun</label><input type="number" id="ekspedisiTahun" onchange="buatEkspedisi()"></div><button onclick="simpanEkspedisi()">ðŸ’¾ Simpan</button><button class="btn-secondary" onclick="cetakEkspedisi()">ðŸ–¨ Cetak</button></div>
   <div class="info"><b>Petunjuk:</b> Tanggal pada kolom pertama diisi manual. Kas masuk dan Tunai Pasar mengikuti Buku Rekap yang tersimpan.</div>
  </div>
  <div id="ekspedisiContainer"></div>
@@ -229,7 +229,7 @@ function setDefaultPeriod(){const now=new Date();["bulan","ekspedisiBulan","tuna
 
 <div id="tunaiPage" class="container hidden">
  <div class="card"><div class="page-head"><div><h1>Buku Tunai</h1><p>Tunai dari karyawan untuk kasir.</p></div></div>
-  <div class="toolbar no-print"><div><label>Bulan</label><select id="tunaiBulan" onchange="buatTunai()"><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option></select></div><div><label>Tahun</label><input type="number" id="tunaiTahun" onchange="buatTunai()"></div><button onclick="simpanTunai()">ðŸ'¾ Simpan</button><button class="btn-secondary" onclick="cetakTunai()">ðŸ–¨ Cetak</button></div>
+  <div class="toolbar no-print"><div><label>Bulan</label><select id="tunaiBulan" onchange="buatTunai()"><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option></select></div><div><label>Tahun</label><input type="number" id="tunaiTahun" onchange="buatTunai()"></div><button onclick="simpanTunai()">ðŸ’¾ Simpan</button><button class="btn-secondary" onclick="cetakTunai()">ðŸ–¨ Cetak</button></div>
   <div class="info"><b>Petunjuk:</b> Tanggal pada kolom pertama diisi manual. Storting dan Drop mengikuti Buku Rekap. Kasbon, Transport, dan DLL diisi manual.</div>
  </div>
  <div id="tunaiContainer"></div>
