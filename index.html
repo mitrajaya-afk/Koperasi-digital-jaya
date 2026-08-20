@@ -109,6 +109,12 @@ label{display:block;font-weight:700;margin-bottom:5px}
 
 
 .staff-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.staff-add-date{background:#1261e8;color:#fff;min-height:32px;padding:6px 10px;border-radius:8px;font-weight:800}.staff-add-date:hover{background:#0b4fc7}
+.staff-add-date-cell{padding:4px!important;background:#fff!important}.staff-add-date-cell button{width:100%;min-height:34px;padding:5px 9px}
+.staff th{white-space:nowrap}.staff th:first-child{min-width:170px}.staff .sum-head{min-width:95px}
+.staff-date-head{display:flex;align-items:center;justify-content:center;gap:4px}.staff-date-head span{font-weight:900}.staff-date-head button{min-height:25px!important;height:25px!important;padding:2px 6px!important;font-size:11px}
+.staff-date-head button:hover{filter:none}
+.staff .empty-date{text-align:center;color:#667085;padding:18px}
 .staff-note{background:#f5fbf7;border-left:4px solid var(--green);padding:10px 12px;border-radius:8px;margin-bottom:12px}
 .staff{min-width:700px}
 .staff th{background:#8bd34a;color:#111;font-size:14px}
@@ -531,14 +537,19 @@ function saveStaffData(t,d){localStorage.setItem(staffKey(t),JSON.stringify(d))}
 function dateDisplay(s){const [y,m,d]=s.split("-");return `${d}/${m}/${y}`}
 function renderStaff(t){
  const d=staffData(t),table=document.getElementById(t==="simp"?"simpTable":"bonTable");
- table.innerHTML=`<thead><tr><th>NAMA PETUGAS</th>
- ${d.dates.map((x,i)=>`<th><div class="datehead">${dateDisplay(x)} <button class="date-remove no-print" onclick="removeDate('${t}',${i})">X</button></div></th>`).join("")}
- <th>JUMLAH</th></tr></thead>`;
+ let head=`<thead><tr><th>NAMA PETUGAS</th>`;
+ d.dates.forEach((x,i)=>{
+  head+=`<th><div class="staff-date-head"><span>${dateDisplay(x)}</span><button class="date-remove no-print" title="Hapus tanggal" onclick="removeDate('${t}',${i})">X</button></div></th>`;
+ });
+ head+=`<th class="sum-head">JUMLAH<br><button class="staff-add-date no-print" onclick="addDate('${t}')" title="Tambah kolom tanggal hari ini">ï¼‹ TANGGAL</button></th></tr></thead>`;
+ table.innerHTML=head;
  const tb=document.createElement("tbody");
+ if(!d.dates.length){
+  const empty=document.createElement("tr");empty.innerHTML=`<td colspan="2" class="empty-date">Belum ada tanggal. Tekan <b>ï¼‹ TANGGAL</b> pada tabel untuk mulai.</td>`;tb.appendChild(empty);
+ }
  d.names.forEach((name,ri)=>{
   const tr=document.createElement("tr");
-  tr.innerHTML=`<td><input class="name-input" value="${escapeHtml(name)}" onchange="renameStaff('${t}',${ri},this.value)">
-  <button class="btn-danger person-remove no-print" onclick="removePerson('${t}',${ri})">Hapus</button></td>
+  tr.innerHTML=`<td><input class="name-input" value="${escapeHtml(name)}" onchange="renameStaff('${t}',${ri},this.value)"><button class="btn-danger person-remove no-print" onclick="removePerson('${t}',${ri})">Hapus</button></td>
   ${d.dates.map(dt=>`<td><input class="money" inputmode="numeric" data-t="${t}" data-r="${ri}" data-d="${dt}" value="${d.v[ri+"|"+dt]?angka(d.v[ri+"|"+dt]):""}" placeholder="0" oninput="staffInput(this)"></td>`).join("")}
   <td class="amount" id="sr-${t}-${ri}">0</td>`;
   tb.appendChild(tr);
@@ -548,20 +559,17 @@ function renderStaff(t){
  tb.appendChild(tr);table.appendChild(tb);calcStaff(t);
 }
 function addDate(t){
- const d=staffData(t),inp=document.createElement("input");inp.type="date";
- inp.style.position="fixed";inp.style.left="-10000px";document.body.appendChild(inp);
- inp.addEventListener("change",()=>{
-  const x=inp.value;inp.remove();if(!x)return;
-  if(d.dates.includes(x)){alert("Tanggal tersebut sudah ada.");return}
-  d.dates.push(x);d.dates.sort();saveStaffData(t,d);renderStaff(t);
- });
- inp.click();
+ const d=staffData(t);
+ const now=new Date(),x=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
+ if(d.dates.includes(x)){
+  alert("Tanggal hari ini sudah ada. Untuk menambah transaksi pada tanggal yang sama, gunakan kolom tanggal tersebut.");return;
+ }
+ d.dates.push(x);d.dates.sort();saveStaffData(t,d);renderStaff(t);
 }
 function removeDate(t,i){
  const d=staffData(t),x=d.dates[i];
  if(!confirm("Hapus kolom tanggal "+dateDisplay(x)+"?"))return;
- d.dates.splice(i,1);
- Object.keys(d.v).forEach(k=>{if(k.endsWith("|"+x))delete d.v[k]});
+ d.dates.splice(i,1);Object.keys(d.v).forEach(k=>{if(k.endsWith("|"+x))delete d.v[k]});
  saveStaffData(t,d);renderStaff(t);
 }
 function addPerson(t){
@@ -620,7 +628,8 @@ function latestExp(){
   const k=localStorage.key(i);
   if(!k||!k.startsWith("koperasi-ekspedisi-"))continue;
   try{
-   const d=JSON.parse(localStorage.getItem(k)),score=(d.tahun||0)*100+(d.bulan||0);
+   const d=JSON.parse(localStorage.getItem(k));
+   const score=(d.tahun||0)*100+(d.bulan||0);
    if(d.saldoKasAkhir!==undefined&&(!best||score>best.score))best={score,d};
   }catch(e){}
  }
@@ -632,11 +641,15 @@ function staffTotal(t){
  return s;
 }
 function updateCash(){
- const e=latestExp(),exp=e?parseAngka(e.saldoKasAkhir):0;
- const simp=staffTotal("simp"),bon=staffTotal("bon"),kas=exp+simp-bon;
+ const e=latestExp();
+ // KMJ KAS mengambil SALDO KAS AKHIR Buku Ekspedisi apa adanya.
+ // Buku Simpanan menambah kas, Buku Bon mengurangi kas.
+ const exp=e?parseAngka(e.saldoKasAkhir):0;
+ const simp=staffTotal("simp"),bon=staffTotal("bon");
+ const kas=exp+simp-bon;
  const x=document.getElementById("cashValue"),z=document.getElementById("cashDetail");
  if(x)x.textContent="KMJ KAS Rp "+(angka(kas)||"0");
- if(z)z.textContent="Ekspedisi "+(angka(exp)||"0")+" + Simpanan "+(angka(simp)||"0")+" - Bon "+(angka(bon)||"0");
+ if(z)z.textContent="Saldo Ekspedisi "+(angka(exp)||"0")+" + Simpanan "+(angka(simp)||"0")+" - Bon "+(angka(bon)||"0");
 }
 
 
@@ -761,12 +774,11 @@ function setDefaultPeriod(){
  <div class="card">
   <div class="page-head"><div><h1>Buku Simpanan Karyawan</h1><p>Catatan uang simpanan karyawan yang dititipkan kepada kasir/kas.</p></div></div>
   <div class="staff-controls no-print">
-   <button onclick="addDate('simp')">Tambah Tanggal</button>
    <button class="btn-secondary" onclick="addPerson('simp')">Tambah Petugas</button>
    <button onclick="saveStaff('simp')">Simpan</button>
    <button class="btn-secondary" onclick="cetakStaff()">Cetak</button>
   </div>
-  <div class="staff-note"><b>Tambah Tanggal:</b> tekan tombol lalu kalender akan muncul. Pilih tanggal transaksi, kemudian isi nominal simpanan pada petugas yang sesuai. <b>Jumlah</b> dihitung otomatis.</div>
+  <div class="staff-note"><b>Kolom tanggal:</b> gunakan tombol <b>ï¼‹</b> di dalam tabel untuk menambah kolom baru. Tanggal dibuat otomatis mengikuti tanggal hari ini. Setiap kolom berisi nominal simpanan masing-masing petugas dan <b>Jumlah</b> dihitung otomatis.</div>
   <div class="table-wrap"><table id="simpTable" class="staff"></table></div>
   <p id="simpStatus"></p>
  </div>
@@ -778,12 +790,11 @@ function setDefaultPeriod(){
  <div class="card">
   <div class="page-head"><div><h1>Buku Bon Karyawan</h1><p>Catatan pinjaman karyawan yang belum dilunasi.</p></div></div>
   <div class="staff-controls no-print">
-   <button onclick="addDate('bon')">Tambah Tanggal</button>
    <button class="btn-secondary" onclick="addPerson('bon')">Tambah Petugas</button>
    <button onclick="saveStaff('bon')">Simpan</button>
    <button class="btn-secondary" onclick="cetakStaff()">Cetak</button>
   </div>
-  <div class="staff-note"><b>Tambah Tanggal:</b> tekan tombol lalu kalender akan muncul. Pilih tanggal saat bon dibuat, kemudian isi nominal pada petugas yang sesuai. Setelah pinjaman lunas, nama petugas dapat dihapus dari buku.</div>
+  <div class="staff-note"><b>Kolom tanggal:</b> gunakan tombol <b>ï¼‹</b> di dalam tabel untuk menambah kolom baru. Tanggal dibuat otomatis mengikuti tanggal hari ini. Setiap kolom berisi nominal bon masing-masing petugas dan <b>Jumlah</b> dihitung otomatis.</div>
   <div class="table-wrap"><table id="bonTable" class="staff"></table></div>
   <p id="bonStatus"></p>
  </div>
