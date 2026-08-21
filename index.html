@@ -13,7 +13,7 @@
  --dark:#172033;--muted:#667085;--line:#dfe5ee;
  --soft:#f4f7fb;--danger:#d62828;--success:#16803c
 }
-body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#f7f9fc,#eef3f9);color:var(--dark)}
+body{margin:0;padding-bottom:68px;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#f7f9fc,#eef3f9);color:var(--dark)}
 .hidden{display:none!important}
 .container{max-width:1240px;margin:auto;padding:12px}
 .card{background:#fff;border:1px solid #e1e6ef;border-radius:15px;padding:16px;margin-bottom:16px;box-shadow:0 6px 18px rgba(15,23,42,.05)}
@@ -64,7 +64,7 @@ label{display:block;font-weight:700;margin-bottom:5px}
 .page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
 .page-head h1{margin:0 0 5px;font-size:28px}
 .page-head p{margin:0;color:#667085}
-.toolbar{display:grid;grid-template-columns:1fr 1fr auto auto;gap:12px;align-items:end}
+.toolbar{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
 .info{background:#f2f6ff;border-left:4px solid var(--primary);padding:11px;border-radius:9px;margin-top:13px;color:#344054}
 
 
@@ -105,7 +105,7 @@ label{display:block;font-weight:700;margin-bottom:5px}
 .exp-expense-cell{padding:3px!important}
 .exp-expense-row{display:grid;grid-template-columns:minmax(0,1fr) 150px 38px;gap:5px;margin:3px}
 .exp-expense-row input{min-height:32px;height:32px}
-.exp-delete{background:#fff0f0;color:#d62828;border:1px solid #f1b5b5;padding:5px 7px;min-height:32px}
+.exp-delete{background:#fff0f0;color:#d62828;border:1px solid #f1b5b5;padding:4px 6px;min-height:32px;height:32px;width:100%;font-size:11px;white-space:nowrap}
 
 
 .staff-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
@@ -121,6 +121,15 @@ label{display:block;font-weight:700;margin-bottom:5px}
 .staff td{border:1px solid #dfe4e9;padding:7px;text-align:center}
 .staff td:first-child{text-align:left}
 .staff .total td{background:#8bd34a;color:#111;font-weight:900}
+#bonPage .staff th{background:#d62828;color:#fff}
+#bonPage .staff .total td{background:#d62828;color:#fff}
+
+
+/* Tombol Simpan melayang */
+#floatingSaveBar{position:fixed;left:0;right:0;bottom:0;z-index:9998;display:flex;justify-content:center;align-items:center;padding:9px 12px;background:rgba(255,255,255,.96);border-top:1px solid #dfe5ee;box-shadow:0 -5px 18px rgba(15,23,42,.12);backdrop-filter:blur(8px)}
+#floatingSaveButton{min-width:150px;min-height:44px;border-radius:12px;background:#16803c;color:#fff;font-size:15px;font-weight:900;box-shadow:0 4px 12px rgba(22,128,60,.25)}
+#floatingSaveButton:hover{filter:brightness(.96)}
+@media(max-width:700px){#floatingSaveBar{padding:8px 10px}#floatingSaveButton{width:100%;max-width:360px}}
 .staff input{min-height:34px;height:34px;padding:5px}
 .name-input{min-width:130px;font-weight:700}
 .money{text-align:right}
@@ -205,20 +214,20 @@ function tampilDashboard(){
 }
 function bukaRekap(){
  hidePages();document.getElementById("rekapPage").classList.remove("hidden");
- localStorage.setItem("halamanTerakhir","rekap");setActiveNav("rekap");buatRekap();
+ localStorage.setItem("halamanTerakhir","rekap");setActiveNav("rekap");setFloatingSave("rekap");buatRekap();
 }
 function bukaEkspedisi(){
  hidePages();document.getElementById("ekspedisiPage").classList.remove("hidden");
  localStorage.setItem("halamanTerakhir","ekspedisi");setActiveNav("ekspedisi");
- sinkronPeriodeEkspedisi();buatEkspedisi();
+ sinkronPeriodeEkspedisi();setFloatingSave("ekspedisi");buatEkspedisi();
 }
 function bukaSimpanan(){
  hidePages();document.getElementById("simpPage").classList.remove("hidden");
- localStorage.setItem("halamanTerakhir","simp");setActiveNav("simp");renderStaff("simp");
+ localStorage.setItem("halamanTerakhir","simp");setActiveNav("simp");setFloatingSave("simp");renderStaff("simp");
 }
 function bukaBon(){
  hidePages();document.getElementById("bonPage").classList.remove("hidden");
- localStorage.setItem("halamanTerakhir","bon");setActiveNav("bon");renderStaff("bon");
+ localStorage.setItem("halamanTerakhir","bon");setActiveNav("bon");setFloatingSave("bon");renderStaff("bon");
 }
 async function logout(){
  const {error}=await supabaseClient.auth.signOut();
@@ -623,6 +632,10 @@ function cetakStaff(){window.print()}
    Ekspedisi + Simpanan - Bon
 ========================= */
 function latestExp(){
+ let b=+(document.getElementById("ekspedisiBulan")?.value||document.getElementById("bulan")?.value||new Date().getMonth()+1);
+ let t=+(document.getElementById("ekspedisiTahun")?.value||document.getElementById("tahun")?.value||new Date().getFullYear());
+ const current=ambilDataEkspedisi(b,t);
+ if(current?.saldoKasAkhir!==undefined)return current;
  let best=null;
  for(let i=0;i<localStorage.length;i++){
   const k=localStorage.key(i);
@@ -653,6 +666,21 @@ function updateCash(){
 }
 
 
+function setFloatingSave(page){
+  const bar=document.getElementById("floatingSaveBar"),btn=document.getElementById("floatingSaveButton");
+  if(!bar||!btn)return;
+  const map={rekap:["Simpan Rekap",simpanData],ekspedisi:["Simpan Ekspedisi",simpanEkspedisi],simp:["Simpan Simpanan",()=>saveStaff("simp")],bon:["Simpan Bon",()=>saveStaff("bon")]};
+  const item=map[page];
+  if(!item){bar.classList.add("hidden");return;}
+  btn.textContent=item[0];
+  window._floatingSaveAction=item[1];
+  bar.classList.remove("hidden");
+}
+function simpanHalamanAktif(){
+  if(typeof window._floatingSaveAction==="function")window._floatingSaveAction();
+}
+
+
 function escapeHtml(v){
  return String(v||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 }
@@ -669,6 +697,7 @@ function setDefaultPeriod(){
 
 
 <div id="savePopup" class="save-popup">Tersimpan</div>
+  <div id="floatingSaveBar" class="no-print hidden"><button id="floatingSaveButton" onclick="simpanHalamanAktif()">Simpan</button></div>
 
 
 <!-- LOGIN -->
@@ -742,7 +771,7 @@ function setDefaultPeriod(){
     <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
    </select></div>
    <div><label>Tahun</label><input type="number" id="tahun" onchange="gantiPeriode()"></div>
-   <button onclick="simpanData()">Simpan</button><button class="btn-secondary" onclick="cetakRekap()">Cetak</button>
+   <button class="btn-secondary" onclick="cetakRekap()">Cetak</button>
   </div>
   <div class="info"><b>Petunjuk:</b> Isi tanggal secara manual pada kolom pertama. Isi hanya <b>Storting</b>, <b>Drop</b>, dan <b>Tabungan Keluar</b>. Kolom lainnya dihitung otomatis.</div>
  </div>
@@ -760,7 +789,7 @@ function setDefaultPeriod(){
     <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
    </select></div>
    <div><label>Tahun</label><input type="number" id="ekspedisiTahun" onchange="buatEkspedisi()"></div>
-   <button onclick="simpanEkspedisi()">Simpan</button><button class="btn-secondary" onclick="cetakEkspedisi()">Cetak</button>
+   <button class="btn-secondary" onclick="cetakEkspedisi()">Cetak</button>
   </div>
   <div class="info"><b>Petunjuk:</b> Tanggal pada kolom pertama diisi manual. Kas masuk dan Tunai Pasar mengikuti Buku Rekap yang tersimpan.</div>
  </div>
