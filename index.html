@@ -5,15 +5,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>KOPERASI MITRA JAYA (KMJ)</title>
 <style>
-*{box-sizing:border-box}:root{--p:#1261e8;--g:#087d3e;--d:#172033;--mut:#667085;--line:#dfe5ee;--danger:#d62828}
+*{box-sizing:border-box}
+:root{--p:#1261e8;--g:#087d3e;--d:#172033;--mut:#667085;--line:#dfe5ee;--danger:#d62828}
 body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#f7f9fc,#eef3f9);color:var(--d)}
 .hidden{display:none!important}.container{max-width:1240px;margin:auto;padding:12px}
 .card,.book{background:#fff;border:1px solid #e1e6ef;border-radius:15px;padding:16px;margin-bottom:16px;box-shadow:0 6px 18px #0f172a0d}
 tombol{border:0;radius-border:10px;tinggi-minimal:42px;padding:10px 15px;latar-belakang:var(--p);warna:#fff;berat-font:700;kursor:penunjuk}
+tombol:dinonaktifkan{opasitas:.6;kursor:tidak-diizinkan}
 .btn-secondary{background:#eef1f5;color:#344054;border:1px solid #d9dee7}.btn-danger{background:#fff0f0;color:#b42318;border:1px solid #f4c7c7}
 input,select{width:100%;min-height:42px;padding:9px 10px;border:1px solid #d9dee7;border-radius:9px;background:#fff;font-size:14px}
 label{display:block;font-weight:700;margin-bottom:5px}.form-group{margin-bottom:14px}.login-box{max-width:420px;margin:70px auto}
 .status-success{color:#16803c;font-weight:700}.status-error{color:#b42318;font-weight:700}
+#loginMessage{min-height:20px;margin:10px 0 0}
 #appHeader{position:sticky;top:0;z-index:9000;background:linear-gradient(135deg,#07883d,#006b34);color:#fff;box-shadow:0 3px 14px #0002}
 .header-main{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;gap:12px}.brand{display:flex;align-items:center;gap:10px}
 .brand-mark{width:42px;height:42px;border-radius:10px;background:#fff;color:#087b3b;display:grid;place-items:center;font-weight:900}.brand-title{font-size:18px;font-weight:900}.brand-sub{font-size:11px;opacity:.85}
@@ -24,48 +27,55 @@ label{display:block;font-weight:700;margin-bottom:5px}.form-group{margin-bottom:
 .page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}.page-head h1{margin:0 0 5px;font-size:28px}.page-head p{margin:0;color:#667085}
 .toolbar{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.info{background:#f2f6ff;border-left:4px solid var(--p);padding:11px;border-radius:9px;margin-top:13px}
 .table-wrap{width:100%;overflow-x:auto}.rekap-table{width:100%;min-width:1050px;border-collapse:collapse;table-layout:fixed}.rekap-table th,.rekap-table td{border:1px solid #dfe4eb;text-align:center;padding:5px 4px}.rekap-table th{background:#eef3fb;font-size:12px}.rekap-table td{font-size:13px;white-space:nowrap}.rekap-table input{min-height:32px;height:32px;padding:4px;text-align:right}
-.resort-name{font-weight:700;background:#f7f9fc}.calculated{background:#fafbfc;font-weight:600}.saldo-awal-row{background:#f1fbf5;font-weight:700}.total-row{background:#f2f6ff;font-weight:700}.saldo-akhir-row{background:#eaf8ef;font-weight:700}.date-cell{background:#f8fafc;font-weight:700}.manual-date{min-width:130px;text-align:center;font-weight:900!important;color:#111!important;-webkit-appearance:none;appearance:none}
-.date-action-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:120px}.date-action-box .manual-date{width:100%}
+.resort-name{font-weight:700;background:#f7f9fc}.calculated{background:#fafbfc;font-weight:600}.saldo-awal-row{background:#f1fbf5;font-weight:700}.total-row{background:#f2f6ff;font-weight:700}.saldo-akhir-row{background:#eaf8ef;font-weight:700}.date-cell{background:#f8fafc;font-weight:700}
+.manual-date{min-width:130px;text-align:center;font-weight:900!important;color:#111!important;-webkit-appearance:none;appearance:none}.date-action-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:120px}.date-action-box .manual-date{width:100%}
 .date-today-btn{background:#667085;color:#fff;min-height:34px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:900;white-space:nowrap;border:1px solid #667085}
 .book{padding:0;overflow:hidden}.book table{width:100%;border-collapse:collapse;table-layout:fixed}.book th,.book td{border:1px solid #e1e5eb;padding:7px;vertical-align:middle}.book th{background:#f4f6fa;text-align:center;font-size:12px}.book td.amount{text-align:right;font-weight:700;white-space:nowrap}
 .exp-table{min-width:760px}.exp-opening td.amount{color:#d62828}.exp-income td.amount{color:#1261e8}.exp-expense-total{background:#fff4f4}.exp-expense-total td.amount{color:#d62828}.exp-temporary{background:#eef5ff}.exp-final{background:#eaf8ef}.exp-final td.amount{color:#16803c;font-size:15px}
 .exp-expense-cell{padding:3px!important}.exp-expense-row{display:grid;grid-template-columns:minmax(0,1fr) 150px 58px;gap:5px;margin:3px}.exp-expense-row input{min-height:32px;height:32px}.exp-delete{background:#fff0f0;color:#d62828;border:1px solid #f1b5b5;padding:5px 7px;min-height:32px;width:100%;font-size:12px}
 .staff{min-width:700px;width:100%;border-collapse:collapse}.staff th,.staff td{border:1px solid #dfe4e9;padding:7px;text-align:center}.staff th{background:#8bd34a;color:#111;font-size:14px}.staff td:first-child{text-align:left}.staff .total td{background:#8bd34a;color:#111;font-weight:900}.staff input{min-height:34px;height:34px;padding:5px}.name-input{min-width:130px;font-weight:700}.money{text-align:right}
-.staff-date-head{display:flex;align-items:center;justify-content:center;gap:4px}.date-remove,.person-remove{min-height:30px!important;height:30px!important;padding:3px 7px!important;background:#667085!important;color:#fff!important;border:1px solid #667085!important;font-size:11px}
+.staff-date-head{display:flex;align-items:center;justify-content:center;gap:4px}.staff-date-head span{font-weight:900}.date-remove,.person-remove{min-height:30px!important;height:30px!important;padding:3px 7px!important;font-size:11px;background:#667085!important;color:#fff!important;border:1px solid #667085!important}
 #bonPage .staff th,#bonPage .staff .total td{background:#d62828;color:#fff}
 .staff-note{background:#f5fbf7;border-left:4px solid var(--g);padding:10px 12px;border-radius:8px;margin-bottom:12px}
 #rekapPage button,#ekspedisiPage button,#simpPage button,#bonPage button{background:#667085;color:#fff;border-color:#667085}
-#rekapPage button:hover,#ekspedisiPage button:hover,#simpPage button:hover,#bonPage button:hover{background:#596273;color:#fff}
-.save-bar{position:fixed;left:0;right:0;bottom:0;z-index:8999;background:#fffffff5;border-top:1px solid #dfe5ee;box-shadow:0 -5px 18px #0f172a1a;padding:9px 12px;display:flex;justify-content:center;backdrop-filter:blur(7px)}.save-bar button{min-width:190px}.save-spacer{height:68px}
-.save-popup{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:99999;display:none;background:#1261e8;color:#fff;padding:11px 20px;border-radius:999px;font-weight:700}.save-popup.show{display:flex}
+.save-bar{position:fixed;left:0;right:0;bottom:0;z-index:8999;background:#fffffff5;border-top:1px solid #dfe5ee;box-shadow:0 -5px 18px #0f172a1a;padding:9px 12px;display:flex;justify-content:center;backdrop-filter:blur(7px)}
+.tombol simpan-bar{lebar minimum:190px}.spasi simpan{tinggi:68px}.popup simpan{posisi:tetap;atas:20px;kiri:50%;transform:translateX(-50%);indeks z:99999;tampilan:tidak ada;latar belakang:#1261e8;warna:#fff;padding:11px 20px;radius batas:999px;bobot font:700}.popup simpan.tampilkan{tampilan:fleksibel}
+.loading{position:fixed;inset:0;background:#fff;z-index:100000;display:grid;place-items:center}.loading-box{background:#fff;border:1px solid #ddd;border-radius:14px;padding:20px 25px;box-shadow:0 8px 30px #0002;text-align:center}
 @media(max-width:900px){.menu{grid-template-columns:1fr 1fr}.toolbar{grid-template-columns:1fr 1fr}.toolbar button{width:100%}}
 @media(max-width:700px){.container{padding:9px}.card{padding:11px}.brand-title{font-size:16px}.brand-sub{font-size:10px}.brand-mark{width:38px;height:38px}.page-head h1{font-size:24px}.exp-table{min-width:780px}.exp-expense-row{grid-template-columns:minmax(0,1fr) 110px 44px}.cash strong{font-size:24px}.save-bar button{width:100%;min-width:0}}
 @media print{#appHeader,.no-print,#loginPage,#dashboardPage,.save-bar{display:none!important}#rekapPage,#ekspedisiPage,#simpPage,#bonPage{display:block!important}.card{box-shadow:none;border:0}.book{break-inside:avoid}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+<div id="startup" class="loading"><div class="loading-box"><b>Menyiapkan KOPERASI MITRA JAYA...</b><br><small>Mohon tunggu sebentar.</small></div></div>
+
+
 <div id="savePopup" class="save-popup">Tersimpan</div>
 
 
-<div id="loginPage" class="container">
+<div id="loginPage" class="container hidden">
   <div class="card login-box">
     <h2>Masuk</h2>
     <p>Silakan masuk ke KOPERASI MITRA JAYA (KMJ).</p>
-    <div class="form-group"><label>Email</label><input id="email" type="email" autocomplete="username"></div>
-    <div class="form-group"><label>Kata Sandi</label><input id="password" type="password" autocomplete="current-password"></div>
-    <button id="loginButton" onclick="login()" style="width:100%">MASUK</button>
+    <div class="form-group"><label for="email">Email</label><input id="email" type="email" autocomplete="username"></div>
+    <div class="form-group"><label for="password">Kata Sandi</label><input id="password" type="password" autocomplete="current-password"></div>
+    <button id="loginButton" type="button" style="width:100%">MASUK</button>
     <p id="loginMessage"></p>
   </div>
 </div>
 
 
 <header id="appHeader" class="hidden">
-  <div class="header-main"><div class="brand"><div class="brand-mark">KMJ</div><div><div class="brand-title">KOPERASI MITRA JAYA (KMJ)</div><div class="brand-sub">Sistem Laporan Operasional & Rekapitulasi</div></div></div><button id="logoutTop" onclick="logout()">Keluar</button></div>
+  <div class="header-main">
+    <div class="brand"><div class="brand-mark">KMJ</div><div><div class="brand-title">KOPERASI MITRA JAYA (KMJ)</div><div class="brand-sub">Sistem Laporan Operasional & Rekapitulasi</div></div></div>
+    <button id="logoutTop" type="button">Keluar</button>
+  </div>
   <nav class="nav-bar">
-    <button class="nav-btn" data-page="rekap" onclick="bukaRekap()">Rekap Harian</button>
-    <button class="nav-btn" data-page="ekspedisi" onclick="bukaEkspedisi()">Buku Ekspedisi</button>
-    <button class="nav-btn" data-page="simp" onclick="bukaSimpanan()">Buku Simpanan</button>
-    <button class="nav-btn" data-page="bon" onclick="bukaBon()">Buku Bon Karyawan</button>
+    <button class="nav-btn" data-page="rekap" type="button">Rekap Harian</button>
+    <button class="nav-btn" data-page="ekspedisi" type="button">Buku Ekspedisi</button>
+    <button class="nav-btn" data-page="simp" type="button">Buku Simpanan</button>
+    <button class="nav-btn" data-page="bon" type="button">Buku Bon Karyawan</button>
   </nav>
 </header>
 
@@ -74,578 +84,524 @@ label{display:block;font-weight:700;margin-bottom:5px}.form-group{margin-bottom:
   <div class="cash"><small>Uang fisik yang seharusnya dipegang kasir</small><strong id="cashValue">KMJ KAS Rp 0</strong><span id="cashDetail">Saldo Ekspedisi 0 + Simpanan 0 - Bon 0</span></div>
   <div class="card"><h1>Dasbor KOPERASI MITRA JAYA (KMJ)</h1><p>Empat buku utama mengendalikan kas usaha.</p></div>
   <div class="card"><div class="menu">
-    <button onclick="bukaRekap()"><span class="menu-mark">01</span><b>Rekap Harian</b><small>Catatan operasional</small></button>
-    <button onclick="bukaEkspedisi()"><span class="menu-mark">02</span><b>Buku Ekspedisi</b><small>Pergerakan kas harian</small></button>
-    <button onclick="bukaSimpanan()"><span class="menu-mark">03</span><b>Buku Simpanan Karyawan</b><small>Uang titipan karyawan</small></button>
-    <button onclick="bukaBon()"><span class="menu-mark">04</span><b>Buku Bon Karyawan</b><small>Pinjaman yang belum lunas</small></button>
+    <button type="button" data-open="rekap"><span class="menu-mark">01</span><b>Rekap Harian</b><small>Catatan operasional</small></button>
+    <button type="button" data-open="ekspedisi"><span class="menu-mark">02</span><b>Buku Ekspedisi</b><small>Pergerakan kas harian</small></button>
+    <button type="button" data-open="simp"><span class="menu-mark">03</span><b>Buku Simpanan Karyawan</b><small>Uang titipan karyawan</small></button>
+    <button type="button" data-open="bon"><span class="menu-mark">04</span><b>Buku Bon Karyawan</b><small>Pinjaman yang belum lunas</small></button>
   </div></div>
 </div>
 
 
 <div id="rekapPage" class="container hidden">
-  <div class="card"><div class="page-head"><div><h1>Rekap Harian</h1><p>Rekap Operasional KOPERASI MITRA JAYA (KMJ)</p></div></div>
+  <div class="card">
+    <div class="page-head"><div><h1>Rekap Harian</h1><p>Rekap Operasional KOPERASI MITRA JAYA (KMJ)</p></div></div>
     <div class="toolbar no-print">
-      <div><label>Bulan</label><select id="bulan" onchange="gantiPeriode()"><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option></select></div>
-      <div><label>Tahun</label><input id="tahun" type="number" onchange="gantiPeriode()"></div><button class="btn-secondary" onclick="cetakRekap()">Cetak</button>
+      <div><label>Bulan</label><select id="bulan"></select></div>
+      <div><label>Tahun</label><input id="tahun" type="number"></div>
+      <button id="cetakRekap" class="btn-secondary" type="button">Cetak</button>
     </div>
     <div class="info"><b>Petunjuk:</b> Tekan <b>TANGGAL</b> untuk membuat tanggal hari ini. Satu tanggal hanya dapat dibuat satu kali dalam sehari. Isi hanya Storting, Drop, dan Tabungan Keluar.</div>
   </div>
   <div id="rekapContainer"></div><div class="save-spacer"></div>
-  <div class="card no-print"><p id="statusData">Belum ada perubahan.</p><button class="btn-danger" onclick="hapusSemuaData()">Hapus Data Bulan Ini</button></div>
+  <div class="card no-print"><p id="statusData">Belum ada perubahan.</p><button id="hapusRekap" class="btn-danger" type="button">Hapus Data Bulan Ini</button></div>
 </div>
 
 
 <div id="ekspedisiPage" class="wadah tersembunyi">
-  <div class="card"><div class="page-head"><div><h1>Buku Ekspedisi</h1><p>Kas masuk, pengeluaran, kas sementara, tunai pasar, dan saldo kas harian.</p></div></div>
+  <div class="card">
+    <div class="page-head"><div><h1>Buku Ekspedisi</h1><p>Kas masuk, pengeluaran, kas sementara, tunai pasar, dan saldo kas harian.</p></div></div>
     <div class="toolbar no-print">
-      <div><label>Bulan</label><select id="ekspedisiBulan" onchange="buatEkspedisi()"><option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option><option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option></select></div>
-      <div><label>Tahun</label><input id="ekspedisiTahun" type="number" onchange="buatEkspedisi()"></div><button class="btn-secondary" onclick="window.print()">Cetak</button>
+      <div><label>Bulan</label><select id="ekspedisiBulan"></select></div>
+      <div><label>Tahun</label><input id="ekspedisiTahun" type="number"></div>
+      <button id="cetakEkspedisi" class="btn-secondary" type="button">Cetak</button>
     </div>
-    <div class="info"><b>Petunjuk:</b> Tekan <b>TANGGAL</b> untuk membuat tanggal hari ini. Satu tanggal hanya dapat dibuat satu kali dalam sehari. Kas masuk dan Tunai Pasar mengikuti Buku Rekap.</div>
+    <div class="info"><b>Petunjuk:</b> Tekan <b>TANGGAL</b> untuk membuat tanggal hari ini. Kas masuk dan Tunai Pasar mengikuti Buku Rekap.</div>
   </div>
-  <div id="ekspedisiContainer"></div><div class="save-spacer"></div><div class="card no-print"><p id="statusEkspedisi">Belum ada perubahan.</p></div>
+  <div id="ekspedisiContainer"></div><div class="save-spacer"></div>
+  <div class="card no-print"><p id="statusEkspedisi">Belum ada perubahan.</p></div>
 </div>
 
 
-<div id="simpPage" class="containerhidden"><div class="card"><div class="page-head"><div><h1>Buku Simpanan Karyawan</h1><p>Catatan uang simpanan karyawan.</p></div></div>
-  <div class="staff-controls no-print"><button class="btn-secondary" onclick="addPerson('simp')">Tambah Petugas</button><button class="btn-secondary" onclick="cetakStaff()">Cetak</button></div>
-  <div class="staff-note"><b>+ TANGGAL</b> di dalam tabel menambah kolom dan tanggal otomatis.</div><div class="table-wrap"><table id="simpTable" class="staff"></table></div><p id="simpStatus"></p><div class="save-spacer"></div>
-</div></div>
+<div id="simpPage" class="container hidden">
+  <div class="card">
+    <div class="page-head"><div><h1>Buku Simpanan Karyawan</h1><p>Catatan uang simpanan karyawan.</p></div></div>
+    <div class="staff-controls no-print"><button class="btn-secondary" id="simpAddPerson" type="button">Tambah Petugas</button><button class="btn-secondary" id="simpCetak" type="button">Cetak</button></div>
+    <div class="staff-note"><b>+ TANGGAL</b> di dalam tabel menambah kolom dan tanggal otomatis.</div>
+    <div class="table-wrap"><table id="simpTable" class="staff"></table></div><p id="simpStatus"></p><div class="save-spacer"></div>
+  </div>
+</div>
 
 
-<div id="bonPage" class="containerhidden"><div class="card"><div class="page-head"><div><h1>Buku Bon Karyawan</h1><p>Catatan pinjaman karyawan yang belum dilunasi.</p></div></div>
-  <div class="staff-controls no-print"><button class="btn-secondary" onclick="addPerson('bon')">Tambah Petugas</button><button class="btn-secondary" onclick="cetakStaff()">Cetak</button></div>
-  <div class="staff-note"><b>+ TANGGAL</b> di dalam tabel menambah kolom dan tanggal otomatis.</div><div class="table-wrap"><table id="bonTable" class="staff"></table></div><p id="bonStatus"></p><div class="save-spacer"></div>
-</div></div>
+<div id="bonPage" class="container hidden">
+  <div class="card">
+    <div class="page-head"><div><h1>Buku Bon Karyawan</h1><p>Catatan pinjaman karyawan yang belum dilunasi.</p></div></div>
+    <div class="staff-controls no-print"><button class="btn-secondary" id="bonAddPerson" type="button">Tambah Petugas</button><button class="btn-secondary" id="bonCetak" type="button">Cetak</button></div>
+    <div class="staff-note"><b>+ TANGGAL</b> di dalam tabel menambah kolom dan tanggal otomatis.</div>
+    <div class="table-wrap"><table id="bonTable" class="staff"></table></div><p id="bonStatus"></p><div class="save-spacer"></div>
+  </div>
+</div>
 
 
-<div class="save-bar no-print"><button onclick="simpanHalamanAktif()">Simpan</button></div>
+<div class="save-bar no-print"><button id="saveButton" type="button">Simpan</button></div>
 
 
 <script>
+"gunakan secara ketat";
+
+
 const SUPABASE_URL="https://tnfylfudwsweompnqvvl.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_ghOqY5cjfgAYWXs2OQjigg_Vznmv2Xa";
 
 
 biarkan supabaseClient=null;
 biarkan currentUser=null;
-biarkan appReady=false;
-
-
+biarkan currentPage="dasbor";
+let rekapRows={};
+misalkan ekspedisiRows={};
 const resortNames=["Jaya 1","Jaya 2","Jaya 3"];
 const namaBulan=["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 
 
-fungsi byId(id){return document.getElementById(id)}
-fungsi setMsg(id,text,ok=false){konstanta e=byId(id);if(!e)return;e.textContent=text;e.className=ok?"status-success":"status-error"}
-function tampilTersimpan(p="Tersimpan"){const e=byId("savePopup");e.textContent=p;e.classList.add("show");clearTimeout(window.spt);window.spt=setTimeout(()=>e.classList.remove("show"),1800)}
+const $=id=>document.getElementById(id);
+const show=id=>$(id)?.classList.remove("hidden");
+const hide=id=>$(id)?.classList.add("hidden");
 
 
-fungsi asinkron carregarSupabase(){
-  jika (window.supabase && typeof window.supabase.createClient == "function") {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-    kembalikan nilai benar;
-  }
-  kembalikan false;
+fungsi angka(v){
+  if(v===""||v==null||isNaN(v))mengembalikan "";
+  kembalikan Number(v).toLocaleString("id-ID",{maximumFractionDigits:0});
 }
+fungsi parseAngka(v){
+  jika (v==="" || v==null) kembalikan 0;
+  const n=parseFloat(String(v).replace(/\./g,"").replace(/,/g,""));
+  kembalikan isNaN(n)?0:n;
+}
+function nilai(id){const e=$(id);return e?parseAngka(e.value):0}
+fungsi setText(id,v){const e=$(id);if(e)e.textContent=angka(v)||"0"}
+function formatInput(e){if(e.value!=="")e.value=angka(parseAngka(e.value));hitungSemuaHari()}
+fungsi escapeHtml(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&","<":"<",">":">",'"':""","'":"'"}[m]))}
+function tanggalHariIni(){const n=new Date();return n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0")}
+fungsi jumlahHari(b,t){return new Date(t,b,0).getDate()}
+function tampilTersimpan(p="Tersimpan"){const e=$("savePopup");e.textContent=p;e.classList.add("show");clearTimeout(window.spt);window.spt=setTimeout(()=>e.classList.remove("show"),1800)}
+fungsi status(el,text,ok=true){if(!el)return;el.textContent=text;el.className=ok?"status-success":"status-error"}
 
 
-fungsi asinkron initApp(){
-  setDefaultPeriod();
-  const ok=menunggu carregarSupabase();
-  jika (!ok){
-    setMsg("loginMessage","Koneksi Supabase belum tersedia. Muat ulang halaman lalu coba lagi.");
-    kembali;
-  }
-  appReady=true;
-  const {data,error}=await supabaseClient.auth.getSession();
-  if(error){setMsg("loginMessage","Gagal memeriksa sesi: "+error.message);return}
-  jika (data && data.session) {
-    currentUser=data.session.user;
-    tunggu masukAplikasi();
-  }
-  supabaseClient.auth.onAuthStateChange(async(event,session)=>{
-    jika(sesi){
-      currentUser=session.user;
-      tunggu masukAplikasi();
-    }kalau tidak{
-      currentUser=null;
-      byId("appHeader").classList.add("hidden");
-      byId("dashboardPage").classList.add("hidden");
-      byId("rekapPage").classList.add("hidden");
-      byId("ekspedisiPage").classList.add("hidden");
-      byId("simpPage").classList.add("hidden");
-      byId("bonPage").classList.add("hidden");
-      byId("loginPage").classList.remove("hidden");
-    }
+fungsi setDefaultPeriod(){
+  const n = new Date();
+  $("bulan").value=String(n.getMonth()+1); $("tahun").value=n.getFullYear();
+  $("ekspedisiBulan").value=String(n.getMonth()+1); $("ekspedisiTahun").value=n.getFullYear();
+}
+fungsi isiBulan(){
+  [$("bulan"),$("ekspedisiBulan")].forEach(s=>{
+    s.innerHTML="";
+    for(let i=1;i<=12;i++){const o=document.createElement("option");o.value=i;o.textContent=namaBulan[i];s.appendChild(o)}
   });
 }
-
-
+fungsi initSupabase(){
+  if(!window.supabase||!window.supabase.createClient)throw new Error("Library Supabase belum berhasil dimuat.");
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+}
+fungsi sembunyikanHalaman(){
+  ["dashboardPage","rekapPage","ekspedisiPage","simpPage","bonPage"].forEach(hide);
+}
+fungsi setActiveNav(n){
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.page===n));
+}
+fungsi tampilDashboard(){
+  hidePages();show("dashboardPage");currentPage="dashboard";setActiveNav("");updateCash();
+}
+fungsi bukaHalaman(n){
+  jika(n==="rekap")bukaRekap();
+  else if(n==="ekspedisi")bukaEkspedisi();
+  jika (n==="simp")bukaStaff("simp");
+  else if(n==="bon")bukaStaff("bon");
+}
+fungsi asinkron bukaRekap(){
+  hidePages();show("rekapPage");currentPage="rekap";setActiveNav("rekap");
+  tunggu buatRekap();
+}
+fungsi asinkron bukaEkspedisi(){
+  hidePages();show("ekspedisiPage");currentPage="ekspedisi";setActiveNav("ekspedisi");
+  $("ekspedisiBulan").value=$("bulan").value;$("ekspedisiTahun").value=$("tahun").value;
+  tunggu buatEkspedisi();
+}
+fungsi asinkron bukaStaff(t){
+  hidePages();show(t==="simp"?"simpPage":"bonPage");currentPage=t;setActiveNav(t);
+  tunggu renderStaff(t);
+}
+fungsi initEvents(){
+  $("loginButton").addEventListener("click",login);
+  $("password").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
+  $("email").addEventListener("keydown",e=>{if(e.key==="Enter")$("password").focus()});
+  $("logoutTop").addEventListener("click",logout);
+  document.querySelectorAll(".nav-btn").forEach(b=>b.addEventListener("click",()=>bukaHalaman(b.dataset.page)));
+  document.querySelectorAll("[data-open]").forEach(b=>b.addEventListener("click",()=>bukaHalaman(b.dataset.open)));
+  $("bulan").addEventListener("change",()=>{if(currentPage==="rekap")buatRekap();});
+  $("tahun").addEventListener("change",()=>{if(currentPage==="rekap")buatRekap();});
+  $("ekspedisiBulan").addEventListener("change",buatEkspedisi);
+  $("ekspedisiTahun").addEventListener("change",buatEkspedisi);
+  $("cetakRekap").addEventListener("click",()=>window.print());
+  $("cetakEkspedisi").addEventListener("click",()=>window.print());
+  $("hapusRekap").addEventListener("klik",hapusDataRekap);
+  $("simpAddPerson").addEventListener("click",()=>addPerson("simp"));
+  $("bonAddPerson").addEventListener("click",()=>addPerson("bon"));
+  $("simpCetak").addEventListener("click",()=>window.print());
+  $("bonCetak").addEventListener("click",()=>window.print());
+  $("saveButton").addEventListener("klik",simpanHalamanAktif);
+}
+fungsi asinkron mulai(){
+  mencoba{
+    isiBulan();setDefaultPeriod();initSupabase();initEvents();
+    const {data,error}=await supabaseClient.auth.getSession();
+    jika terjadi kesalahan, lemparkan kesalahan;
+    $("startup").classList.add("hidden");
+    if(data?.session)tunggu masukAplikasi(data.session);
+    jika tidak, tampilkan("loginPage");
+  }catch(e){
+    $("startup").classList.add("hidden");show("loginPage");
+    status($("loginMessage"),"Aplikasi gagal dimulai: "+(e.message||e),false);
+  }
+}
 fungsi asinkron login(){
-  const email = byId("email").value.trim();
-  const password=byId("password").value;
-  if(!email||!password){setMsg("loginMessage","Email dan kata sandi wajib diisi.");return}
-  if(!supabaseClient){setMsg("loginMessage","Supabase belum siap. Muat ulang halaman.");return}
-  const btn=byId("loginButton");
+  const btn=$("loginButton"),msg=$("loginMessage");
+  const email=$("email").value.trim(),password=$("password").value;
+  if(!email||!password){status(msg,"Email dan kata sandi wajib diisi.",false);return}
   btn.disabled=true;btn.textContent="MEMERIKSA...";
-  setMsg("loginMessage","Memeriksa login...",true);
+  status(pesan,"Memeriksa login...",benar);
   mencoba{
     const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
-    if(error){setMsg("loginMessage","Login gagal: "+error.message);return}
-    if(!data || !data.session){setMsg("loginMessage","Login belum sesi menghasilkan. Periksa akun Supabase.");return}
-    currentUser=data.user;
-    setMsg("loginMessage","Login berhasil.",true);
-    tunggu masukAplikasi();
+    jika terjadi kesalahan, lemparkan kesalahan;
+    if(!data?.session)throw new Error("Login belum menghasilkan sesi. Silakan coba lagi.");
+    status(pesan,"Login berhasil.",benar);
+    tunggu masukAplikasi(data.session);
   }catch(e){
-    setMsg("loginMessage","Terjadi kesalahan: "+(e.message||e),false);
+    console.error("KESALAHAN LOGIN",e);
+    status(msg,"Login gagal: "+(e.message||"Terjadi kesalahan."),false);
   }Akhirnya{
     btn.disabled=false;btn.textContent="MASUK";
   }
 }
-
-
+fungsi async masukAplikasi(sesi){
+  currentUser=session?.user||currentUser;
+  jika (!currentUser) kembali;
+  sembunyikan("loginPage");tampilkan("appHeader");sembunyikan("startup");
+  tampilDashboard();
+}
 fungsi async logout(){
-  jika (supabaseClient) menunggu supabaseClient.auth.signOut();
-  localStorage.removeItem("halamanTerakhir");
-  location.reload();
+  try{await supabaseClient.auth.signOut()}catch(e){console.error(e)}
+  currentUser=null;hide("appHeader");hidePages();show("loginPage");$("loginMessage").textContent="";currentPage="dashboard";
 }
 
 
-fungsi async masukAplikasi(){
-  byId("loginPage").classList.add("hidden");
-  byId("appHeader").classList.remove("hidden");
-  const p=localStorage.getItem("halamanTerakhir");
-  if(p==="rekap")menunggu bukaRekap();
-  else if(p==="ekspedisi")menunggu bukaEkspedisi();
-  else if(p==="simp")await bukaSimpanan();
-  else if(p==="bon")tunggu bukaBon();
-  jika tidak, tunggu tampilkanDashboard();
-}
-
-
-fungsi hidePages(){["dashboardPage","rekapPage","ekspedisiPage","simpPage","bonPage"].forEach(x=>byId(x).classList.add("hidden")))}
-fungsi setActiveNav(n){document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.page===n))}
-async function tampilDashboard(){hidePages();byId("dashboardPage").classList.remove("hidden");setActiveNav("");localStorage.removeItem("halamanTerakhir");await updateCash()}
-fungsi async bukaRekap(){hidePages();byId("rekapPage").classList.remove("hidden");localStorage.setItem("halamanTerakhir","rekap");setActiveNav("rekap");tunggu buatRekap()}
-async function bukaEkspedisi(){hidePages();byId("ekspedisiPage").classList.remove("hidden");localStorage.setItem("halamanTerakhir","ekspedisi");setActiveNav("ekspedisi");sinkronPeriodeEkspedisi();await buatEkspedisi()}
-async function bukaSimpanan(){hidePages();byId("simpPage").classList.remove("hidden");localStorage.setItem("halamanTerakhir","simp");setActiveNav("simp");await renderStaff("simp")}
-fungsi async bukaBon(){hidePages();byId("bonPage").classList.remove("hidden");localStorage.setItem("halamanTerakhir","bon");setActiveNav("bon");menunggu renderStaff("bon")}
-
-
-fungsi jumlahHari(b,t){return new Date(t,b,0).getDate()}
-fungsi angka(v){jika(v===""||v==null||isNaN(v))return "";return Number(v).toLocaleString("id-ID",{maximumFractionDigits:0})}
-fungsi parseAngka(v){jika(v===""||v==null)return 0;konstanta n=parseFloat(String(v).replace(/\./g,"").replace(/,/g,""));return isNaN(n)?0:n}
-function nilai(id){const e=byId(id);return e?parseAngka(e.value):0}
-fungsi setText(id,v){const e=byId(id);if(e)e.textContent=angka(v)||"0"}
-function formatInput(e){if(e.value!=="")e.value=angka(parseAngka(e.value));hitungSemuaHari()}
-function tanggalHariIni(){const n=new Date();return n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0")}
-fungsi escapeHtml(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&","<":"<",">":">",'"':""","'":"'"}[m]))}
-
-
-async function buatTanggalHariIni(jenis,k){
-  const today=tanggalHariIni();
-  const prefix=jenis==="rekap"?"tanggal-":"exp-tanggal-";
-  konstanta saat ini = byId(prefix + k);
-  const selector=jenis==="rekap"?'input[id^="tanggal-"]':'input[id^="exp-tanggal-"]';
-  const sudah=[...document.querySelectorAll(selector)].some(e=>e.value===today);
-  if(sudah){alert("Tanggal hari ini sudah dibuat. Satu tanggal hanya bisa dibuat satu kali dalam sehari.");return}
-  if(current&¤t.value){alert("Baris ini sudah memiliki tanggal "+current.value+".");return}
-  jika(nilai saat ini)saat ini = hari ini;
-  if(jenis==="rekap")menunggu simpanData(true);else menunggu simpanEkspedisi(true);
-}
-
-
+/* =========================
+   REKAP HARIAN - SUPABASE
+   ========================= */
+fungsi rekapKey(h,i,b,t){return `${t}-${b}-${h}-${i}`}
 fungsi buatRekap(){
-  const b=+byId("bulan").value,t=+byId("tahun").value;
+  const b=+$("bulan").nilai,t=+$("tahun").nilai;
   jika (!b||!t) kembali;
-  byId("rekapContainer").innerHTML="";
+  $("rekapContainer").innerHTML="";rekapRows={};
   for(misalkan h=1;h<=jumlahHari(b,t);h++)buatHari(h,b,t);
-  kembalikan loadData();
+  hitungSemuaHari();
+  kembalikan loadRekapFromSupabase(b,t);
 }
-
-
 fungsi buatHari(h,b,t){
   const box = document.createElement("div"); box.className="card";
-  box.innerHTML=`<div class="table-wrap"><table class="rekap-table"><thead><tr><th>Tanggal</th><th>Nama Resort</th><th>Storting</th><th>Tunai<br>Pasar</th><th>Tabungan<br>5%</th><th>ADM<br>5%</th><th>Jumlah</th><th>Drop</th><th>Drop<br>20%</th><th>Drop<br>120%</th><th>Tabungan<br>Keluar</th><th>Saldo</th></tr></thead><tbody id="tbody-${h}"></tbody></table></div>`;
-  byId("rekapContainer").appendChild(box);
-  const tb=byId("tbody-"+h),dk=`${t}-${b}-${h}`;
+  box.innerHTML=`<div class="table-wrap"><table class="rekap-table"><thead><tr>
+  <th>Tanggal</th><th>Nama Resort</th><th>Storting</th><th>Tunai<br>Pasar</th><th>Tabungan<br>5%</th><th>ADM<br>5%</th><th>Jumlah</th><th>Drop</th><th>Drop<br>20%</th><th>Drop<br>120%</th><th>Tabungan<br>Keluar</th><th>Saldo</th>
+  </tr></thead><tbody id="tbody-${h}"></tbody></table></div>`;
+  $("rekapContainer").appendChild(box);
+  const tb=$("tbody-"+h),dk=`${t}-${b}-${h}`;
   resortNames.forEach((n,i)=>{
-    const k=dk+"-"+i,r=document.createElement("tr");
-    r.innerHTML=`${i===0?`<td class="date-cell" rowspan="3"><div class="date-action-box"><input class="manual-date" type="date" id="tanggal-${dk}" readonly><button type="button" class="date-today-btn no-print" onclick="buatTanggalHariIni('rekap','${dk}')">TANGGAL</button></div></td>`:""}<td class="resort-name">${n}</td><td><input type="text" inputmode="numeric" id="storting-${k}" oninput="formatInput(this)"></td><td class="calculated" id="tunai-${k}">0</td><td class="calculated" id="tabungan5-${k}">0</td><td class="calculated" id="adm5-${k}">0</td><td class="calculated" id="jumlah-${k}">0</td><td><input type="text" inputmode="numeric" id="drop-${k}" oninput="formatInput(this)"></td><td class="calculated" id="drop20-${k}">0</td><td class="calculated" id="drop120-${k}">0</td><td><input type="text" inputmode="numeric" id="tabunganKeluar-${k}" oninput="formatInput(this)"></td><td class="calculated" id="saldo-${k}">0</td>`;
+    const k=rekapKey(h,i,b,t),r=document.createElement("tr");rekapRows[k]=true;
+    r.innerHTML=`${i===0?`<td class="date-cell" rowspan="3"><div class="date-action-box"><input class="manual-date" type="date" id="tanggal-${dk}" readonly><button type="button" class="date-today-btn no-print" onclick="buatTanggalHariIni('rekap','${dk}')">TANGGAL</button></div></td>`:""}
+    <td class="resort-name">${n}</td>
+    <td><input type="text" inputmode="numeric" id="storting-${k}" oninput="formatInput(this)"></td>
+    <td class="calculated" id="tunai-${k}">0</td><td class="calculated" id="tabungan5-${k}">0</td><td class="calculated" id="adm5-${k}">0</td><td class="calculated" id="jumlah-${k}">0</td>
+    <td><input type="text" inputmode="numeric" id="drop-${k}" oninput="formatInput(this)"></td>
+    <td class="calculated" id="drop20-${k}">0</td><td class="calculated" id="drop120-${k}">0</td>
+    <td><input type="text" inputmode="numeric" id="tabunganKeluar-${k}" oninput="formatInput(this)"></td><td class="calculated" id="saldo-${k}">0</td>`;
     tb.appendChild(r);
   });
   const mk=(cl,l,p)=>{const r=document.createElement("tr");r.className=cl;r.innerHTML=`<td colspan="2">${l}</td>${["Storting","Tunai","Tabungan5","Adm5","Jumlah","Drop","Drop20","Drop120","TabunganKeluar","Saldo"].map(x=>`<td id="${p}${x}-${h}">0</td>`).join("")}`;tb.appendChild(r)};
   mk("saldo-awal-baris","Saldo-awal","awal-baris");mk("total-baris","Jumlah hari","total");mk("saldo-akhir-baris","Saldo akhir","akhir");
 }
-
-
+function buatTanggalHariIni(jenis,k){
+  const hari ini=tanggalHariIni(),prefix=jenis==="rekap"?"tanggal-":"exp-tanggal-",current=$(prefix+k);
+  const selector=jenis==="rekap"?'input[id^="tanggal-"]':'input[id^="exp-tanggal-"]';
+  if([...document.querySelectorAll(selector)].some(e=>e.value===today)){alert("Tanggal hari ini sudah dibuat. Satu tanggal hanya bisa dibuat satu kali dalam sehari.");return}
+  if(current&¤t.value){alert("Baris ini sudah memiliki tanggal "+current.value+".");return}
+  jika(nilai saat ini)saat ini = hari ini;
+}
 fungsi hitungSemuaHari(){
-  const b=+byId("bulan").value,t=+byId("tahun").value;if(!b||!t)return;
+  const b=+$("bulan").value,t=+$("tahun").value;if(!b||!t)return;
   let awal={storting:0,tuna:0,tabungan5:0,adm5:0,jumlah:0,drop:0,drop20:0,drop120:0,tabunganKeluar:0,saldo:0};
   for(misalkan h=1;h<=jumlahHari(b,t);h++)awal=hitungHari(h,b,t,awal).akhir;
 }
-
-
 fungsi hitungHari(h,b,t,awal){
   let tot={storting:0,tuna:0,tabungan5:0,adm5:0,jumlah:0,drop:0,drop20:0,drop120:0,tabunganKeluar:0,saldo:0};
   resortNames.forEach((n,i)=>{
-    konstanta k=`${t}-${b}-${h}-${i}`,st=nilai("storting-"+k),dr=nilai("drop-"+k),tk=nilai("tabunganKel uar-"+k),tb5=dr*.05,adm=dr*.05,j=st+tb5+adm,keb=dr+tk,tun=j<keb?keb-j:0,sd=j>=keb?j-keb:0;
+    konstanta k=rekapKey(h,i,b,t),st=nilai("storting-"+k),dr=nilai("drop-"+k),tk=nilai("tabunganKelua r-"+k),tb5=dr*.05,adm=dr*.05,j=st+tb5+adm,keb=dr+tk,tun=j<keb?keb-j:0,sd=j>=keb?j-keb:0;
     setText("tuna-"+k,tun);setText("tabungan5-"+k,tb5);setText("adm5-"+k,adm);setText("jumlah-"+k,j);setText("drop20-"+k,dr*.2);setText("drop120-"+k,dr*1.2);setText("saldo-"+k,sd);
     tot.storting+=st;tot.tunai+=tun;tot.tabungan5+=tb5;tot.adm5+=adm;tot.jumlah+=j;tot.drop+=dr;tot.drop20+=dr*.2;tot.drop120+=dr*1.2;tot.tabunganKeluar+=tk;tot.saldo+=sd;
   });
   Object.keys(tot).forEach(x=>{const c=x[0].toUpperCase()+x.slice(1);setText("awal"+c+"-"+h,awal[x]);setText("total"+c+"-"+h,tot[x])});
   const akhir={};Object.keys(tot).forEach(x=>akhir[x]=awal[x]+tot[x]);
   Object.keys(akhir).forEach(x=>setText("akhir"+x[0].toUpperCase()+x.slice(1)+"-"+h,akhir[x]));
-  kembali{akhir};
+  kembalikan {akhir};
 }
-
-
-fungsi asinkron loadData(){
+fungsi asinkron loadRekapFromSupabase(b,t){
   jika (!currentUser) kembali;
-  const b=+byId("bulan").value,t=+byId("tahun").value;
   mencoba{
-    const {data:heads,error:e1}=await supabaseClient.from("rekap_harian").select("*").eq("user_id",currentUser.id).gte("tanggal",`${t}-${String(b).padStart(2,"0")}-01`).lt("tanggal",`${b===12?t+1:t}-${String(b===12?1:b+1).padStart(2,"0")}-01`);
-    jika(e1)lempar e1;
-    const headByDay={};
-    (kepala||[]).forEach(x=>kepalaBerdasarkanHari[Number(String(x.tanggal).slice(8,10))]=x);
-    const ids=(heads||[]).map(x=>x.id);
+    const {data:harian,error}=tunggu supabaseClient.from("rekap_harian").select("id,tanggal").eq("user_id",currentUser.id).gte("tanggal",`${t}-${String(b).padStart(2,"0")}-01`).lte("tanggal",`${t}-${String(b).padStart(2,"0")}-${jumlahHari(b,t)}`);
+    jika terjadi kesalahan, lemparkan kesalahan;
+    const ids=(harian||[]).map(x=>x.id);
     biarkan item=[];
-    jika(ids.length){
-      const {data,error}=await supabaseClient.from("rekap_item").select("*").eq("user_id",currentUser.id).in("rekap_id",ids);
-      jika terjadi kesalahan, lempar kesalahan; item = data || [];
-    }
-    untuk(let h=1;h<=jumlahHari(b,t);h++){
-      konstanta head=headByDay[h];
-      jika(head){konstanta tanggal=byId(`tanggal-${t}-${b}-${h}`);jika(tanggal)date.value=head.tanggal||""}
-      const dayItems = items.filter(x => head && x.rekap_id === head.id);
-      hariItem.forEach(x=>{
-        const i = resortNames.indexOf(x.resort); if (i < 0) return;
-        konstanta k=`${t}-${b}-${h}-${i}`;
-        byId(`storting-${k}`).value=x.storting?angka(x.storting):"";
-        byId(`drop-${k}`).value=x.drop_amount?angka(x.drop_amount):"";
-        byId(`tabunganKeluar-${k}`).value=x.tabungan_keluar?angka(x.tabungan_keluar):"";
+    jika(ids.length){const r=await supabaseClient.from("rekap_item").select("rekap_id,resort,storting,drop_amount,tabungan_keluar").in("rekap_id",ids);if(r.error)throw r.error;items=r.data||[]}
+    (harian||[]).forEach(d=>{
+      const h=Number(String(d.tanggal).slice(8,10)),dk=`${t}-${b}-${h}`;const date=$("tanggal-"+dk);if(date)date.value=d.tanggal;
+      item.filter(x=>x.rekap_id===d.id).forEach(x=>{
+        const i = resortNames.indexOf(x.resort); if (i < 0) return; const k = rekapKey(h, i, b, t);
+        $("storting-"+k).value=parseAngka(x.storting)?angka(x.storting):"";$("drop-"+k).value=parseAngka(x.drop_amount)?angka(x.drop_amount):"";$("tabunganKeluar-"+k).value=parseAngka(x.tabungan_keluar)?angka(x.tabungan_keluar):"";
       });
-    }
-    hitungSemuaHari();
-  }catch(e){console.error(e);setMsg("statusData","Gagal membaca Buku Rekap dari Supabase: "+e.message)}
+    });
+    hitungHariSemua();status($("statusData"),`Data ${namaBulan[b]} ${t} dimuat dari Supabase.`,true);
+  }catch(e){console.error(e);status($("statusData"),"Gagal memuat Rekap dari Supabase: "+e.message,false)}
 }
-
-
-fungsi asinkron getOrCreateRekapHead(t,b,h,tanggal){
-  const {data,error}=menunggu supabaseClient.from("rekap_harian").select("*").eq("user_id",currentUser.id).eq("tanggal",tanggal).maybeSingle();
-  jika terjadi kesalahan, lemparkan kesalahan;
-  jika(data)kembalikan data;
-  const {data:ins,error:e}=await supabaseClient.from("rekap_harian").insert({user_id:currentUser.id,tanggal}).select().single();
-  jika (e) lempar e; kembalikan ins;
-}
-
-
-fungsi asinkron simpanData(silent=false){
-  if(!currentUser){if(!silent)alert("Anda belum login.");return}
-  const b=+byId("bulan").value,t=+byId("tahun").value;
+fungsi asinkron simpanRekap(){
+  if(!currentUser)return alert("Sesi login tidak ditemukan. Silakan login lagi.");
+  const b=+$("bulan").nilai,t=+$("tahun").nilai;
   mencoba{
     untuk(let h=1;h<=jumlahHari(b,t);h++){
-      const k=`${t}-${b}-${h}`,tanggal=byId("tanggal-"+k)?.value;
+      const dk=`${t}-${b}-${h}`,tanggal=$("tanggal-"+dk)?.value;
       jika(!tanggal)lanjutkan;
-      const head=await getOrCreateRekapHead(t,b,h,tanggal);
-      const {data:oldItems,error:e0}=await supabaseClient.from("rekap_item").select("*").eq("user_id",currentUser.id).eq("rekap_id",head.id);
-      jika(e0)lempar e0;
-      untuk (biarkan i=0;i<resortNames.length;i++){
-        const payload={rekap_id:head.id,user_id:currentUser.id,resort:resortNames[i],storting:nilai(`storting-${k}-${i}`),drop_amount:nilai(`drop-${k}-${i}`),tabungan_keluar:nilai(`tabunganKeluar-${k}-${i}`)};
-        const old=(oldItems||[]).find(x=>x.resort===resortNames[i]);
-        jika(lama){konstanta {kesalahan}=await supabaseClient.from("rekap_item").update(payload).eq("id",old.id).eq("user_id",currentUser.id);jika(kesalahan)lempar kesalahan}
-        else{const {error}=await supabaseClient.from("rekap_item").insert(payload);if(error)throw error}
+      let rh=(menunggu supabaseClient.from("rekap_harian").select("id").eq("user_id",currentUser.id).eq("tanggal",tanggal).maybeSingle());
+      jika rh.error) lempar rh.error;
+      let rid=rh.data?.id;
+      jika (!rid) {
+        const ins=await supabaseClient.from("rekap_harian").insert({user_id:currentUser.id,tanggal}).select("id").single();
+        jika (ins.error) lempar ins.error;rid=ins.data.id;
+      }kalau tidak{
+        const up = await supabaseClient.from("rekap_harian").update({updated_at:new Date().toISOString()}).eq("id",rid).eq("user_id",currentUser.id);
+        jika (up.error) lempar up.error;
+      }
+      untuk(misalkan i=0;i<3;i++){
+        const k=rekapKey(h,i,b,t),payload={rekap_id:rid,user_id:currentUser.id,resort:resortNames[i],storting:nilai("storting-"+k),drop_amount:nilai("drop-"+k),tabungan_keluar:nilai("tabunganKeluar-"+k)};
+        const old=await supabaseClient.from("rekap_item").select("id").eq("rekap_id",rid).eq("resort",resortNames[i]).maybeSingle();
+        jika(kesalahan lama)lempar kesalahan lama;
+        jika(old.data?.id){const u=await supabaseClient.from("rekap_item").update(payload).eq("id",old.data.id).eq("user_id",currentUser.id);if(u.error)throw u.error}
+        else{const ins=await supabaseClient.from("rekap_item").insert(payload);if(ins.error)throw ins.error}
       }
     }
-    setMsg("statusData",`Data ${namaBulan[b]} ${t} berhasil disimpan ke Supabase.`,true);
-    jika (!diam)tampilTersimpan();
-  }catch(e){console.error(e);setMsg("statusData","Gagal menyimpan Buku Rekap: "+e.message);if(!silent)alert("Gagal menyimpan Buku Rekap: "+e.message)}
+    status($("statusData"),`Data ${namaBulan[b]} ${t} berhasil disimpan ke Supabase.`,true);tampilTersimpan();await loadRekapFromSupabase(b,t);updateCash();
+  }catch(e){console.error(e);status($("statusData"),"Gagal menyimpan Rekap: "+e.message,false);alert("Gagal menyimpan Rekap ke Supabase.\n\n"+e.message)}
 }
-
-
-fungsi gantiPeriode(){buatRekap()}
-fungsi cetakRekap(){window.print()}
-fungsi asinkron hapusSemuaData(){
-  const b=+byId("bulan").value,t=+byId("tahun").value;
-  if(!confirm(`Hapus seluruh data ${namaBulan[b]} ${t} dari Supabase?`))return;
+fungsi asinkron hapusDataRekap(){
+  jika (!currentUser) kembali;
+  const b=+$("bulan").nilai,t=+$("tahun").nilai;
+  if(!confirm(`Hapus seluruh data Rekap ${namaBulan[b]} ${t} untuk akun ini?`))return;
   mencoba{
-    const {data:heads,error}=await supabaseClient.from("rekap_harian").select("id").eq("user_id",currentUser.id).gte("tanggal",`${t}-${String(b).padStart(2,"0")}-01`).lt("tanggal",`${b===12?t+1:t}-${String(b===12?1:b+1).padStart(2,"0")}-01`);
-    jika terjadi kesalahan, lemparkan kesalahan;
-    for(const h of heads||[]){const {error:e}=await supabaseClient.from("rekap_item").delete().eq("rekap_id",h.id).eq("user_id",currentUser.id);if(e)throw e}
-    jika ((heads||[]).length){const {error:e}=await supabaseClient.from("rekap_harian").delete().in("id",(heads||[]).map(x=>x.id)).eq("user_id",currentUser.id);if(e)throw e}
-    menunggu buatRekap();setMsg("statusData",`Data ${namaBulan[b]} ${t} sudah dihapus.`,true);tampilTersimpan("Data dihapus");
-  }catch(e){alert("Gagal menghapus: "+e.message)}
+    const r=await supabaseClient.from("rekap_harian").select("id").eq("user_id",currentUser.id).gte("tanggal",`${t}-${String(b).padStart(2,"0")}-01`).lte("tanggal",`${t}-${String(b).padStart(2,"0")}-${jumlahHari(b,t)}`);
+    jika (r.error) lempar r.error;
+    const ids=(r.data||[]).map(x=>x.id);
+    Jika (ids.length) {konstanta di = await supabaseClient.from("rekap_item").delete().in("rekap_id",ids).eq("user_id",currentUser.id); jika (di.error) throw di.error; konstanta dh = await supabaseClient.from("rekap_harian").delete().in("id",ids).eq("user_id",currentUser.id); jika (dh.error) throw dh.error}
+    menunggu buatRekap();status($("statusData"),"Data bulan ini berhasil dihapus.",true);
+  }catch(e){alert("Gagal menghapus data: "+e.message)}
 }
 
 
-function sinkronPeriodeEkspedisi(){byId("ekspedisiBulan").value=byId("bulan").value;byId("ekspedisiTahun").value=byId("tahun").value}
-
-
-fungsi asinkron ambilDataRekap(b,t){
-  jika (!currentUser) kembalikan null;
-  const {data:heads,error}=await supabaseClient.from("rekap_harian").select("*").eq("user_id",currentUser.id).gte("tanggal",`${t}-${String(b).padStart(2,"0")}-01`).lt("tanggal",`${b===12?t+1:t}-${String(b===12?1:b+1).padStart(2,"0")}-01`);
-  jika terjadi kesalahan, lemparkan kesalahan;
-  const ids=(heads||[]).map(x=>x.id);let items=[];
-  jika(ids.length){const {data,error:e}=await supabaseClient.from("rekap_item").select("*").eq("user_id",currentUser.id).in("rekap_id",ids);if(e)throw e;items=data||[]}
-  const hari={};(kepala||[]).forEach(x=>{const h=Number(String(x.tanggal).slice(8,10));hari[h]={tanggal:x.tanggal,items:items.filter(i=>i.rekap_id===x.id).map(i=>({resort:i.resort,storting:i.storting,drop:i.drop_amount,tabunganKeluar:i.tabungan_keluar}))}});
-  kembalikan{bulan:b,tahun:t,hari};
+/* =========================
+   EKSPEDISI - SUPABASE
+   ========================= */
+fungsi buatEkspedisi(){
+  const b=+$("ekspedisiBulan").value,t=+$("ekspedisiTahun").value;if(!b||!t)return;
+  $("ekspedisiContainer").innerHTML="";ekspedisiRows={};
+  for(let h=1;h<=jumlahHari(b,t);h++)buatHariEkspedisi(h,b,t);
+  hitungEkspedisi();return loadEkspedisiFromSupabase(b,t);
 }
-
-
-fungsi asinkron ambilDataEkspedisi(b,t){
-  jika (!currentUser) kembalikan null;
-  const {data:heads,error}=await supabaseClient.from("ekspedisi_harian").select("*").eq("user_id",currentUser.id).gte("tanggal",`${t}-${String(b).padStart(2,"0")}-01`).lt("tanggal",`${b===12?t+1:t}-${String(b===12?1:b+1).padStart(2,"0")}-01`);
-  jika terjadi kesalahan, lemparkan kesalahan;
-  const hari={};
-  untuk(konstanta h kepala||[]){
-    const day = Number(String(h.tanggal).slice(8, 10));
-    const {data:ex,error:e}=await supabaseClient.from("ekspedisi_pengeluaran").select("*").eq("user_id",currentUser.id).eq("ekspedisi_id",h.id);
-    jika(e)lempar e;
-    hari[hari]={id:h.id,tanggal:h.tanggal,pengeluaran:(ex||[]).map(x=>({id:x.id,keterangan:x.keterangan,jumlah:x.jumlah}))};
-  }
-  return{bulan:b,tahun:t,hari,saldoKasAwal:heads?.[0]?.saldo_kas_awal??null,saldoKasAkhir:heads?.length?heads[heads.length-1].saldo_kas_akhir:null};
-}
-
-
-fungsi asinkron ambilKasMasukRekap(h,b,t){
-  const d=await ambilDataRekap(b,t);if(!d?.hari?.[h])return 0;
-  return(d.hari[h].items||[]).reduce((s,x)=>{const j=parseAngka(x.storting)+parseAngka(x.drop)*.1,k=parseAngka(x.drop)+parseAngka(x.tabunganKeluar);return s+(j>=k?jk:0)},0);
-}
-fungsi asinkron ambilTunaiPasarRekap(h,b,t){
-  const d=await ambilDataRekap(b,t);if(!d?.hari?.[h])return 0;
-  return(d.hari[h].items||[]).reduce((s,x)=>{const j=parseAngka(x.storting)+parseAngka(x.drop)*.1,k=parseAngka(x.drop)+parseAngka(x.tabunganKeluar);return s+(j<k?kj:0)},0);
-}
-
-
-fungsi asinkron ambilSaldoKasAwalEkspedisi(b,t){
-  const d=menunggu ambilDataEkspedisi(b,t);
-  jika (d?.saldoKasAwal !== null && d?.saldoKasAwal !== undefined) kembalikan parseAngka(d.saldoKasAwal);
-  misalkan pb=b-1,pt=t;jika(pb===0){pb=12;pt--}
-  const p=await ambilDataEkspedisi(pb,pt);
-  kembalikan parseAngka(p?.saldoKasAkhir);
-}
-
-
-fungsi asinkron buatEkspedisi(){
-  const b=+byId("ekspedisiBulan").value,t=+byId("ekspedisiTahun").value;
-  byId("ekspedisiContainer").innerHTML="";
-  let s=null;try{s=await ambilDataEkspedisi(b,t)}catch(e){console.error(e);setMsg("statusEkspedisi","Gagal membaca Buku Ekspedisi: "+e.message)}
-  for(let h=1;h<=jumlahHari(b,t);h++)buatHariEkspedisi(h,b,t,s);
-  tunggu loadEkspedisi();
-}
-
-
-function buatHariEkspedisi(h,b,t,s){
-  const k=`${t}-${b}-${h}`,d=s?.hari?.[h]||{},box=document.createElement("div");box.className="book";
+function buatHariEkspedisi(h,b,t){
+  const k=`${t}-${b}-${h}`,box=document.createElement("div");box.className="book";
   box.innerHTML=`<div class="table-wrap"><table class="exp-table"><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Catatan</th><th>Jumlah (Rp)</th></tr></thead><tbody>
-  <tr class="exp-opening"><td rowspan="7"><div class="date-action-box"><input class="manual-date" type="date" id="exp-tanggal-${k}" value="${d.tanggal||""}" readonly><button type="button" class="date-today-btn no-print" onclick="buatTanggalHariIni('ekspedisi','${k}')">TANGGAL</button></div></td><td><b>Saldo kas</b></td><td>saldo hari sebelumnya</td><td class="amount" id="exp-awal-${k}">0</td></tr>
+  <tr class="exp-opening"><td rowspan="7"><div class="date-action-box"><input class="manual-date" type="date" id="exp-tanggal-${k}" readonly><button type="button" class="date-today-btn no-print" onclick="buatTanggalHariIni('ekspedisi','${k}')">TANGGAL</button></div></td><td><b>Saldo kas</b></td><td>saldo hari sebelumnya</td><td class="amount" id="exp-awal-${k}">0</td></tr>
   <tr class="exp-income"><td><b>Kas masuk</b></td><td>dari Buku Rekap</td><td class="amount" id="exp-masuk-${k}">0</td></tr>
-  <tr><td><b>Pengeluaran</b></td><td colspan="2" class="exp-expense-cell"><div id="exp-list-${k}"></div><button class="no-print" onclick="tambahPengeluaran('${k}')">Tambah Pengeluaran</button></td></tr>
+  <tr><td><b>Pengeluaran</b></td><td colspan="2" class="exp-expense-cell"><div id="exp-list-${k}"></div><button class="no-print" type="button" onclick="tambahPengeluaran('${k}')">Tambah Pengeluaran</button></td></tr>
   <tr class="exp-expense-total"><td><b>Jumlah pengeluaran</b></td><td></td><td class="amount" id="exp-pengeluaran-${k}">0</td></tr>
   <tr class="exp-temporary"><td><b>Kas sementara</b></td><td>saldo kas + kas masuk - pengeluaran</td><td class="amount" id="exp-sementara-${k}">0</td></tr>
   <tr><td><b>Tunai pasar</b></td><td>dari Buku Rekap</td><td class="amount" id="exp-tunai-${k}">0</td></tr>
   <tr class="exp-final"><td><b>Saldo kas</b></td><td>menjadi saldo awal besok</td><td class="amount" id="exp-akhir-${k}">0</td></tr>
   </tbody></table></div>`;
-  byId("ekspedisiContainer").appendChild(box);
-  const l=byId("exp-list-"+k);(d.pengeluaran?.length?d.pengeluaran:[{}]).forEach((x,i)=>buatBarisPengeluaran(l,k,i,x.keterangan||"",x.jumlah||"",x.id||""));
+  $("ekspedisiContainer").appendChild(box);const l=$("exp-list-"+k);buatBarisPengeluaran(l,k,0,"","");
 }
-
-
-function buatBarisPengeluaran(l,k,i,ket,jml,id){
-  const r=document.createElement("div");r.className="exp-expense-row";r.dataset.id=id||"";
-  r.innerHTML=`<input type="text" id="exp-ket-${k}-${i}" value="${escapeHtml(ket)}" placeholder="Keterangan" oninput="hitungEkspedisi()"><input type="text" inputmode="numeric" id="exp-jml-${k}-${i}" value="${jml?angka(jml):""}" placeholder="0" oninput="formatInputEkspedisi(this)"><button class="exp-delete no-print" onclick="hapusPengeluaran('${k}',${i})">Hapus</button>`;
+function buatBarisPengeluaran(l,k,i,ket,jml){
+  const r=document.createElement("div");r.className="exp-expense-row";
+  r.innerHTML=`<input type="text" id="exp-ket-${k}-${i}" value="${escapeHtml(ket)}" placeholder="Keterangan" oninput="hitungEkspedisi()"><input type="text" inputmode="numeric" id="exp-jml-${k}-${i}" value="${jml?angka(jml):""}" placeholder="0" oninput="formatInputEkspedisi(this)"><button class="exp-delete no-print" type="button" onclick="hapusPengeluaran('${k}',${i})">Hapus</button>`;
   l.appendChild(r);
 }
-function tambahPengeluaran(k){const l=byId("exp-list-"+k);buatBarisPengeluaran(l,k,l.children.length,"","","");hitungEkspedisi()}
-async function hapusPengeluaran(k,i){const l=byId("exp-list-"+k),r=l.children[i];if(!r)return;const id=r.dataset.id;if(id){try{const {error}=await supabaseClient.from("ekspedisi_pengeluaran").delete().eq("id",id).eq("user_id",currentUser.id);if(error)throw error}catch(e){alert("Gagal menghapus pengeluaran: "+e.message);return}}r.remove();[...l.children].forEach((r,n)=>{r.querySelectorAll("input")[0].id=`exp-ket-${k}-${n}`;r.querySelectorAll("input")[1].id=`exp-jml-${k}-${n}`;r.querySelector("button").setAttribute("onclick",`hapusPengeluaran('${k}',${n})`)});if(!l.children.length)buatBarisPengeluaran(l,k,0,"","","");hitungEkspedisi()}
+function tambahPengeluaran(k){const l=$("exp-list-"+k);buatBarisPengeluaran(l,k,l.children.length,"","")}
+fungsi hapusPengeluaran(k,i){
+  const l=$("exp-list-"+k),r=l.children[i];if(r)r.remove();
+  [...l.children].forEach((r,n)=>{r.querySelector("input[type=text]").id=`exp-ket-${k}-${n}`;r.querySelector("input[inputmode=numeric]").id=`exp-jml-${k}-${n}`;r.querySelector("button").setAttribute("onclick",`hapusPengeluaran('${k}',${n})`)});
+  if(!l.children.length)buatBarisPengeluaran(l,k,0,"","");hitungEkspedisi();
+}
 function formatInputEkspedisi(e){e.value=e.value===""?"":angka(parseAngka(e.value));hitungEkspedisi()}
-
-
-fungsi async hitungEkspedisi(){
-  const b=+byId("ekspedisiBulan").value,t=+byId("ekspedisiTahun").value;
-  misalkan awal=0;
-  coba{awal=menunggu ambilSaldoKasAwalEkspedisi(b,t)}catch(e){console.error(e)}
+fungsi hitungEkspedisi(){
+  const b=+$("ekspedisiBulan").value,t=+$("ekspedisiTahun").value;biarkan awal=0;
   untuk(let h=1;h<=jumlahHari(b,t);h++){
     const k=`${t}-${b}-${h}`,rows=document.querySelectorAll("#exp-list-"+k+" .exp-expense-row");let pe=0;
-    rows.forEach((r,i)=>pe+=parseAngka(byId(`exp-jml-${k}-${i}`)?.value));
-    biarkan masuk=0,tunai=0;coba{masuk=menunggu ambilKasMasukRekap(h,b,t);tunai=menunggu ambilTunaiPasarRekap(h,b,t)}catch(e){}
-    const sementara=awal+masuk-pe,akhir=sementara-tunai;
+    rows.forEach((r,i)=>pe+=parseAngka($(`exp-jml-${k}-${i}`)?.value));
+    const masuk=ambilKasMasukRekapLokal(h,b,t),tunai=ambilTunaiPasarRekapLokal(h,b,t),sementara=awal+masuk-pe,akhir=sementara-tunai;
     setText("exp-awal-"+k,awal);setText("exp-masuk-"+k,masuk);setText("exp-pengeluaran-"+k,pe);setText("exp-sementara-"+k,sementara);setText("exp-tunai-"+k,tuna);setText("exp-akhir-"+k,akhir);awal=akhir;
   }
   perbarui uang tunai();
 }
-
-
-fungsi asinkron loadEkspedisi(){
+function ambilKasMasukRekapLokal(h,b,t){
+  misalkan s=0;
+  resortNames.forEach((n,i)=>{const k=rekapKey(h,i,b,t),st=nilai("storting-"+k),dr=nilai("drop-"+k),tk=nilai("tabunganKeluar-"+k),j=st+dr*.1,keb=dr+tk;s+=j>=keb?j-keb:0});return s;
+}
+fungsi ambilTunaiPasarRekapLokal(h,b,t){
+  misalkan s=0;
+  resortNames.forEach((n,i)=>{const k=rekapKey(h,i,b,t),st=nilai("storting-"+k),dr=nilai("drop-"+k),tk=nilai("tabunganKeluar-"+k),j=st+dr*.1,keb=dr+tk;s+=j<keb?keb-j:0});return s;
+}
+fungsi asinkron loadEkspedisiFromSupabase(b,t){
   jika (!currentUser) kembali;
-  const b=+byId("ekspedisiBulan").value,t=+byId("ekspedisiTahun").value;
   mencoba{
-    const s=await ambilDataEkspedisi(b,t);
-    untuk(let h=1;h<=jumlahHari(b,t);h++){
-      const k=`${t}-${b}-${h}`,d=s?.hari?.[h],date=byId("exp-tanggal-"+k),l=byId("exp-list-"+k);
-      jika(!d)lanjutkan;
-      jika(tanggal)tanggal.nilai=d.tanggal||"";
-      if(l){l.innerHTML="";(d.pengeluaran||[]).forEach((x,i)=>buatBarisPengeluaran(l,k,i,x.keterangan,x.jumlah,x.id));if(!l.children.length)buatBarisPengeluaran(l,k,0,"","","")}
+    const r=tunggu supabaseClient.from("ekspedisi_harian").select("id,tanggal,saldo_kas_awal,saldo_kas_akhir").eq("user_id",currentUser.id).g te("tanggal",`${t}-${String(b).padStart(2,"0")}-01`).lte("tanggal",`${t}-${String(b).padStart(2,"0")}-${jumlahHari(b,t)}`);
+    jika (r.error) lempar r.error;
+    untuk(konstanta d dari r.data||[]){
+      const h=Nomor(String(d.tanggal).slice(8,10)),k=`${t}-${b}-${h}`;$("exp-tanggal-"+k).value=d.tanggal;
+      const q=menunggu supabaseClient.from("ekspedisi_pengeluaran").select("keterangan,jumlah").eq("ekspedisi_id",d.id).eq("user_id",currentUser.id);
+      jika (q.error) lemparkan q.error;
+      const l=$("exp-list-"+k);l.innerHTML="";const arr=q.data||[];
+      jika(!arr.length)buatBarisPengeluaran(l,k,0,"","");
+      else arr.forEach((x,i)=>buatBarisPengeluaran(l,k,i,x.keterangan||"",x.jumlah||0));
     }
-    tunggu hitungEkspedisi();
-  }catch(e){setMsg("statusEkspedisi","Gagal membaca Buku Ekspedisi: "+e.message)}
+    hitungEkspedisi();status($("statusEkspedisi"),`Data ${namaBulan[b]} ${t} dimuat dari Supabase.`,true);
+  }catch(e){console.error(e);status($("statusEkspedisi"),"Gagal memuat Ekspedisi: "+e.message,false)}
 }
-
-
-fungsi asinkron getOrCreateExpHead(t,b,h,tanggal){
-  const {data,error}=menunggu supabaseClient.from("ekspedisi_harian").select("*").eq("user_id",currentUser.id).eq("tanggal",tanggal).maybeSingle();
-  jika terjadi kesalahan, lemparkan kesalahan; jika data tersedia, kembalikan data;
-  const {data:ins,error:e}=menunggu supabaseClient.from("ekspedisi_harian").insert({user_id:currentUser.id,tanggal,saldo_kas_awal:0,saldo_kas_akhir:0}).select().single();
-  jika (e) lempar e; kembalikan ins;
-}
-
-
-fungsi async simpanEkspedisi(silent=false){
-  if(!currentUser){if(!silent)alert("Anda belum login.");return}
-  const b=+byId("ekspedisiBulan").value,t=+byId("ekspedisiTahun").value;
+fungsi async simpanEkspedisi(){
+  if(!currentUser)return alert("Sesi login tidak ditemukan. Silakan login lagi.");
+  const b=+$("ekspedisiBulan").value,t=+$("ekspedisiTahun").value;
   mencoba{
-    let awal=menunggu ambilSaldoKasAwalEkspedisi(b,t);
+    misalkan awal=0;
     untuk(let h=1;h<=jumlahHari(b,t);h++){
-      const k=`${t}-${b}-${h}`,tanggal=byId("exp-tanggal-"+k)?.value;
-      jika(!tanggal)lanjutkan;
-      const head=await getOrCreateExpHead(t,b,h,tanggal);
-      const rows=[...document.querySelectorAll("#exp-list-"+k+" .exp-expense-row")];
-      const {data:old,error:e0}=await supabaseClient.from("ekspedisi_pengeluaran").select("*").eq("user_id",currentUser.id).eq("ekspedisi_id",head.id);
-      jika(e0)lempar e0;
-      konstanta disimpan=[];
-      untuk (misalkan i=0;i<jumlah baris;i++){
-        const ket=byId(`exp-ket-${k}-${i}`).value.trim(),jml=parseAngka(byId(`exp-jml-${k}-${i}`).value),id=baris[i].dataset.id;
-        jika (!ket && !jml) lanjutkan;
-        const payload={ekspedisi_id:head.id,user_id:currentUser.id,keterangan:ket,jumlah:jml};
-        if(id){const {error}=await supabaseClient.from("ekspedisi_pengeluaran").update(payload).eq("id",id).eq("user_id",currentUser.id);if(error)throw error;kept.push(id)}
-        else{const {data:ins,error}=await supabaseClient.from("ekspedisi_pengeluaran").insert(payload).select().single();if(error)throw error;kept.push(ins.id)}
-      }
-      for(const x of old||[]){if(!kept.includes(x.id)){const {error}=await supabaseClient.from("ekspedisi_pengeluaran").delete().eq("id",x.id).eq("user_id",currentUser.id);if(error)throw error}}
-      const pe=(menunggu ambilDataEkspedisi(b,t))?.hari?.[h]?.pengeluaran?.reduce((s,x)=>s+parseAngka(x.jumlah),0)||0;
-      const masuk=menunggu ambilKasMasukRekap(h,b,t),tunai=menunggu ambilTunaiPasarRekap(h,b,t),sementara=awal+masuk-pe,akhir=sementara-tunai;
-      const {error:e2}=menunggu supabaseClient.from("ekspedisi_harian").update({saldo_kas_awal:awal,saldo_kas_akhir:akhir}).eq("id",head.id).eq("user_id",currentUser.id);if(e2)throw e2;
+      const k=`${t}-${b}-${h}`,tanggal=$("exp-tanggal-"+k)?.value;
+      const rows=[...document.querySelectorAll("#exp-list-"+k+" .exp-expense-row")].map((r,i)=>({keterangan:$(`exp-ket-${k}-${i}`)?.value.trim()||"",jumlah:parseAngka($(`exp-jml-${k}-${i}`)?.value)})).filter(x=>x.keterangan||x.jumlah);
+      const masuk=ambilKasMasukRekapLokal(h,b,t),tunai=ambilTunaiPasarRekapLokal(h,b,t),akhir=awal+masuk-rows.reduce((s,x)=>s+x.jumlah,0)-tunai;
+      if(!tanggal){awal=akhir;lanjutkan}
+      const old = await supabaseClient.from("ekspedisi_harian").select("id").eq("user_id",currentUser.id).eq("tanggal",tanggal).maybeSingle(); if (old.error) throw old.error;
+      misalkan eid=old.data?.id;
+      if(eid){const u=menunggu supabaseClient.from("ekspedisi_harian").update({saldo_kas_awal:awal,saldo_kas_akhir:akhir,updated_at:new Date().toISOString()}).eq("id",eid).eq("user_id",currentUser.id);if(u.error)throw u.error}
+      else{const ins=menunggu supabaseClient.from("ekspedisi_harian").insert({user_id:currentUser.id,tanggal,saldo_kas_awal:awal,saldo_kas_akhir:akhir}).select("id").single();if(ins.error)throw ins.error;eid=ins.data.id}
+      const del = await supabaseClient.from("ekspedisi_pengeluaran").delete().eq("ekspedisi_id",eid).eq("user_id",currentUser.id); if (del.error) throw del.error;
+      if(rows.length){const ins=await supabaseClient.from("ekspedisi_pengeluaran").insert(rows.map(x=>({...x,ekspedisi_id:eid,user_id:currentUser.id})));if(ins.error)throw ins.error}
       awal=akhir;
     }
-    setMsg("statusEkspedisi",`Data ${namaBulan[b]} ${t} berhasil disimpan ke Supabase.`,true);
-    jika (!diam)tampilTersimpan();
-    tunggu hitungEkspedisi();
-  }catch(e){console.error(e);setMsg("statusEkspedisi","Gagal menyimpan Buku Ekspedisi: "+e.message);if(!silent)alert("Gagal menyimpan Buku Ekspedisi: "+e.message)}
+    hitungEkspedisi();status($("statusEkspedisi"),`Data ${namaBulan[b]} ${t} berhasil disimpan ke Supabase.`,true);tampilTersimpan();updateCash();
+  }catch(e){console.error(e);status($("statusEkspedisi"),"Gagal menyimpan Ekspedisi: "+e.message,false);alert("Gagal menyimpan Ekspedisi ke Supabase.\n\n"+e.message)}
 }
 
 
-fungsi staffKey(t){return t==="simp"?"simp":"bon"}
+/* =========================
+   SIMPANAN & BON - kmj_staff
+   ========================= */
 fungsi staffDefault(){return["Rudi","Kiki","Andi"]}
-
-
-fungsi asinkron staffData(t){
-  jika (!currentUser) mengembalikan {nama: staffDefault(), tanggal: [], v: {}, id: null};
-  const jenis=staffKey(t);
-  const {data,error}=await supabaseClient.from("kmj_staff").select("*").eq("user_id",currentUser.id).eq("jenis",jenis).maybeSingle();
-  jika terjadi kesalahan, lemparkan kesalahan;
-  jika(data){const d=(data.data&&typeof data.data==="object")?data.data:{};return{id:data.id,names:d.names||staffDefault(),dates:d.dates||[],v:dv||{}}}
-  kembalikan{nama:staffDefault(),tanggal:[],v:{},id:null};
+fungsi staffData(t){konstanta kunci=t==="simp"?"simp":"bon";return window.staffCache?.[kunci]||{nama:staffDefault(),tanggal:[],v:{}}}
+window.staffCache={simp:null,bon:null};
+fungsi asinkron loadStaff(t){
+  jika (!currentUser) kembali;
+  const r=await supabaseClient.from("kmj_staff").select("id,jenis,data").eq("user_id",currentUser.id).eq("jenis",t).maybeSingle();
+  jika (r.error) lempar r.error;
+  jika(r.data?.data){window.staffCache[t]=r.data.data}
+  jika tidak, window.staffCache[t]={names:staffDefault(),dates:[],v:{}};
 }
-
-
-fungsi asinkron saveStaffData(t,d){
-  const jenis=staffKey(t),payload={user_id:currentUser.id,jenis,data:{names:d.names,dates:d.dates,v:dv}};
-  jika(d.id){konstanta {error}=await supabaseClient.from("kmj_staff").update(payload).eq("id",d.id).eq("user_id",currentUser.id);jika(error)throw error}
-  else{const {data,error}=await supabaseClient.from("kmj_staff").insert(payload).select().single();if(error)throw error;d.id=data.id}
-}
-
-
-fungsi dateDisplay(s){const[y,m,d]=s.split("-");return`${d}/${m}/${y}`}
-
-
 fungsi asinkron renderStaff(t){
-  const d=await staffData(t),table=byId(t==="simp"?"simpTable":"bonTable");
+  try{await loadStaff(t)}catch(e){console.error(e);window.staffCache[t]={names:staffDefault(),dates:[],v:{}};status($(t==="simp"?"simpStatus":"bonStatus"),"Gagal memuat buku: "+e.message,false)}
+  const d=staffData(t),table=$(t==="simp"?"simpTable":"bonTable");
   let head="<thead><tr><th>NAMA PETUGAS</th>;
-  d.dates.forEach((x,i)=>head+=`<th><div class="staff-date-head"><span>${dateDisplay(x)}</span><button class="date-remove no-print" onclick="removeDate('${t}',${i})">X</button></div></th>`);
-  head+=`<th>JUMLAH<br><button class="no-print" onclick="addDate('${t}')">+ TANGGAL</button></th></tr></thead>`;table.innerHTML=head;
+  d.dates.forEach((x,i)=>head+=`<th><div class="staff-date-head"><span>${dateDisplay(x)}</span><button class="date-remove no-print" type="button" onclick="removeDate('${t}',${i})">X</button></div></th>`);
+  head+=`<th>JUMLAH<br><button class="no-print" type="button" onclick="addDate('${t}')">+ TANGGAL</button></th></tr></thead>`;table.innerHTML=head;
   const tb = document.createElement("tbody");
   d.names.forEach((n,r)=>{
     const tr = document.createElement("tr");
-    tr.innerHTML=`<td><input class="name-input" value="${escapeHtml(n)}" onchange="renameStaff('${t}',${r},this.value)"><button class="person-remove no-print" onclick="removePerson('${t}',${r})">Hapus</button></td>${d.dates.map(dt=>`<td><input class="money" inputmode="numeric" data-t="${t}" data-r="${r}" data-d="${dt}" value="${dv[r+"|"+dt]?angka(dv[r+"|"+dt]):""}" oninput="staffInput(this)"></td>`).join("")}<td id="sr-${t}-${r}">0</td>`;
-    tb.appendChild(tr);
+    tr.innerHTML=`<td><input class="name-input" value="${escapeHtml(n)}" onchange="renameStaff('${t}',${r},this.value)"><button class="btn-danger person-remove no-print" type="button" onclick="removePerson('${t}',${r})">Hapus</button></td>
+    ${d.dates.map(dt=>`<td><input class="money" inputmode="numeric" data-t="${t}" data-r="${r}" data-d="${dt}" value="${dv[r+"|"+dt]?angka(dv[r+"|"+dt]):""}" oninput="staffInput(this)"></td>`).join("")}
+    <td id="sr-${t}-${r}">0</td>`;tb.appendChild(tr);
   });
-  const tr=document.createElement("tr");tr.className="total";tr.innerHTML=`<td>JUMLAH</td>${d.dates.map(dt=>`<td id="sc-${t}-${dt}">0</td>`).join("")}<td id="sg-${t}">0</td>`;tb.appendChild(tr);table.appendChild(tb);calcStaff(t,d);
+  const tr=document.createElement("tr");tr.className="total";tr.innerHTML=`<td>JUMLAH</td>${d.dates.map(dt=>`<td id="sc-${t}-${dt}">0</td>`).join("")}<td id="sg-${t}">0</td>`;tb.appendChild(tr);table.appendChild(tb);calcStaff(t);
 }
-
-
-fungsi asinkron addDate(t){
-  const d=menunggu staffData(t),x=tanggalHariIni();
-  if(d.dates.includes(x)){alert("Tanggal hari ini sudah ada.");return}
-  d.dates.push(x);d.dates.sort();await saveStaffData(t,d);await renderStaff(t);tampilTersimpan();
+fungsi dateDisplay(s){const[y,m,d]=s.split("-");return`${d}/${m}/${y}`}
+fungsi asinkron saveStaffToSupabase(t){
+  if(!currentUser)throw new Error("Sesi login tidak ditemukan.");
+  const payload={user_id:currentUser.id,jenis:t,data:staffData(t),updated_at:new Date().toISOString()};
+  const old = await supabaseClient.from("kmj_staff").select("id").eq("user_id",currentUser.id).eq("jenis",t).maybeSingle(); if (old.error) throw old.error;
+  Jika (data lama?.id) {konst u = await supabaseClient.from("kmj_staff").update({data:payload.data,updated_at:payload.updated_at}).eq("id",old.data.id).eq("user_id",currentUser.id); jika (u.error) throw u.error}
+  else{const i=await supabaseClient.from("kmj_staff").insert(payload);if(i.error)throw i.error}
 }
-fungsi asinkron removeDate(t,i){
-  const d=await staffData(t),x=d.dates[i];if(!confirm("Hapus kolom tanggal "+dateDisplay(x)+"?"))return;
-  d.dates.splice(i,1);Object.keys(dv).forEach(k=>{if(k.endsWith("|"+x))delete dv[k]});await saveStaffData(t,d);await renderStaff(t);
-}
-fungsi asinkron addPerson(t){
-  const n=prompt("Nama petugas:");if(!n?.trim())return;
-  const d = await staffData(t); d.names.push(n.trim()); await saveStaffData(t, d); await renderStaff(t);
-}
-fungsi asinkron removePerson(t,i){
-  const d=await staffData(t);if(!confirm("Hapus "+d.names[i]+" dari buku ini?"))return;
-  d.names.splice(i,1);const v={};Object.keys(dv).forEach(k=>{const[r,dt]=k.split("|"),ri=+r;if(ri<i)v[k]=dv[k];else if(ri>i)v[(ri-1)+"|"+dt]=dv[k]});dv=v;await saveStaffData(t,d);await renderStaff(t);
-}
-async function renameStaff(t,i,v){const d=await staffData(t);d.names[i]=v.trim()||("Petugas "+(i+1));await saveStaffData(t,d);await renderStaff(t)}
-fungsi asinkron staffInput(e){
-  e.value=e.value===""?"":angka(parseAngka(e.value));
-  const d=menunggu staffData(e.dataset.t);dv[e.dataset.r+"|"+e.dataset.d]=parseAngka(e.value);menunggu saveStaffData(e.dataset.t,d);calcStaff(e.dataset.t,d);
-}
-function calcStaff(t,d){let g=0;d.names.forEach((_,r)=>{let s=0;d.dates.forEach(dt=>s+=parseAngka(dv[r+"|"+dt]));setText(`sr-${t}-${r}`,s);g+=s});d.dates.forEach(dt=>{let s=0;d.names.forEach((_,r)=>s+=parseAngka(dv[r+"|"+dt]));setText(`sc-${t}-${dt}`,s)});setText("sg-"+t,g);updateCash()}
-
-
 fungsi asinkron saveStaff(t){
-  try{const d=await staffData(t);await saveStaffData(t,d);const e=byId(t==="simp"?"simpStatus":"bonStatus");e.textContent="Data berhasil disimpan ke Supabase.";e.className="status-success";await updateCash();tampilTersimpan()}
-  catch(e){alert("Gagal menyimpan: "+e.message)}
+  try{await saveStaffToSupabase(t);status($(t==="simp"?"simpStatus":"bonStatus"),"Data berhasil disimpan ke Supabase.",true);tampilTersimpan();updateCash()}catch(e){status($(t==="simp"?"simpStatus":"bonStatus"),"Gagal menyimpan: "+e.message,false);alert("Gagal menyimpan buku: "+e.message)}
 }
-fungsi cetakStaff(){window.print()}
+fungsi addDate(t){
+  const d=staffData(t),x=tanggalHariIni();if(d.dates.includes(x)){alert("Tanggal hari ini sudah ada.");return}d.dates.push(x);d.dates.sort();window.staffCache[t]=d;renderStaffLocal(t);saveStaff(t);
+}
+fungsi hapusTanggal(t,i){
+  const d=staffData(t),x=d.dates[i];if(!confirm("Hapus kolom tanggal "+dateDisplay(x)+"?"))return;
+  d.dates.splice(i,1);Object.keys(dv).forEach(k=>{if(k.endsWith("|"+x))delete dv[k]});window.staffCache[t]=d;renderStaffLocal(t);saveStaff(t);
+}
+fungsi addPerson(t){
+  const n=prompt("Nama petugas:");if(!n?.trim())return;const d=staffData(t);d.names.push(n.trim());window.staffCache[t]=d;renderStaffLocal(t);saveStaff(t);
+}
+fungsi removePerson(t,i){
+  const d=staffData(t);if(!confirm("Hapus "+d.names[i]+" dari buku ini?"))return;d.names.splice(i,1);const v={};
+  Object.keys(dv).forEach(k=>{const[r,dt]=k.split("|"),ri=+r;if(ri<i)v[k]=dv[k];else if(ri>i)v[(ri-1)+"|"+dt]=dv[k]});
+  dv=v;window.staffCache[t]=d;renderStaffLocal(t);saveStaff(t);
+}
+fungsi renameStaff(t,i,v){konstanta d=staffData(t);d.names[i]=v.trim()||("Petugas "+(i+1));window.staffCache[t]=d;saveStaff(t)}
+function staffInput(e){e.value=e.value===""?"":angka(parseAngka(e.value));const d=staffData(e.dataset.t);dv[e.dataset.r+"|"+e.dataset.d]=parseAngka(e.value);window.staffCache[e.dataset.t]=d;calcStaff(e.dataset.t,false)}
+fungsi renderStaffLocal(t){
+  const d=staffData(t),table=$(t==="simp"?"simpTable":"bonTable");let head="<thead><tr><th>NAMA PETUGAS</th>";
+  d.dates.forEach((x,i)=>head+=`<th><div class="staff-date-head"><span>${dateDisplay(x)}</span><button class="date-remove no-print" type="button" onclick="removeDate('${t}',${i})">X</button></div></th>`);
+  head+=`<th>JUMLAH<br><button class="no-print" type="button" onclick="addDate('${t}')">+ TANGGAL</button></th></tr></thead>`;table.innerHTML=head;
+  const tb = document.createElement("tbody");
+  d.names.forEach((n,r)=>{const tr=document.createElement("tr");tr.innerHTML=`<td><input class="name-input" value="${escapeHtml(n)}" onchange="renameStaff('${t}',${r},this.value)"><button class="person-remove no-print" type="button" onclick="removePerson('${t}',${r})">Hapus</button></td>${d.dates.map(dt=>`<td><input class="money" inputmode="numeric" data-t="${t}" data-r="${r}" data-d="${dt}" value="${dv[r+"|"+dt]?angka(dv[r+"|"+dt]):""}" oninput="staffInput(this)"></td>`).join("")}<td id="sr-${t}-${r}">0</td>`;tb.appendChild(tr)});
+  const tr=document.createElement("tr");tr.className="total";tr.innerHTML=`<td>JUMLAH</td>${d.dates.map(dt=>`<td id="sc-${t}-${dt}">0</td>`).join("")}<td id="sg-${t}">0</td>`;tb.appendChild(tr);table.appendChild(tb);calcStaff(t);
+}
+fungsi calcStaff(t,refresh=true){
+  const d=staffData(t);let g=0;d.names.forEach((_,r)=>{let s=0;d.dates.forEach(dt=>s+=parseAngka(dv[r+"|"+dt]));setText(`sr-${t}-${r}`,s);g+=s});
+  d.dates.forEach(dt=>{let s=0;d.names.forEach((_,r)=>s+=parseAngka(dv[r+"|"+dt]));setText(`sc-${t}-${dt}`,s)});setText("sg-"+t,g);if(refresh)updateCash();
+}
+function staffTotal(t){const d=staffData(t);let s=0;d.names.forEach((_,r)=>d.dates.forEach(dt=>s+=parseAngka(dv[r+"|"+dt])));return s}
 
 
+/* =========================
+   DASHBOARD KAS
+   ========================= */
 fungsi asinkron latestExp(){
   jika (!currentUser) kembalikan null;
-  const {data,error}=await supabaseClient.from("ekspedisi_harian").select("*").eq("user_id",currentUser.id).order("tanggal",{ascending:false}).limit(1);
-  jika terjadi kesalahan, kembalikan null; kembalikan data?.[0]||null;
-}
-fungsi asinkron staffTotal(t){
-  try{const d=await staffData(t);let s=0;d.names.forEach((_,r)=>d.dates.forEach(dt=>s+=parseAngka(dv[r+"|"+dt])));return s}catch(e){return 0}
+  mencoba{
+    const r=menunggu supabaseClient.from("ekspedisi_harian").select("tanggal,saldo_kas_akhir").eq("user_id",currentUser.id).order("tanggal",{ascending:false}).limit(1);
+    jika(r.error) lempar r.error; kembalikan r.data?.[0]||null;
+  }catch(e){console.error(e);return null}
 }
 fungsi asinkron updateCash(){
-  jika (!currentUser || !supabaseClient) kembali;
-  const e=menunggu terbaruExp(),exp=parseAngka(e?.saldo_kas_akhir),simp=menunggu staffTotal("simp"),bon=menunggu staffTotal("bon"),kas=exp+simp-bon;
-  byId("cashValue").textContent="KMJ KAS Rp "+(angka(kas)||"0");
-  byId("cashDetail").textContent="Saldo Ekspedisi "+(angka(exp)||"0")+" + Simpanan "+(angka(simp)||"0) +" - Bon "+(angka(bon)||"0");
+  jika (!currentUser) kembali;
+  const e=menunggu terbaruExp(),exp=parseAngka(e?.saldo_kas_akhir),simp=staffTotal("simp"),bon=staffTotal("bon"),kas=exp+simp-bon;
+  $("cashValue").textContent="KMJ KAS Rp "+(angka(kas)||"0");
+  $("cashDetail").textContent="Saldo Ekspedisi "+(angka(exp)||"0")+" + Simpanan "+(angka(simp)||"0")+" - Bon "+(angka(bon)||"0");
 }
-
-
-fungsi setDefaultPeriod(){
-  const n=tanggal baru();byId("bulan").value=n.getMonth()+1;byId("ekspedisiBulan").value=n.getMonth()+1;byId("tahun").value=n.getFullYear();byId("ekspedisiTahun").value=n.getFullYear();
-}
-
-
 fungsi async simpanHalamanAktif(){
-  const p=localStorage.getItem("halamanTerakhir");
-  if(p==="rekap")menunggu simpanData();
-  else if(p==="ekspedisi")menunggu simpanEkspedisi();
-  jika (p == "simp") tunggu saveStaff("simp");
-  else if(p==="bon")menunggu saveStaff("bon");
+  if(currentPage==="rekap")menunggu simpanRekap();
+  else if(currentPage==="ekspedisi")menunggu simpanEkspedisi();
+  else if(currentPage==="simp")await saveStaff("simp");
+  else if(currentPage==="bon")await saveStaff("bon");
   else tampilTersimpan("Tidak ada buku aktif");
 }
 
 
-window.addEventListener("load",initApp);
-</script>
+window.addEventListener("error",e=>console.error("KESALAHAN JAVASCRIPT:",e.error||e.message));
+window.addEventListener("unhandledrejection",e=>console.error("PROMISE ERROR:",e.reason));
 
 
-<!-- Supabase dimuat paling akhir agar halaman tetap tampil meskipun CDN terlambat -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-jika (window.supabase && typeof window.supabase.createClient == "function") {
-  jika dokumen sudah siap == "complete") initApp();
-}
+document.addEventListener("DOMContentLoaded",start);
 </script>
 </body>
 </html>
