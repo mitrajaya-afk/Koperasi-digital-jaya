@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KOPERASI MITRA JAYA (KMJ)</title>
+<title>KOPERASI MITRA JAYA (KMJ) - Supabase v2.1</title>
 <style>
 *{box-sizing:border-box}
 :root{--p:#1261e8;--g:#087d3e;--d:#172033;--mut:#667085;--line:#dfe5ee;--danger:#d62828}
@@ -45,10 +45,10 @@ label{display:block;font-weight:700;margin-bottom:5px}.form-group{margin-bottom:
 @media(max-width:700px){.container{padding:9px}.card{padding:11px}.brand-title{font-size:16px}.brand-sub{font-size:10px}.brand-mark{width:38px;height:38px}.page-head h1{font-size:24px}.exp-table{min-width:780px}.exp-expense-row{grid-template-columns:minmax(0,1fr) 110px 44px}.cash strong{font-size:24px}.save-bar button{width:100%;min-width:0}}
 @media print{#appHeader,.no-print,#loginPage,#dashboardPage,.save-bar{display:none!important}#rekapPage,#ekspedisiPage,#simpPage,#bonPage{display:block!important}.card{box-shadow:none;border:0}.book{break-inside:avoid}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
-<div id="startup" class="loading"><div class="loading-box"><b>Menyiapkan KOPERASI MITRA JAYA...</b><br><small>Mohon tunggu sebentar.</small></div></div>
+<div id="startup" class="loadinghidden"><div class="loading-box"><b>Menyiapkan KOPERASI MITRA JAYA...</b><br><small>Mohon tunggu sebentar.</small></div></div>
 
 
 <div id="savePopup" class="save-popup">Tersimpan</div>
@@ -250,20 +250,61 @@ fungsi initEvents(){
   $("saveButton").addEventListener("klik",simpanHalamanAktif);
 }
 fungsi asinkron mulai(){
+  // LOGIN DITAMPILKAN TERLEBIH DAHULU AGAR APLIKASI TIDAK TERKUNCI
+  // PADA LAYAR "Menyiapkan..." KETIKA KONEKSI SUPABASE LAMBAT.
+  sembunyikan("startup");
+  tampilkan("halaman login");
   mencoba{
-    isiBulan();setDefaultPeriod();initSupabase();initEvents();
-    const {data,error}=await supabaseClient.auth.getSession();
+    isiBulan();
+    setDefaultPeriod();
+    initSupabase();
+    initEvents();
+    pasangPemantauAuth();
+
+
+    // Beri batas waktu pada pemeriksaan sesi. Jika jaringan lambat,
+    // halaman login tetap bisa terlihat dan pengguna mendapat pesan yang jelas.
+    const sessionPromise = supabaseClient.auth.getSession();
+    const timeoutPromise=new Promise((_,reject)=>setTimeout(()=>reject(new Error("Koneksi ke Supabase terlalu lama. Periksa internet lalu muat ulang halaman.")),10000));
+    const {data,error}=await Promise.race([sessionPromise,timeoutPromise]);
     jika terjadi kesalahan, lemparkan kesalahan;
-    $("startup").classList.add("hidden");
-    if(data?.session)tunggu masukAplikasi(data.session);
-    jika tidak, tampilkan("loginPage");
+
+
+    jika (data?.session) {
+      tunggu masukAplikasi(data.session);
+    }kalau tidak{
+      tampilkan("halaman login");
+    }
   }catch(e){
-    $("startup").classList.add("hidden");show("loginPage");
-    status($("loginMessage"),"Aplikasi gagal dimulai: "+(e.message||e),false);
+    console.error("START ERROR",e);
+    sembunyikan("startup");
+    tampilkan("halaman login");
+    status($("loginMessage"),"Aplikasi siap, tetapi koneksi Supabase belum berhasil: "+(e.message||e),false);
   }
+}
+
+
+// Menjaga sesi tetap sinkron setelah login/logout dari Supabase.
+fungsi pasangPemantauAuth(){
+  jika (!supabaseClient) kembali;
+  supabaseClient.auth.onAuthStateChange(async (event,session)=>{
+    jika(event==="SIGNED_IN" && session?.user){
+      currentUser=session.user;
+      sembunyikan("loginPage");
+      tampilkan("appHeader");
+      sembunyikan("startup");
+      jika(currentPage==="dashboard")tampilDashboard();
+    }else if(event==="SIGNED_OUT"){
+      currentUser=null;
+      sembunyikan("appHeader");
+      sembunyikanHalaman();
+      tampilkan("halaman login");
+    }
+  });
 }
 fungsi asinkron login(){
   const btn=$("loginButton"),msg=$("loginMessage");
+  if(!supabaseClient){status(msg,"Koneksi Supabase belum siap. Muat ulang halaman lalu coba lagi.",false);return}
   const email=$("email").value.trim(),password=$("password").value;
   if(!email||!password){status(msg,"Email dan kata sandi wajib diisi.",false);return}
   btn.disabled=true;btn.textContent="MEMERIKSA...";
