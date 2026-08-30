@@ -14,6 +14,10 @@
             --line:#dfe5ee;
             --danger:#d62828;
             --bg-calc:#eef2f7;
+            --amber:#d97706;
+            --amber-bg:#fffbeb;
+            --amber-total:#fef3c7;
+            --amber-text:#92400e;
         }
 
 
@@ -35,7 +39,7 @@
         .status-success{color:#16803c;font-weight:700}
 
 
-        /* Header & Navigasi */
+        /* Header & Navigasi Utama */
         #appHeader{position:sticky;top:0;z-index:9000;background:linear-gradient(135deg,#07883d,#006b34);color:#fff;box-shadow:0 3px 14px #0002}
         .header-main{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;gap:12px}
         .brand{display:flex;align-items:center;gap:10px}
@@ -70,14 +74,13 @@
         .info{background:#e8f5e9;border-left:4px solid var(--g);padding:11px;border-radius:8px;margin-top:13px;color:#1b5e20}
 
 
-        /* Styling Tabel & Kolom Input/Rumus */
+        /* Styling Tabel Rekap & Ekspedisi */
         .table-wrap{width:100%;overflow-x:auto}
         .rekap-table{width:100%;min-width:1050px;border-collapse:collapse;table-layout:fixed}
         .rekap-table th,.rekap-table td{border:1px solid #dfe4eb;text-align:center;padding:6px 4px}
         .rekap-table th{background:var(--g);color:#ffffff;font-size:12px;font-weight:700}
         .rekap-table td{font-size:13px;white-space:nowrap}
         
-        /* Input Manual (Latar Putih) vs Rumus (Latar Abu-abu) */
         .rekap-table input{
             min-height:34px;
             height:34px;
@@ -154,29 +157,96 @@
         .exp-delete{background:#fff0f0;color:#d62828;border:1px solid #f1b5b5;padding:5px 7px;min-height:32px;width:100%;font-size:12px;border-radius:6px}
 
 
-        /* Buku Simpanan & Bon */
+        /* Styling Buku Simpanan & Buku Bon Karyawan */
+        .staff-controls{display:flex;gap:8px;margin-bottom:12px}
+        .staff-controls button{min-height:36px;padding:6px 14px;font-size:13px}
         .staff{min-width:700px;width:100%;border-collapse:collapse}
-        .staff th,.staff td{border:1px solid #dfe4e9;padding:7px;text-align:center}
-        .staff th{background:#8bd34a;color:#111;font-size:14px}
-        .staff td:first-child{text-align:left}
-        .staff .total td{background:#8bd34a;color:#111;font-weight:900}
-        .staff input{min-height:34px;height:34px;padding:5px;border-radius:6px;border:1px solid #b0c4de}
-        .name-input{min-width:130px;font-weight:700}
-        .money{text-align:right}
+        .staff th,.staff td{border:1px solid #dfe4e9;padding:8px 6px;text-align:center;vertical-align:middle}
+        
+        /* Simpanan Header: Hijau KMJ */
+        #simpPage .staff th{background:var(--g);color:#ffffff;font-size:13px;font-weight:700}
+        #simpPage .staff .total td{background:#eef3fb;color:#0f172a;font-weight:700;font-size:13px}
+        .staff-note{background:#f5fbf7;border-left:4px solid var(--g);padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:13px;color:#1b5e20}
 
 
-        .staff-date-head{display:flex;align-items:center;justify-content:center;gap:4px}
-        .staff-date-head span{font-weight:900}
-        .date-remove{min-height:26px!important;height:26px!important;padding:2px 7px!important;background:#667085!important;color:#fff!important;border:1px solid #667085!important;font-size:12px;border-radius:4px}
-        .person-remove{min-height:30px!important;height:30px!important;padding:3px 7px!important;font-size:11px;margin-left:5px;background:#667085!important;color:#fff!important;border:1px solid #667085!important;border-radius:4px}
+        /* Buku Bon Header: Kuning Amber Modern & Teduh */
+        #bonPage .staff th{background:var(--amber);color:#ffffff;font-size:13px;font-weight:700}
+        #bonPage .staff .total td{background:var(--amber-total);color:var(--amber-text);font-weight:700;font-size:13px}
+        #bonPage .staff-note{background:var(--amber-bg);border-left:4px solid var(--amber);color:var(--amber-text);padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:13px}
 
 
-        #bonPage .staff th,#bonPage .staff .total td{background:#d62828;color:#fff}
-        .staff-note{background:#f5fbf7;border-left:4px solid var(--g);padding:10px 12px;border-radius:8px;margin-bottom:12px}
+        /* Container Input Nama & Tombol Hapus "×" */
+        .name-box{display:flex;align-items:center;gap:6px}
+        .staff input.name-input{
+            flex:1;
+            min-width:0;
+            min-height:34px;
+            height:34px;
+            padding:4px 8px;
+            border-radius:6px;
+            border:1px solid #b0c4de;
+            font-weight:700;
+            font-size:13px;
+            background:#ffffff!important;
+        }
+        
+        /* Tombol "×" Merah Mini */
+        .person-remove{
+            width:28px!important;
+            height:28px!important;
+            min-width:28px!important;
+            min-height:28px!important;
+            padding:0!important;
+            margin:0!important;
+            display:inline-flex!important;
+            align-items:center;
+            justify-content:center;
+            font-size:16px!important;
+            font-weight:bold!important;
+            line-height:1;
+            background:#fee2e2!important;
+            color:#dc2626!important;
+            border:1px solid #fca5a5!important;
+            border-radius:6px;
+            cursor:pointer;
+            transition:all 0.15s ease;
+        }
+        .person-remove:hover{
+            background:#fca5a5!important;
+            color:#7f1d1d!important;
+        }
 
 
-        #rekapPage button,#ekspedisiPage button,#simpPage button,#bonPage button{background:#667085;color:#fff;border-color:#667085}
-        #rekapPage button:hover,#ekspedisiPage button:hover,#simpPage button:hover,#bonPage button:hover{background:#596273;color:#fff;filter:none}
+        .staff input.money{
+            min-height:34px;
+            height:34px;
+            padding:4px 8px;
+            border-radius:6px;
+            border:1px solid #b0c4de;
+            font-weight:600;
+            font-size:13px;
+            text-align:right;
+            background:#ffffff!important;
+        }
+        
+        .staff td[id^="sr-"]{background:var(--bg-calc);font-weight:700;text-align:right;font-size:13px}
+
+
+        .staff-date-head{display:flex;align-items:center;justify-content:center;gap:6px}
+        .staff-date-head span{font-weight:700}
+        .date-remove{
+            min-height:22px!important;
+            height:22px!important;
+            padding:1px 6px!important;
+            background:rgba(255,255,255,0.25)!important;
+            color:#fff!important;
+            border:1px solid rgba(255,255,255,0.4)!important;
+            font-size:13px;
+            border-radius:4px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+        .date-remove:hover{background:rgba(255,255,255,0.4)!important}
 
 
         /* Floating Save Bar */
@@ -286,6 +356,8 @@
         function sinkronPeriodeEkspedisi(){ekspedisiBulan.value=bulan.value;ekspedisiTahun.value=tahun.value} 
         function ambilDataRekap(b,t){try{return JSON.parse(localStorage.getItem(`koperasi-rekap-${t}-${b}`))}catch(e){return null}} 
         function ambilDataEkspedisi(b,t){try{return JSON.parse(localStorage.getItem(`koperasi-ekspedisi-${t}-${b}`))}catch(e){return null}} 
+        
+        /* PERBAIKAN FATAL BUG TERIKSANA DI SINI (j >= k) */
         function ambilKasMasukRekap(h,b,t){const d=ambilDataRekap(b,t);if(!d?.hari?.[h])return 0;return(d.hari[h].items||[]).reduce((s,x)=>{const j=parseAngka(x.storting)+parseAngka(x.drop)*.1,k=parseAngka(x.drop)+parseAngka(x.tabunganKeluar);return s+(j>=k?j-k:0)},0)} 
         function ambilTunaiPasarRekap(h,b,t){const d=ambilDataRekap(b,t);if(!d?.hari?.[h])return 0;return(d.hari[h].items||[]).reduce((s,x)=>{const j=parseAngka(x.storting)+parseAngka(x.drop)*.1,k=parseAngka(x.drop)+parseAngka(x.tabunganKeluar);return s+(j<k?k-j:0)},0)} 
         function ambilSaldoKasAwalEkspedisi(b,t){const d=ambilDataEkspedisi(b,t);if(d?.saldoKasAwal!==undefined)return parseAngka(d.saldoKasAwal);let pb=b-1,pt=t;if(pb===0){pb=12;pt--}const p=ambilDataEkspedisi(pb,pt);return parseAngka(p?.saldoKasAkhir)} 
@@ -310,13 +382,16 @@
         function dateDisplay(s){const[y,m,d]=s.split("-");return`${d}/${m}/${y}`} 
 
 
-        function renderStaff(t){const d=staffData(t),table=document.getElementById(t==="simp"?"simpTable":"bonTable");let head="<thead><tr><th>NAMA PETUGAS</th>";d.dates.forEach((x,i)=>head+=`<th><div class="staff-date-head"><span>${dateDisplay(x)}</span><button class="date-remove no-print" onclick="removeDate('${t}',${i})">X</button></div></th>`);head+=`<th>JUMLAH<br><button class="no-print" onclick="addDate('${t}')">+ TANGGAL</button></th></tr></thead>`;table.innerHTML=head;const tb=document.createElement("tbody");d.names.forEach((n,r)=>{const tr=document.createElement("tr");tr.innerHTML=`<td><input class="name-input" value="${escapeHtml(n)}" onchange="renameStaff('${t}',${r},this.value)"><button class="btn-danger person-remove no-print" onclick="removePerson('${t}',${r})">Hapus</button></td>${d.dates.map(dt=>`<td><input class="money" inputmode="numeric" data-t="${t}" data-r="${r}" data-d="${dt}" value="${d.v[r+"|"+dt]?angka(d.v[r+"|"+dt]):""}" oninput="staffInput(this)"></td>`).join("")}<td id="sr-${t}-${r}">0</td>`;tb.appendChild(tr)});const tr=document.createElement("tr");tr.className="total";tr.innerHTML=`<td>JUMLAH</td>${d.dates.map(dt=>`<td id="sc-${t}-${dt}">0</td>`).join("")}<td id="sg-${t}">0</td>`;tb.appendChild(tr);table.appendChild(tb);calcStaff(t)} 
+        function renderStaff(t){const d=staffData(t),table=document.getElementById(t==="simp"?"simpTable":"bonTable");let head="<thead><tr><th>NAMA PETUGAS</th>";d.dates.forEach((x,i)=>head+=`<th><div class="staff-date-head"><span>${dateDisplay(x)}</span><button class="date-remove no-print" title="Hapus Kolom Tanggal" onclick="removeDate('${t}',${i})">&times;</button></div></th>`);head+=`<th>JUMLAH<br><button class="no-print" onclick="addDate('${t}')">+ TANGGAL</button></th></tr></thead>`;table.innerHTML=head;const tb=document.createElement("tbody");d.names.forEach((n,r)=>{const tr=document.createElement("tr");tr.innerHTML=`<td><div class="name-box"><input class="name-input" value="${escapeHtml(n)}" onchange="renameStaff('${t}',${r},this.value)"><button class="person-remove no-print" title="Hapus Petugas" onclick="removePerson('${t}',${r})">&times;</button></div></td>${d.dates.map(dt=>`<td><input class="money" inputmode="numeric" data-t="${t}" data-r="${r}" data-d="${dt}" value="${d.v[r+"|"+dt]?angka(d.v[r+"|"+dt]):""}" oninput="staffInput(this)"></td>`).join("")}<td id="sr-${t}-${r}">0</td>`;tb.appendChild(tr)});const tr=document.createElement("tr");tr.className="total";tr.innerHTML=`<td>JUMLAH</td>${d.dates.map(dt=>`<td id="sc-${t}-${dt}">0</td>`).join("")}<td id="sg-${t}">0</td>`;tb.appendChild(tr);table.appendChild(tb);calcStaff(t)} 
         async function addDate(t){const d=staffData(t),n=new Date(),x=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");if(d.dates.includes(x)){alert("Tanggal hari ini sudah ada.");return}d.dates.push(x);d.dates.sort();await saveStaffData(t,d);renderStaff(t)} 
         async function removeDate(t,i){const d=staffData(t),x=d.dates[i];if(!confirm("Hapus kolom tanggal "+dateDisplay(x)+"?"))return;d.dates.splice(i,1);Object.keys(d.v).forEach(k=>{if(k.endsWith("|"+x))delete d.v[k]});await saveStaffData(t,d);renderStaff(t)} 
         async function addPerson(t){const n=prompt("Nama petugas:");if(!n?.trim())return;const d=staffData(t);d.names.push(n.trim());await saveStaffData(t,d);renderStaff(t)} 
         async function removePerson(t,i){const d=staffData(t);if(!confirm("Hapus "+d.names[i]+" dari buku ini?"))return;d.names.splice(i,1);const v={};Object.keys(d.v).forEach(k=>{const[r,dt]=k.split("|"),ri=+r;if(ri<i)v[k]=d.v[k];else if(ri>i)v[(ri-1)+"|"+dt]=d.v[k]});d.v=v;await saveStaffData(t,d);renderStaff(t)} 
         async function renameStaff(t,i,v){const d=staffData(t);d.names[i]=v.trim()||("Petugas "+(i+1));await saveStaffData(t,d);renderStaff(t)} 
-        async function staffInput(e){e.value=e.value===""?"":angka(parseAngka(e.value));const d=staffData(e.dataset.t);d.v[e.dataset.r+"|"+e.dataset.d]=parseAngka(e.value);await saveStaffData(e.dataset.t,d);calcStaff(e.dataset.t,false)} 
+        
+        /* PERBAIKAN PERFORMA PENGETIKAN DI SINI */
+        function staffInput(e){e.value=e.value===""?"":angka(parseAngka(e.value));const d=staffData(e.dataset.t);d.v[e.dataset.r+"|"+e.dataset.d]=parseAngka(e.value);localStorage.setItem(staffKey(e.dataset.t),JSON.stringify(d));calcStaff(e.dataset.t,false)} 
+        
         function calcStaff(t,refresh=true){const d=staffData(t);let g=0;d.names.forEach((_,r)=>{let s=0;d.dates.forEach(dt=>s+=parseAngka(d.v[r+"|"+dt]));setText(`sr-${t}-${r}`,s);g+=s});d.dates.forEach(dt=>{let s=0;d.names.forEach((_,r)=>s+=parseAngka(d.v[r+"|"+dt]));setText(`sc-${t}-${dt}`,s)});setText("sg-"+t,g);if(refresh)updateCash()} 
         async function saveStaff(t){const ok=await saveStaffData(t,staffData(t));if(ok){const e=document.getElementById(t==="simp"?"simpStatus":"bonStatus");e.textContent="Data berhasil disimpan online.";e.className="status-success";updateCash();tampilTersimpan()}} 
         function cetakStaff(){window.print()} 
