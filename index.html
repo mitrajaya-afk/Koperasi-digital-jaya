@@ -1,5 +1,3 @@
-Berikut adalah kode index.html lengkap yang sudah digabungkan dengan sistem keamanan PIN untuk seluruh buku (Rekap, Ekspedisi, Simpanan, dan Bon). Anda tinggal menyalin seluruh kode di bawah ini dan menempelkannya (copy-paste) ke file web Anda.
-Catatan: PIN default (bawaan) yang saya pasang adalah 123456, Anda bisa mengubahnya pada baris const PIN_KASIR = "123456"; di bagian atas Javascript.
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -315,7 +313,7 @@ Catatan: PIN default (bawaan) yang saya pasang adalah 123456, Anda bisa mengubah
 
 
         // --- SISTEM KEAMANAN PIN ADMIN ---
-        const PIN_KASIR = "123456"; // Ganti dengan PIN rahasia Anda
+        const PIN_KASIR = "125660"; // Ganti dengan PIN rahasia Anda
         
         function terapkanKunciKeamanan() {
             const semuaInput = document.querySelectorAll('.rekap-table input, .exp-table input[type="text"], .exp-table input[inputmode="numeric"], .staff input.money, .staff input.name-input');
