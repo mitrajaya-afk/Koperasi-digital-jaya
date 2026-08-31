@@ -53,16 +53,18 @@
         .nav-bar button.active{background:#ffffff24}
 
 
-        /* Dashboard Cash Box */
+        /* Dashboard Cash Box & Visual Modern */
         .cash{background:linear-gradient(135deg,#063d20,#0b9146);color:#fff;border-radius:16px;padding:17px 20px;margin-bottom:16px}
         .cash small{opacity:.9}
         .cash strong{display:block;font-size:29px;margin:4px 0}
         .cash span{font-size:12px;opacity:.9}
 
 
-        .menu{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-        .menu button{min-height:130px;text-align:left;background:#fff;color:var(--d);border:1px solid #e1e6ed;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:7px}
-        .menu-mark{font-size:20px;background:#eaf8ef;color:var(--g);padding:9px 13px;border-radius:12px}
+        .dashboard-analytics{display:grid;grid-template-columns:1fr 1.4fr;gap:16px;margin-bottom:16px}
+        .analytics-card{background:#fff;border:1px solid #e1e6ef;border-radius:15px;padding:20px;box-shadow:0 6px 18px #0f172a0d;display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .analytics-card h3{margin:0 0 15px 0;font-size:16px;color:var(--d);align-self:flex-start}
+        .chart-container{position:relative;width:100%;max-width:320px;height:260px;display:flex;align-items:center;justify-content:center}
+        .line-chart-container{position:relative;width:100%;height:260px}
 
 
         .page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
@@ -101,7 +103,6 @@
         .total-row{background:#eef3fb;font-weight:700}
         .saldo-akhir-row{background:#eaf8ef;font-weight:700}
         
-        /* Kolom Tanggal Utuh & Tombol TANGGAL */
         .date-cell{background:#f8fafc;font-weight:700;vertical-align:middle}
         .date-action-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px 4px}
         
@@ -163,117 +164,35 @@
         .staff{min-width:700px;width:100%;border-collapse:collapse}
         .staff th,.staff td{border:1px solid #dfe4e9;padding:8px 6px;text-align:center;vertical-align:middle}
         
-        /* Simpanan Header: Hijau KMJ */
         #simpPage .staff th{background:var(--g);color:#ffffff;font-size:13px;font-weight:700}
         #simpPage .staff .total td{background:#eef3fb;color:#0f172a;font-weight:700;font-size:13px}
         .staff-note{background:#f5fbf7;border-left:4px solid var(--g);padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:13px;color:#1b5e20}
 
 
-        /* Buku Bon Header: Kuning Amber Modern & Teduh */
         #bonPage .staff th{background:var(--amber);color:#ffffff;font-size:13px;font-weight:700}
         #bonPage .staff .total td{background:var(--amber-total);color:var(--amber-text);font-weight:700;font-size:13px}
-        #bonPage .staff-note{background:var(--amber-bg);border-left:4px solid var(--amber);color:var(--amber-text);padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:13px}
+        .staff-note{background:var(--amber-bg);border-left:4px solid var(--amber);color:var(--amber-text);padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:13px}
 
 
-        /* Container Input Nama & Tombol Hapus "×" */
         .name-box{display:flex;align-items:center;gap:6px}
-        .staff input.name-input{
-            flex:1;
-            min-width:0;
-            min-height:34px;
-            height:34px;
-            padding:4px 8px;
-            border-radius:6px;
-            border:1px solid #b0c4de;
-            font-weight:700;
-            font-size:13px;
-            background:#ffffff!important;
-        }
+        .staff input.name-input{flex:1;min-width:0;min-height:34px;height:34px;padding:4px 8px;border-radius:6px;border:1px solid #b0c4de;font-weight:700;font-size:13px;background:#ffffff!important;}
         
-        /* Tombol "×" Merah Mini */
-        .person-remove{
-            width:28px!important;
-            height:28px!important;
-            min-width:28px!important;
-            min-height:28px!important;
-            padding:0!important;
-            margin:0!important;
-            display:inline-flex!important;
-            align-items:center;
-            justify-content:center;
-            font-size:16px!important;
-            font-weight:bold!important;
-            line-height:1;
-            background:#fee2e2!important;
-            color:#dc2626!important;
-            border:1px solid #fca5a5!important;
-            border-radius:6px;
-            cursor:pointer;
-            transition:all 0.15s ease;
-        }
-        .person-remove:hover{
-            background:#fca5a5!important;
-            color:#7f1d1d!important;
-        }
+        .person-remove{width:28px!important;height:28px!important;min-width:28px!important;min-height:28px!important;padding:0!important;margin:0!important;display:inline-flex!important;align-items:center;justify-content:center;font-size:16px!important;font-weight:bold!important;line-height:1;background:#fee2e2!important;color:#dc2626!important;border:1px solid #fca5a5!important;border-radius:6px;cursor:pointer;transition:all 0.15s ease;}
+        .person-remove:hover{background:#fca5a5!important;color:#7f1d1d!important;}
 
 
-        .staff input.money{
-            min-height:34px;
-            height:34px;
-            padding:4px 8px;
-            border-radius:6px;
-            border:1px solid #b0c4de;
-            font-weight:600;
-            font-size:13px;
-            text-align:right;
-            background:#ffffff!important;
-        }
-        
+        .staff input.money{min-height:34px;height:34px;padding:4px 8px;border-radius:6px;border:1px solid #b0c4de;font-weight:600;font-size:13px;text-align:right;background:#ffffff!important;}
         .staff td[id^="sr-"]{background:var(--bg-calc);font-weight:700;text-align:right;font-size:13px}
 
 
         .staff-date-head{display:flex;align-items:center;justify-content:center;gap:6px}
         .staff-date-head span{font-weight:700}
-        .date-remove{
-            min-height:22px!important;
-            height:22px!important;
-            padding:1px 6px!important;
-            background:rgba(255,255,255,0.25)!important;
-            color:#fff!important;
-            border:1px solid rgba(255,255,255,0.4)!important;
-            font-size:13px;
-            border-radius:4px;
-            cursor:pointer;
-            font-weight:bold;
-        }
+        .date-remove{min-height:22px!important;height:22px!important;padding:1px 6px!important;background:rgba(255,255,255,0.25)!important;color:#fff!important;border:1px solid rgba(255,255,255,0.4)!important;font-size:13px;border-radius:4px;cursor:pointer;font-weight:bold;}
         .date-remove:hover{background:rgba(255,255,255,0.4)!important}
 
 
-        /* Floating Save Bar */
-        .save-bar{
-            position:fixed;
-            left:0;
-            right:0;
-            bottom:0;
-            z-index:8999;
-            background:#fffffffa;
-            border-top:1px solid #dfe5ee;
-            box-shadow:0 -5px 18px #0f172a1a;
-            padding:10px 12px;
-            display:flex;
-            justify-content:center;
-            backdrop-filter:blur(7px);
-        }
-        .save-bar button{
-            min-width:220px;
-            background:var(--g);
-            color:#fff;
-            font-size:15px;
-            font-weight:700;
-            border-radius:25px;
-            box-shadow:0 4px 12px rgba(8,125,62,0.3);
-            transition:all 0.2s;
-        }
+        .save-bar{position:fixed;left:0;right:0;bottom:0;z-index:8999;background:#fffffffa;border-top:1px solid #dfe5ee;box-shadow:0 -5px 18px #0f172a1a;padding:10px 12px;display:flex;justify-content:center;backdrop-filter:blur(7px);}
+        .save-bar button{min-width:220px;background:var(--g);color:#fff;font-size:15px;font-weight:700;border-radius:25px;box-shadow:0 4px 12px rgba(8,125,62,0.3);transition:all 0.2s;}
         .save-bar button:hover{background:#066331}
         .save-bar button.save-disabled{background:#9ca3af;cursor:not-allowed;box-shadow:none;opacity:.9}
         .save-bar button.save-disabled:hover{background:#9ca3af}
@@ -286,25 +205,18 @@
         .save-popup.show{display:flex}
 
 
-        /* Tampilan kolom yang sudah tersimpan dan terkunci */
-        input.terkunci {
-            background-color: #f1f5f9 !important;
-            color: #64748b !important;
-            cursor: pointer;
-            border-color: #cbd5e1 !important;
-        }
-        input.terkunci:hover {
-            border-color: #d62828 !important;
-        }
+        input.terkunci {background-color: #f1f5f9 !important;color: #64748b !important;cursor: pointer;border-color: #cbd5e1 !important;}
+        input.terkunci:hover {border-color: #d62828 !important;}
 
 
-        @media(max-width:900px){.menu{grid-template-columns:1fr 1fr}.toolbar{grid-template-columns:1fr 1fr}.toolbar button{width:100%}}
+        @media(max-width:900px){.dashboard-analytics{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.toolbar button{width:100%}}
         @media(max-width:700px){.container{padding:9px}.card{padding:11px}.brand-title{font-size:16px}.brand-sub{font-size:10px}.brand-mark{width:38px;height:38px}.page-head h1{font-size:24px}.exp-table{min-width:780px}.exp-expense-row{grid-template-columns:minmax(0,1fr) 110px 44px}.cash strong{font-size:24px}.save-bar button{width:100%;min-width:0}}
         @media print{#appHeader,.no-print,#loginPage,#dashboardPage,.save-bar{display:none!important}#rekapPage,#ekspedisiPage,#simpPage,#bonPage{display:block!important}.card{box-shadow:none;border:0}.book{break-inside:avoid}}
     </style>
 
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const SUPABASE_URL="https://tnfylfudwsweompnqvvl.supabase.co";
         const SUPABASE_PUBLISHABLE_KEY="sb_publishable_ghOqY5cjfgAYWXs2OQjigg_Vznmv2Xa";
@@ -312,8 +224,7 @@
         const resortNames=["Jaya 1","Jaya 2","Jaya 3"],namaBulan=["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
 
 
-        // --- SISTEM KEAMANAN PIN ADMIN ---
-        const PIN_KASIR = "123456"; // Ganti dengan PIN rahasia Anda
+        const PIN_KASIR = "123456"; 
         
         function terapkanKunciKeamanan() {
             const semuaInput = document.querySelectorAll('.rekap-table input, .exp-table input[type="text"], .exp-table input[inputmode="numeric"], .staff input.money, .staff input.name-input');
@@ -324,7 +235,7 @@
                     
                     const handlePinPrompt = function(e) {
                         if(this.hasAttribute('readonly')) {
-                            this.blur(); // Hapus fokus kursor segera
+                            this.blur(); 
                             const pin = prompt("Data sudah tersimpan di cloud. Masukkan PIN Admin untuk mengedit:");
                             if(pin === PIN_KASIR) {
                                 this.removeAttribute('readonly');
@@ -340,7 +251,6 @@
                 }
             });
         }
-        // ----------------------------------
 
 
         async function syncFromCloud(){try{const{data,error}=await supabaseClient.from('koperasi_store').select('*');if(error){console.error("Cloud sync error:",error);return}if(data){data.forEach(r=>{if(r.key&&r.value){localStorage.setItem(r.key,typeof r.value==='string'?r.value:JSON.stringify(r.value))}})}}catch(e){console.error("Cloud sync exception:",e)}}
@@ -356,7 +266,17 @@
         async function masukAplikasi(){loginPage.classList.add("hidden");appHeader.classList.remove("hidden");await syncFromCloud();const p=localStorage.getItem("halamanTerakhir");if(p==="rekap")bukaRekap();else if(p==="ekspedisi")bukaEkspedisi();else if(p==="simp")bukaSimpanan();else if(p==="bon")bukaBon();else tampilDashboard()} 
         function hidePages(){["dashboardPage","rekapPage","ekspedisiPage","simpPage","bonPage"].forEach(x=>document.getElementById(x).classList.add("hidden"))} 
         function setActiveNav(n){document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.page===n))} 
-        function tampilDashboard(){if(!bolehPindah(""))return;setPage("");hidePages();dashboardPage.classList.remove("hidden");setActiveNav("");localStorage.removeItem("halamanTerakhir");updateCash()} 
+        
+        function tampilDashboard(){
+            if(!bolehPindah(""))return;
+            setPage("");hidePages();
+            dashboardPage.classList.remove("hidden");
+            setActiveNav("");
+            localStorage.removeItem("halamanTerakhir");
+            updateCash();
+            setTimeout(renderDashboardCharts, 100); 
+        } 
+        
         function bukaRekap(){if(!bolehPindah("rekap"))return;setPage("rekap");hidePages();rekapPage.classList.remove("hidden");localStorage.setItem("halamanTerakhir","rekap");setActiveNav("rekap");buatRekap()} 
         function bukaEkspedisi(){if(!bolehPindah("ekspedisi"))return;setPage("ekspedisi");hidePages();ekspedisiPage.classList.remove("hidden");localStorage.setItem("halamanTerakhir","ekspedisi");setActiveNav("ekspedisi");sinkronPeriodeEkspedisi();buatEkspedisi()} 
         function bukaSimpanan(){if(!bolehPindah("simp"))return;setPage("simp");hidePages();simpPage.classList.remove("hidden");localStorage.setItem("halamanTerakhir","simp");setActiveNav("simp");renderStaff("simp")} 
@@ -412,7 +332,6 @@
             const sudah=[...document.querySelectorAll(selector)].some(e=>e.value===today); 
             if(sudah){alert("Tanggal hari ini sudah dibuat. Satu tanggal hanya boleh dibuat satu kali.");return} 
             
-            // Keamanan PIN jika menimpa tanggal yang sudah ada
             if(current&&current.value){
                 const pin = prompt(`Baris ini sudah berisi tanggal ${current.value}. Masukkan PIN Admin untuk mengubah:`);
                 if(pin !== PIN_KASIR) {
@@ -552,7 +471,155 @@
 
         function latestExp(){let best=null;for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!k?.startsWith("koperasi-ekspedisi-"))continue;try{const d=JSON.parse(localStorage.getItem(k)),score=(d.tahun||0)*100+(d.bulan||0);if(d.saldoKasAkhir!==undefined&&(!best||score>best.score))best={score,d}}catch(e){}}return best?.d||null} 
         function staffTotal(t){const d=staffData(t);let s=0;d.names.forEach((_,r)=>d.dates.forEach(dt=>s+=parseAngka(d.v[r+"|"+dt])));return s} 
-        function updateCash(){const e=latestExp(),exp=parseAngka(e?.saldoKasAkhir),simp=staffTotal("simp"),bon=staffTotal("bon"),kas=exp+simp-bon;cashValue.textContent="KMJ KAS Rp "+(angka(kas)||"0");cashDetail.textContent="Saldo Ekspedisi "+(angka(exp)||"0")+" + Simpanan "+(angka(simp)||"0")+" - Bon "+(angka(bon)||"0")} 
+        
+        function updateCash(){
+            const e=latestExp(),exp=parseAngka(e?.saldoKasAkhir),simp=staffTotal("simp"),bon=staffTotal("bon"),kas=exp+simp-bon;
+            document.getElementById("cashValue").textContent="KMJ KAS Rp "+(angka(kas)||"0");
+            document.getElementById("cashDetail").textContent="Saldo Ekspedisi "+(angka(exp)||"0")+" + Simpanan "+(angka(simp)||"0")+" - Bon "+(angka(bon)||"0");
+        } 
+
+
+        // --- RENDER GRAFIK DASHBOARD CUSTOM ---
+        let pieChartInstance = null;
+        let lineChartInstance = null;
+
+
+        function renderDashboardCharts() {
+            const n = new Date();
+            const b = n.getMonth() + 1;
+            const t = n.getFullYear();
+            const rekapData = ambilDataRekap(b, t);
+
+
+            let dropJaya1 = 0, dropJaya2 = 0, dropJaya3 = 0;
+            const days = jumlahHari(b, t);
+
+
+            if (rekapData && rekapData.hari) {
+                for (let i = 1; i <= days; i++) {
+                    if (rekapData.hari[i] && rekapData.hari[i].items) {
+                        const items = rekapData.hari[i].items;
+                        if(items[0]) dropJaya1 += parseAngka(items[0].drop);
+                        if(items[1]) dropJaya2 += parseAngka(items[1].drop);
+                        if(items[2]) dropJaya3 += parseAngka(items[2].drop);
+                    }
+                }
+            }
+
+
+            // 1. Render Pie Chart (Distribusi Drop Bulan Berjalan per Resort)
+            if (pieChartInstance) pieChartInstance.destroy();
+            const ctxPie = document.getElementById('resortPieChart').getContext('2d');
+            pieChartInstance = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Jaya 1', 'Jaya 2', 'Jaya 3'],
+                    datasets: [{
+                        data: [dropJaya1, dropJaya2, dropJaya3],
+                        backgroundColor: ['#ec4899', '#3b82f6', '#eab308']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+
+            // 2. Render Line Chart (Pertumbuhan Total Drop Antar Bulan)
+            let monthlyLabels = [];
+            let monthlyDropTotals = [];
+
+
+            // Cari semua data rekap tersimpan di localStorage untuk menyusun grafik bulanan kronologis
+            let allMonthsData = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith("koperasi-rekap-")) {
+                    // Format key: koperasi-rekap-tahun-bulan
+                    const parts = key.split("-");
+                    if (parts.length === 3) {
+                        const yr = parseInt(parts[1]);
+                        const mo = parseInt(parts[2]);
+                        try {
+                            const dVal = JSON.parse(localStorage.getItem(key));
+                            let totalMoDrop = 0;
+                            if (dVal && dVal.hari) {
+                                Object.keys(dVal.hari).forEach(hKey => {
+                                    if (dVal.hari[hKey].items) {
+                                        dVal.hari[hKey].items.forEach(it => {
+                                            totalMoDrop += parseAngka(it.drop);
+                                        });
+                                    }
+                                });
+                            }
+                            allMonthsData.push({ year: yr, month: mo, total: totalMoDrop, sortKey: yr * 12 + mo });
+                        } catch(err) {}
+                    }
+                }
+            }
+
+
+            // Urutkan berdasarkan waktu kronologis
+            allMonthsData.sort((a, b) => a.sortKey - b.sortKey);
+
+
+            allMonthsData.forEach(item => {
+                monthlyLabels.push(namaBulan[item.month] + " " + item.year);
+                monthlyDropTotals.push(item.total);
+            });
+
+
+            // Jika belum ada data tersimpan sama sekali, tampilkan bulan aktif saat ini sebagai default
+            if (monthlyLabels.length === 0) {
+                monthlyLabels.push(namaBulan[b] + " " + t);
+                monthlyDropTotals.push(dropJaya1 + dropJaya2 + dropJaya3);
+            }
+
+
+            if (lineChartInstance) lineChartInstance.destroy();
+            const ctxLine = document.getElementById('growthLineChart').getContext('2d');
+            lineChartInstance = new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: monthlyLabels,
+                    datasets: [{
+                        label: 'Total Drop Keseluruhan',
+                        data: monthlyDropTotals,
+                        borderColor: '#087d3e',
+                        backgroundColor: 'rgba(8,125,62,0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#087d3e'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if(value >= 1000000) return (value / 1000000) + " Jt";
+                                    return value;
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+        // ----------------------------------------------------
+
+
         function escapeHtml(v){return String(v||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))} 
         function setDefaultPeriod(){const n=new Date();bulan.value=n.getMonth()+1;ekspedisiBulan.value=n.getMonth()+1;tahun.value=n.getFullYear();ekspedisiTahun.value=n.getFullYear()} 
         async function simpanHalamanAktif(){if(!kmjPage){tampilTersimpan("Tidak ada buku aktif");return}if(!tanggalHariIniAda()){alert("Silakan isi/tambahkan tanggal hari ini terlebih dahulu sebelum menyimpan.");return}const p=localStorage.getItem("halamanTerakhir");if(p==="rekap")await simpanData();else if(p==="ekspedisi")await simpanEkspedisi();else if(p==="simp")await saveStaff("simp");else if(p==="bon")await saveStaff("bon")} 
@@ -601,16 +668,19 @@
             <strong id="cashValue">KMJ KAS Rp 0</strong>
             <span id="cashDetail">Saldo Ekspedisi 0 + Simpanan 0 - Bon 0</span>
         </div>
-        <div class="card">
-            <h1>Dashboard KOPERASI MITRA JAYA (KMJ)</h1>
-            <p>Empat buku utama pengontrol kas usaha.</p>
-        </div>
-        <div class="card">
-            <div class="menu">
-                <button onclick="bukaRekap()"><span class="menu-mark">01</span><b>Rekap Harian</b><small>Catatan operasional</small></button>
-                <button onclick="bukaEkspedisi()"><span class="menu-mark">02</span><b>Buku Ekspedisi</b><small>Pergerakan kas harian</small></button>
-                <button onclick="bukaSimpanan()"><span class="menu-mark">03</span><b>Buku Simpanan Karyawan</b><small>Uang titipan karyawan</small></button>
-                <button onclick="bukaBon()"><span class="menu-mark">04</span><b>Buku Bon Karyawan</b><small>Pinjaman yang belum lunas</small></button>
+        
+        <div class="dashboard-analytics">
+            <div class="analytics-card">
+                <h3>Distribusi Drop Bulan Ini per Resort</h3>
+                <div class="chart-container">
+                    <canvas id="resortPieChart"></canvas>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <h3>Pertumbuhan Total Drop Setiap Bulan</h3>
+                <div class="line-chart-container">
+                    <canvas id="growthLineChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
