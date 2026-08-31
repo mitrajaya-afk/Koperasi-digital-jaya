@@ -313,7 +313,7 @@
 
 
         // --- SISTEM KEAMANAN PIN ADMIN ---
-        const PIN_KASIR = "125660"; // Ganti dengan PIN rahasia Anda
+        const PIN_KASIR = "123456"; // Ganti dengan PIN rahasia Anda
         
         function terapkanKunciKeamanan() {
             const semuaInput = document.querySelectorAll('.rekap-table input, .exp-table input[type="text"], .exp-table input[inputmode="numeric"], .staff input.money, .staff input.name-input');
@@ -590,6 +590,7 @@
             <button class="nav-btn" data-page="ekspedisi" onclick="bukaEkspedisi()">Buku Ekspedisi</button>
             <button class="nav-btn" data-page="simp" onclick="bukaSimpanan()">Buku Simpanan</button>
             <button class="nav-btn" data-page="bon" onclick="bukaBon()">Buku Bon Karyawan</button>
+            <button class="nav-btn" data-page="" onclick="tampilDashboard()">Dashboard</button>
         </nav>
     </header>
 
