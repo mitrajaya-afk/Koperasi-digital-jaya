@@ -509,6 +509,10 @@
             }
 
 
+            // Warna seragam untuk kedua grafik donat (Jaya 1 = Pink, Jaya 2 = Biru, Jaya 3 = Kuning)
+            const sharedColors = ['#ec4899', '#3b82f6', '#eab308'];
+
+
             // 1. Render Pie Chart Drop (Distribusi Drop Bulan Berjalan per Resort)
             if (pieChartInstance) pieChartInstance.destroy();
             const ctxPie = document.getElementById('resortPieChart').getContext('2d');
@@ -518,7 +522,7 @@
                     labels: ['Jaya 1', 'Jaya 2', 'Jaya 3'],
                     datasets: [{
                         data: [dropJaya1, dropJaya2, dropJaya3],
-                        backgroundColor: ['#ec4899', '#3b82f6', '#eab308']
+                        backgroundColor: sharedColors
                     }]
                 },
                 options: {
@@ -540,7 +544,7 @@
                     labels: ['Jaya 1', 'Jaya 2', 'Jaya 3'],
                     datasets: [{
                         data: [stortingJaya1, stortingJaya2, stortingJaya3],
-                        backgroundColor: ['#10b981', '#6366f1', '#f59e0b']
+                        backgroundColor: sharedColors
                     }]
                 },
                 options: {
