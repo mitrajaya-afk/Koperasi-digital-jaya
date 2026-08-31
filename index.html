@@ -54,17 +54,17 @@
 
 
         /* Dashboard Cash Box & Visual Modern */
-        .cash{background:linear-gradient(135deg,#063d20,#0b9146);color:#fff;border-radius:16px;padding:17px 20px;margin-bottom:16px}
-        .cash small{opacity:.9}
-        .cash strong{display:block;font-size:29px;margin:4px 0}
-        .cash span{font-size:12px;opacity:.9}
+        .cash{background:linear-gradient(135deg,#063d20,#0b9146);color:#fff;border-radius:14px;padding:12px 18px;margin-bottom:14px}
+        .cash small{opacity:.9;font-size:11px}
+        .cash strong{display:block;font-size:24px;margin:2px 0}
+        .cash span{font-size:11px;opacity:.9}
 
 
-        .dashboard-analytics{display:grid;grid-template-columns:1fr 1.4fr;gap:16px;margin-bottom:16px}
-        .analytics-card{background:#fff;border:1px solid #e1e6ef;border-radius:15px;padding:20px;box-shadow:0 6px 18px #0f172a0d;display:flex;flex-direction:column;align-items:center;justify-content:center}
-        .analytics-card h3{margin:0 0 15px 0;font-size:16px;color:var(--d);align-self:flex-start}
-        .chart-container{position:relative;width:100%;max-width:320px;height:260px;display:flex;align-items:center;justify-content:center}
-        .line-chart-container{position:relative;width:100%;height:260px}
+        .dashboard-analytics{display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;margin-bottom:16px}
+        .analytics-card{background:#fff;border:1px solid #e1e6ef;border-radius:15px;padding:16px;box-shadow:0 6px 18px #0f172a0d;display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .analytics-card h3{margin:0 0 12px 0;font-size:14px;color:var(--d);align-self:flex-start}
+        .chart-container{position:relative;width:100%;max-width:260px;height:220px;display:flex;align-items:center;justify-content:center}
+        .line-chart-container{position:relative;width:100%;height:220px}
 
 
         .page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
@@ -209,8 +209,8 @@
         input.terkunci:hover {border-color: #d62828 !important;}
 
 
-        @media(max-width:900px){.dashboard-analytics{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.toolbar button{width:100%}}
-        @media(max-width:700px){.container{padding:9px}.card{padding:11px}.brand-title{font-size:16px}.brand-sub{font-size:10px}.brand-mark{width:38px;height:38px}.page-head h1{font-size:24px}.exp-table{min-width:780px}.exp-expense-row{grid-template-columns:minmax(0,1fr) 110px 44px}.cash strong{font-size:24px}.save-bar button{width:100%;min-width:0}}
+        @media(max-width:1024px){.dashboard-analytics{grid-template-columns:repeat(2, 1fr)}}
+        @media(max-width:700px){.dashboard-analytics{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.toolbar button{width:100%}}
         @media print{#appHeader,.no-print,#loginPage,#dashboardPage,.save-bar{display:none!important}#rekapPage,#ekspedisiPage,#simpPage,#bonPage{display:block!important}.card{box-shadow:none;border:0}.book{break-inside:avoid}}
     </style>
 
@@ -481,6 +481,7 @@
 
         // --- RENDER GRAFIK DASHBOARD CUSTOM ---
         let pieChartInstance = null;
+        let stortingPieChartInstance = null;
         let lineChartInstance = null;
 
 
@@ -492,6 +493,7 @@
 
 
             let dropJaya1 = 0, dropJaya2 = 0, dropJaya3 = 0;
+            let stortingJaya1 = 0, stortingJaya2 = 0, stortingJaya3 = 0;
             const days = jumlahHari(b, t);
 
 
@@ -499,15 +501,15 @@
                 for (let i = 1; i <= days; i++) {
                     if (rekapData.hari[i] && rekapData.hari[i].items) {
                         const items = rekapData.hari[i].items;
-                        if(items[0]) dropJaya1 += parseAngka(items[0].drop);
-                        if(items[1]) dropJaya2 += parseAngka(items[1].drop);
-                        if(items[2]) dropJaya3 += parseAngka(items[2].drop);
+                        if(items[0]) { dropJaya1 += parseAngka(items[0].drop); stortingJaya1 += parseAngka(items[0].storting); }
+                        if(items[1]) { dropJaya2 += parseAngka(items[1].drop); stortingJaya2 += parseAngka(items[1].storting); }
+                        if(items[2]) { dropJaya3 += parseAngka(items[2].drop); stortingJaya3 += parseAngka(items[2].storting); }
                     }
                 }
             }
 
 
-            // 1. Render Pie Chart (Distribusi Drop Bulan Berjalan per Resort)
+            // 1. Render Pie Chart Drop (Distribusi Drop Bulan Berjalan per Resort)
             if (pieChartInstance) pieChartInstance.destroy();
             const ctxPie = document.getElementById('resortPieChart').getContext('2d');
             pieChartInstance = new Chart(ctxPie, {
@@ -529,17 +531,37 @@
             });
 
 
-            // 2. Render Line Chart (Pertumbuhan Total Drop Antar Bulan)
+            // 2. Render Pie Chart Storting (Distribusi Storting Bulan Berjalan per Resort)
+            if (stortingPieChartInstance) stortingPieChartInstance.destroy();
+            const ctxStortingPie = document.getElementById('stortingPieChart').getContext('2d');
+            stortingPieChartInstance = new Chart(ctxStortingPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Jaya 1', 'Jaya 2', 'Jaya 3'],
+                    datasets: [{
+                        data: [stortingJaya1, stortingJaya2, stortingJaya3],
+                        backgroundColor: ['#10b981', '#6366f1', '#f59e0b']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+
+            // 3. Render Line Chart (Pertumbuhan Total Drop Antar Bulan)
             let monthlyLabels = [];
             let monthlyDropTotals = [];
 
 
-            // Cari semua data rekap tersimpan di localStorage untuk menyusun grafik bulanan kronologis
             let allMonthsData = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 if (key && key.startsWith("koperasi-rekap-")) {
-                    // Format key: koperasi-rekap-tahun-bulan
                     const parts = key.split("-");
                     if (parts.length === 3) {
                         const yr = parseInt(parts[1]);
@@ -563,7 +585,6 @@
             }
 
 
-            // Urutkan berdasarkan waktu kronologis
             allMonthsData.sort((a, b) => a.sortKey - b.sortKey);
 
 
@@ -573,7 +594,6 @@
             });
 
 
-            // Jika belum ada data tersimpan sama sekali, tampilkan bulan aktif saat ini sebagai default
             if (monthlyLabels.length === 0) {
                 monthlyLabels.push(namaBulan[b] + " " + t);
                 monthlyDropTotals.push(dropJaya1 + dropJaya2 + dropJaya3);
@@ -674,6 +694,12 @@
                 <h3>Distribusi Drop Bulan Ini per Resort</h3>
                 <div class="chart-container">
                     <canvas id="resortPieChart"></canvas>
+                </div>
+            </div>
+            <div class="analytics-card">
+                <h3>Distribusi Storting Bulan Ini per Resort</h3>
+                <div class="chart-container">
+                    <canvas id="stortingPieChart"></canvas>
                 </div>
             </div>
             <div class="analytics-card">
