@@ -227,9 +227,46 @@
         const PIN_KASIR = "125660"; 
         
         function terapkanKunciKeamanan() {
+            const today = tanggalHariIni();
             const semuaInput = document.querySelectorAll('.rekap-table input, .exp-table input[type="text"], .exp-table input[inputmode="numeric"], .staff input.money, .staff input.name-input');
+            
             semuaInput.forEach(inp => {
-                if(inp.value && inp.value !== "" && inp.value !== "0") {
+                if(inp.classList.contains('terkunci') || inp.hasAttribute('readonly')) return;
+                if(inp.classList.contains('manual-date') || inp.type === 'date') return;
+
+
+                let shouldLock = false;
+                
+                if(inp.id.startsWith('storting-') || inp.id.startsWith('drop-') || inp.id.startsWith('tabunganKeluar-')) {
+                    const parts = inp.id.split('-');
+                    const k = parts[1]+'-'+parts[2]+'-'+parts[3];
+                    const tgl = document.getElementById('tanggal-'+k);
+                    if(tgl && tgl.value) {
+                        // Kunci jika ada isinya, ATAU jika tanggalnya adalah hari sebelumnya (mencegah edit sel kosong masa lalu)
+                        if(inp.value && inp.value !== "0") shouldLock = true;
+                        else if(tgl.value !== today) shouldLock = true;
+                    }
+                } 
+                else if(inp.id.startsWith('exp-ket-') || inp.id.startsWith('exp-jml-')) {
+                    const parts = inp.id.split('-'); 
+                    const k = parts[2]+'-'+parts[3]+'-'+parts[4];
+                    const tgl = document.getElementById('exp-tanggal-'+k);
+                    if(tgl && tgl.value) {
+                        if(inp.value && inp.value !== "0") shouldLock = true;
+                        else if(tgl.value !== today) shouldLock = true;
+                    }
+                }
+                else if(inp.classList.contains('money')) {
+                    const dt = inp.dataset.d;
+                    if(inp.value && inp.value !== "0") shouldLock = true;
+                    else if(dt && dt !== today) shouldLock = true;
+                }
+                else if(inp.classList.contains('name-input')) {
+                    if(inp.value) shouldLock = true;
+                }
+
+
+                if(shouldLock) {
                     inp.setAttribute('readonly', 'true');
                     inp.classList.add('terkunci');
                     
@@ -383,15 +420,40 @@
         
         function buatEkspedisi(){const b=+ekspedisiBulan.value,t=+ekspedisiTahun.value;ekspedisiContainer.innerHTML="";const s=ambilDataEkspedisi(b,t);for(let h=1;h<=jumlahHari(b,t);h++)buatHariEkspedisi(h,b,t,s);loadEkspedisi();updateSaveButton()} 
         function buatHariEkspedisi(h,b,t,s){const k=`${t}-${b}-${h}`,d=s?.hari?.[h]||{},box=document.createElement("div");box.className="book";box.innerHTML=`<div class="table-wrap"><table class="exp-table"><thead><tr><th>Tanggal</th><th>Keterangan</th><th>Catatan</th><th>Jumlah (Rp)</th></tr></thead><tbody><tr class="exp-opening"><td rowspan="7"><div class="date-action-box"><input class="manual-date" type="date" id="exp-tanggal-${k}" value="${d.tanggal||""}" readonly><button type="button" class="date-today-btn no-print" onclick="buatTanggalHariIni('ekspedisi','${k}')">TANGGAL</button></div></td><td><b>Saldo kas</b></td><td>saldo hari sebelumnya</td><td class="amount" id="exp-awal-${k}">0</td></tr><tr class="exp-income"><td><b>Kas masuk</b></td><td>dari Buku Rekap</td><td class="amount" id="exp-masuk-${k}">0</td></tr><tr><td><b>Pengeluaran</b></td><td colspan="2" class="exp-expense-cell"><div id="exp-list-${k}"></div><button class="btn-secondary no-print" onclick="tambahPengeluaran('${k}')">Tambah Pengeluaran</button></td></tr><tr class="exp-expense-total"><td><b>Jumlah pengeluaran</b></td><td></td><td class="amount" id="exp-pengeluaran-${k}">0</td></tr><tr class="exp-temporary"><td><b>Kas sementara</b></td><td>saldo kas + kas masuk - pengeluaran</td><td class="amount" id="exp-sementara-${k}">0</td></tr><tr><td><b>Tunai pasar</b></td><td>dari Buku Rekap</td><td class="amount" id="exp-tunai-${k}">0</td></tr><tr class="exp-final"><td><b>Saldo kas</b></td><td>menjadi saldo awal besok</td><td class="amount" id="exp-akhir-${k}">0</td></tr></tbody></table></div>`;ekspedisiContainer.appendChild(box);const l=document.getElementById("exp-list-"+k);(d.pengeluaran?.length?d.pengeluaran:[{}]).forEach((x,i)=>buatBarisPengeluaran(l,k,i,x.keterangan||"",x.jumlah||""))} 
+        
         function buatBarisPengeluaran(l,k,i,ket,jml){const r=document.createElement("div");r.className="exp-expense-row";r.innerHTML=`<input type="text" id="exp-ket-${k}-${i}" value="${escapeHtml(ket)}" placeholder="Keterangan" oninput="hitungEkspedisi()"><input type="text" inputmode="numeric" id="exp-jml-${k}-${i}" value="${jml?angka(jml):""}" placeholder="0" oninput="formatInputEkspedisi(this)"><button class="exp-delete no-print" onclick="hapusPengeluaran('${k}',${i})">Hapus</button>`;l.appendChild(r)} 
-        function tambahPengeluaran(k){const l=document.getElementById("exp-list-"+k);buatBarisPengeluaran(l,k,l.children.length,"","");tandaiPerubahan()} 
+        
+        function tambahPengeluaran(k){
+            const parts = k.split('-');
+            const s = ambilDataEkspedisi(parts[1], parts[0]);
+            const isSaved = s && s.hari && s.hari[parts[2]] && s.hari[parts[2]].tanggal;
+
+
+            if (isSaved) {
+                const pin = prompt("Data hari ini sudah tersimpan. Masukkan PIN Admin untuk menambah pengeluaran baru:");
+                if (pin !== PIN_KASIR) {
+                    if (pin !== null) alert("PIN SALAH!");
+                    return;
+                }
+            }
+
+
+            const l=document.getElementById("exp-list-"+k);
+            buatBarisPengeluaran(l,k,l.children.length,"","");
+            tandaiPerubahan();
+        } 
         
         function hapusPengeluaran(k,i){
+            const parts = k.split('-');
+            const s = ambilDataEkspedisi(parts[1], parts[0]);
+            const isSaved = s && s.hari && s.hari[parts[2]] && s.hari[parts[2]].tanggal;
+
+
             const inp = document.getElementById(`exp-jml-${k}-${i}`);
-            if(inp && inp.classList.contains('terkunci')) {
+            if(isSaved || (inp && inp.classList.contains('terkunci'))) {
                 const pin = prompt("Data sudah tersimpan. Masukkan PIN Admin untuk menghapus baris ini:");
                 if (pin !== PIN_KASIR) {
-                    if(pin !== null) alert("PIN SALAH!");
+                    if (pin !== null) alert("PIN SALAH!");
                     return;
                 }
             }
