@@ -158,30 +158,45 @@
         .exp-delete{background:#fff0f0;color:#d62828;border:1px solid #f1b5b5;padding:5px 7px;min-height:32px;width:100%;font-size:12px;border-radius:6px}
 
 
-        /* Styling Buku Simpanan & Buku Bon Karyawan (Ramping & Minimalis) */
+        /* Styling Buku Simpanan & Buku Bon Karyawan (Fit 18 Huruf Nama & 10 Angka Nominal) */
         .staff-controls{display:flex;gap:8px;margin-bottom:12px}
         .staff-controls button{min-height:36px;padding:6px 14px;font-size:13px}
-        .staff{width:100%;border-collapse:collapse}
-        .staff th,.staff td{border:1px solid #dfe4e9;padding:6px 4px;text-align:center;vertical-align:middle}
+        .staff{width:100%;border-collapse:collapse;table-layout:fixed}
+        .staff th,.staff td{border:1px solid #dfe4e9;padding:6px 4px;text-align:center;vertical-align:middle;white-space:nowrap}
         
-        #simpPage .staff th{background:var(--g);color:#ffffff;font-size:12px;font-weight:700;white-space:nowrap}
+        #simpPage .staff th{background:var(--g);color:#ffffff;font-size:12px;font-weight:700}
         #simpPage .staff .total td{background:#eef3fb;color:#0f172a;font-weight:700;font-size:13px}
         .staff-note{background:#f5fbf7;border-left:4px solid var(--g);padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:13px;color:#1b5e20}
 
 
-        #bonPage .staff th{background:var(--amber);color:#ffffff;font-size:12px;font-weight:700;white-space:nowrap}
+        #bonPage .staff th{background:var(--amber);color:#ffffff;font-size:12px;font-weight:700}
         #bonPage .staff .total td{background:var(--amber-total);color:var(--amber-text);font-weight:700;font-size:13px}
         .staff-note{background:var(--amber-bg);border-left:4px solid var(--amber);color:var(--amber-text);padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:13px}
 
 
         .name-box{display:flex;align-items:center;gap:6px}
-        .staff input.name-input{flex:1;min-width:140px;min-height:32px;height:32px;padding:4px 8px;border-radius:6px;border:1px solid #b0c4de;font-weight:700;font-size:13px;background:#ffffff!important;}
+        .staff input.name-input{width:100%;min-height:34px;height:34px;padding:4px 8px;border-radius:6px;border:1px solid #b0c4de;font-weight:700;font-size:13px;background:#ffffff!important;}
         
         .person-remove{width:26px!important;height:26px!important;min-width:26px!important;min-height:26px!important;padding:0!important;margin:0!important;display:inline-flex!important;align-items:center;justify-content:center;font-size:15px!important;font-weight:bold!important;line-height:1;background:#fee2e2!important;color:#dc2626!important;border:1px solid #fca5a5!important;border-radius:6px;cursor:pointer;transition:all 0.15s ease;}
         .person-remove:hover{background:#fca5a5!important;color:#7f1d1d!important;}
 
 
-        .staff input.money{width:130px;min-width:115px;min-height:32px;height:32px;padding:4px 6px;border-radius:6px;border:1px solid #b0c4de;font-weight:600;font-size:13px;text-align:right;background:#ffffff!important;margin:auto;}
+        .staff input.money{
+            width:125px!important;
+            min-width:125px!important;
+            max-width:125px!important;
+            min-height:34px;
+            height:34px;
+            padding:4px 6px;
+            border-radius:6px;
+            border:1px solid #b0c4de;
+            font-weight:600;
+            font-size:13px;
+            text-align:right;
+            background:#ffffff!important;
+            display:inline-block;
+            margin:auto;
+        }
         .staff td[id^="sr-"]{background:var(--bg-calc);font-weight:700;text-align:right;font-size:13px;padding:6px 8px}
 
 
@@ -484,7 +499,7 @@
         function dateDisplay(s){const[y,m,d]=s.split("-");return`${d}/${m}/${y}`} 
 
 
-        function renderStaff(t){const d=staffData(t),table=document.getElementById(t==="simp"?"simpTable":"bonTable");let head="<thead><tr><th>NAMA PETUGAS</th>";d.dates.forEach((x,i)=>head+=`<th><div class="staff-date-head"><span>${dateDisplay(x)}</span><button class="date-remove no-print" title="Hapus Kolom Tanggal" onclick="removeDate('${t}',${i})">&times;</button></div></th>`);head+=`<th>JUMLAH<br><button class="date-add-btn no-print" onclick="addDate('${t}')">+ TANGGAL</button></th></tr></thead>`;table.innerHTML=head;const tb=document.createElement("tbody");d.names.forEach((n,r)=>{const tr=document.createElement("tr");tr.innerHTML=`<td><div class="name-box"><input class="name-input" value="${escapeHtml(n)}" onchange="renameStaff('${t}',${r},this.value)"><button class="person-remove no-print" title="Hapus Petugas" onclick="removePerson('${t}',${r})">&times;</button></div></td>${d.dates.map(dt=>`<td><input class="money" inputmode="numeric" data-t="${t}" data-r="${r}" data-d="${dt}" value="${d.v[r+"|"+dt]?angka(d.v[r+"|"+dt]):""}" oninput="staffInput(this)"></td>`).join("")}<td id="sr-${t}-${r}">0</td>`;tb.appendChild(tr)});const tr=document.createElement("tr");tr.className="total";tr.innerHTML=`<td>JUMLAH</td>${d.dates.map(dt=>`<td id="sc-${t}-${dt}">0</td>`).join("")}<td id="sg-${t}">0</td>`;tb.appendChild(tr);table.appendChild(tb);calcStaff(t);updateSaveButton();terapkanKunciKeamanan();} 
+        function renderStaff(t){const d=staffData(t),table=document.getElementById(t==="simp"?"simpTable":"bonTable");let head="<thead><tr><th style='width:180px'>NAMA PETUGAS</th>";d.dates.forEach((x,i)=>head+=`<th style='width:115px'><div class="staff-date-head"><span>${dateDisplay(x)}</span><button class="date-remove no-print" title="Hapus Kolom Tanggal" onclick="removeDate('${t}',${i})">&times;</button></div></th>`);head+=`<th style='width:120px'>JUMLAH<br><button class="date-add-btn no-print" onclick="addDate('${t}')">+ TANGGAL</button></th></tr></thead>`;table.innerHTML=head;const tb=document.createElement("tbody");d.names.forEach((n,r)=>{const tr=document.createElement("tr");tr.innerHTML=`<td><div class="name-box"><input class="name-input" value="${escapeHtml(n)}" onchange="renameStaff('${t}',${r},this.value)"><button class="person-remove no-print" title="Hapus Petugas" onclick="removePerson('${t}',${r})">&times;</button></div></td>${d.dates.map(dt=>`<td><input class="money" inputmode="numeric" data-t="${t}" data-r="${r}" data-d="${dt}" value="${d.v[r+"|"+dt]?angka(d.v[r+"|"+dt]):""}" oninput="staffInput(this)"></td>`).join("")}<td id="sr-${t}-${r}">0</td>`;tb.appendChild(tr)});const tr=document.createElement("tr");tr.className="total";tr.innerHTML=`<td>JUMLAH</td>${d.dates.map(dt=>`<td id="sc-${t}-${dt}">0</td>`).join("")}<td id="sg-${t}">0</td>`;tb.appendChild(tr);table.appendChild(tb);calcStaff(t);updateSaveButton();terapkanKunciKeamanan();} 
         
         async function addDate(t){const d=staffData(t),n=new Date(),x=n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0");if(d.dates.includes(x)){alert("Tanggal hari ini sudah ada.");return}d.dates.push(x);d.dates.sort();await saveStaffData(t,d);renderStaff(t);tandaiPerubahan()} 
         
@@ -618,7 +633,7 @@
             });
 
 
-            // 3. Render Line Chart (Pertumbuhan Total Drop Antار Bulan)
+            // 3. Render Line Chart (Pertumbuhan Total Drop Antar Bulan)
             let monthlyLabels = [];
             let monthlyDropTotals = [];
 
